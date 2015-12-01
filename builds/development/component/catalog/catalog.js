@@ -2,12 +2,24 @@
 	"use strict";
 
 	angular.module('ngCatalog', ['ngAnimate', 'ngCookies'])
-		.controller(catalogCtrl);        
+        .config(catalogConf)
+		.controller('catalogCtrl', catalogCtrl);
 
-    function catalogCtrl ($scope, $log) {
-    	$log.log("Catalog controller star");
+    function catalogCtrl ($scope, $log, Data, $rootScope) {
+    	$log.debug("Catalog controller star");
+            $scope.lists = Data.getData();
+            $scope.setIndex = function(index){
+                $rootScope.id = index;
+            };
+    	$log.debug("Catalog controller finish");
+    }
 
-
-    	$log.log("Catalog controller star");
+    function catalogConf($stateProvider){
+        $stateProvider
+            .state('catalog', {
+                    url: '/catalog',
+                    templateUrl: 'component/catalog/catalog.html',
+                    controller: 'catalogCtrl'
+                })
     }
 })();

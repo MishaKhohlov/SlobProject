@@ -1,1 +1,6 @@
-<h1>Catalog</h1>
+<main>
+<h1>Catalog page</h1>
+    <ul>
+        <li ng-repeat="list in lists"><a ng-click="setIndex(list.index)" href="#/catalog/{{list.id}}">{{list.name.firstname}} - {{list.name.lastname}} - {{list.age}}</a></li>
+    </ul>
+</main>
