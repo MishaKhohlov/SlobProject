@@ -7,9 +7,9 @@
 
     function listCtrl ($scope, $log, Data, $state, $rootScope) {
         $log.debug("List controller star");
+        $state.params.id;
 
-        $scope.src = $state.params.id;
-        $scope.item = Data.getDataItem();
+        $scope.item = Data.getDataItem(2);
         $log.debug("List controller finish");
     }
 

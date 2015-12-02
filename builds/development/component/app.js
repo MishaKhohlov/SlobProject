@@ -2,7 +2,7 @@
 	"use strict";
 
 	angular.module('ngApp', ['ui.router', 'ngAnimate', 'ngCookies', 'ngCatalog',
-        'ngService', 'ngAbout', 'ngApp.data', 'ngDataAbout'])
+        'ngService', 'ngAbout', 'ngData', 'ngAuth', 'ngDataAbout', 'ngAdmin'])
         .config(slobConfig)
         .constant('firebase_url', '') 
         //.run(function(test, tw){});

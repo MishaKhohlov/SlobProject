@@ -1,18 +1,30 @@
 ;(function() {
 	"use strict";
 
-	angular.module('ngCatalog', ['ngAnimate', 'ngCookies'])
+	angular.module('ngAdmin', ['ngAnimate', 'ngCookies'])
 		.config(adminConfig)
-		.controller(adminCtrl);        
+		.controller('adminCtrl', adminCtrl);
 
-    function adminCtrl ($scope, $log) {
-    	$log.log("Catalog controller star");
+    function adminCtrl ($scope, $log, Auth, Data) {
+    	$log.log("Admin controller star");
+		$scope.setImage = function(){
 
-
-    	$log.log("Catalog controller star");
+		};
+		$scope.data = Data.getData();
+    	$log.log("Admin controller star");
     }
 
-     function adminConfig($stateProvider, $urlRouterProvider, $logProvider){
-        $logProvider.debugEnabled(true);
+     function adminConfig($stateProvider){
+		 $stateProvider
+				 .state('admin', {
+					 url: '/admin',
+					 templateUrl: 'component/admin/admin.html',
+					 controller: 'adminCtrl',
+					 resolve: {
+						 item: function(Auth) {
+							 return Auth.auth()
+						 }
+					 }
+				 })
     }
 })();

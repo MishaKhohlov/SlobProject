@@ -1,1 +1,16 @@
+.ng-enter { z-index: 8888;}
+.ng-leave { z-index: 9999;}
 
+@keyframes slideOutUp {
+    to { transform: translateX(-100%); }
+}
+@keyframes scaleUp {
+    from { opacity: 0.3; transform: scale(0.8); }
+}
+
+.page.ng-leave, .page.ng-enter.ng-enter-active {animation: scaleUp 0.5s both ease-in; }
+.page.ng-enter, .page.ng-leave.ng-leave-active {animation: slideOutUp 0.5s both ease-in;}
+
+.active-link {
+    color: red;
+}

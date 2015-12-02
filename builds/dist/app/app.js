@@ -2,7 +2,7 @@
 	"use strict";
 
 	angular.module('ngApp', ['ui.router', 'ngAnimate', 'ngCookies', 'ngCatalog',
-        'ngService', 'ngAbout', 'ngApp.data', 'ngDataAbout'])
+        'ngService', 'ngAbout', 'ngData', 'ngAuth', 'ngDataAbout', 'ngAdmin'])
         .config(slobConfig)
         .constant('firebase_url', '') 
         //.run(function(test, tw){});
@@ -29,70 +29,104 @@
     'use strict';
 
     angular
-        .module('ngApp.data', ['firebase'])
+        .module('ngAuth', ['firebase'])
+        .factory('Auth', authFact);
+
+    function authFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url){
+
+        var publickAuthObj = {
+            auth: function() {
+                var prom = $q.defer();
+                //доступ к администратору
+                prom.resolve();
+
+                return prom.promise
+            }
+        };
+        $rootScope.auth_user = function(){
+          return true;
+        };
+        return publickAuthObj;
+    }
+})();
+;(function(){
+    'use strict';
+
+    angular
+        .module('ngData', ['firebase'])
         .factory('Data', dataFact);
 
-    function dataFact($firebaseAuth, $firebaseObject, $log, $rootScope, firebase_url){
+    function dataFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url){
         var dataArr =  [
             {
-                "id": "srcone",
-                "index": 0,
-                "isActive": true,
-                "balance": "$3,942.81",
-                "picture": "http://placehold.it/32x32",
-                "age": 25,
-                "eyeColor": "green",
-                "name": {
-                    "firstname": "Hutchinson",
-                    "lastname": "Carrillo"
-                }
+                'type' : 'квартира', // дом, участки, нежилая недвижимость
+                'number_obj' : 123,
+                'name_obj' : 'Квартира 2км',
+                'photo' : ['','','','',''],
+                'isolation_house' : 'дача', // часть дома, целый дом
+                'isolation_flat' : true,
+                'room' : 'laxury', // 1,2,3,4 many, laxury
+                'price': 2100,
+                'city' : 'true', // kharkiv prigorod
+                'district' : 'Алеексеевка',
+                'space' : 43,
+                'phone_agent' : [675729181,2121232,37465349],
+                'name_agent' : 'Karl',
+                'adress' : 'street artilliryiska house 2/a',
+                'discriptions' : 'This is descriptions'
             },
             {
-                "id": "srctwo",
-                "index": 1,
-                "isActive": false,
-                "balance": "$3,377.88",
-                "picture": "http://placehold.it/32x32",
-                "age": 20,
-                "eyeColor": "blue",
-                "name": {
-                    "firstname": "Hurst",
-                    "lastname": "Morales"
-                }
+                'type' : 'квартира', // дом, участки, нежилая недвижимость
+                'number_obj' : 223,
+                'name_obj' : 'Квартира 2км',
+                'photo' : ['','','','',''],
+                'isolation_house' : 'дача', // часть дома, целый дом
+                'isolation_flat' : true,
+                'room' : 'laxury', // 1,2,3,4 many, laxury
+                'price': 2100,
+                'city' : 'true', // kharkiv prigorod
+                'district' : 'Алеексеевка',
+                'space' : 43,
+                'phone_agent' : [675729181,2121232,37465349],
+                'name_agent' : 'Karl',
+                'adress' : 'street artilliryiska house 2/a',
+                'discriptions' : 'This is descriptions'
             },
             {
-                "id": "srcthree",
-                "index": 2,
-                "isActive": true,
-                "balance": "$3,435.10",
-                "picture": "http://placehold.it/32x32",
-                "age": 40,
-                "eyeColor": "blue",
-                "name": {
-                    "firstname": "Rosemarie",
-                    "lastname": "Bowers"
-                }
-            },
-            {
-                "id": "srcfour",
-                "index": 3,
-                "isActive": true,
-                "balance": "$2,063.13",
-                "picture": "http://placehold.it/32x32",
-                "age": 29,
-                "eyeColor": "green",
-                "name": {
-                    "firstname": "Kelly",
-                    "lastname": "Chapman"
-                }
+                'type' : 'квартира', // дом, участки, нежилая недвижимость
+                'number_obj' : 332,
+                'name_obj' : 'Квартира 2км',
+                'photo' : ['','','','',''],
+                'isolation_house' : 'дача', // часть дома, целый дом
+                'isolation_flat' : true,
+                'room' : 'laxury', // 1,2,3,4 many, laxury
+                'price': 2100,
+                'city' : 'true', // kharkiv prigorod
+                'district' : 'Алеексеевка',
+                'space' : 43,
+                'phone_agent' : [675729181,2121232,37465349],
+                'name_agent' : 'Karl',
+                'adress' : 'street artilliryiska house 2/a',
+                'discriptions' : 'This is descriptions'
             }
         ];
         var publickDataObj = {
             getData: function(){
                 return dataArr;
             },
-            getDataItem: function() {
-                return dataArr[$rootScope.id];
+            getDataItem: function(id) {
+                return dataArr[id];
+            },
+            auth: function() {
+                var dfd = $q.defer()
+
+                setTimeout(function() {
+                    dfd.resolve({
+                        name: 'Mittens Cat'
+                    })
+                }, 2000)
+
+                return dfd.promise
             }
     };
 
@@ -125,19 +159,31 @@
 ;(function() {
 	"use strict";
 
-	angular.module('ngCatalog', ['ngAnimate', 'ngCookies'])
+	angular.module('ngAdmin', ['ngAnimate', 'ngCookies'])
 		.config(adminConfig)
-		.controller(adminCtrl);        
+		.controller('adminCtrl', adminCtrl);
 
-    function adminCtrl ($scope, $log) {
-    	$log.log("Catalog controller star");
+    function adminCtrl ($scope, $log, Auth, Data) {
+    	$log.log("Admin controller star");
+		$scope.setImage = function(){
 
-
-    	$log.log("Catalog controller star");
+		};
+		$scope.data = Data.getData();
+    	$log.log("Admin controller star");
     }
 
-     function adminConfig($stateProvider, $urlRouterProvider, $logProvider){
-        $logProvider.debugEnabled(true);
+     function adminConfig($stateProvider){
+		 $stateProvider
+				 .state('admin', {
+					 url: '/admin',
+					 templateUrl: 'component/admin/admin.html',
+					 controller: 'adminCtrl',
+					 resolve: {
+						 item: function(Auth) {
+							 return Auth.auth()
+						 }
+					 }
+				 })
     }
 })();
 ;(function() {
@@ -149,9 +195,9 @@
 
     function catalogCtrl ($scope, $log, Data, $rootScope) {
     	$log.debug("Catalog controller star");
-            $scope.lists = Data.getData();
-            $scope.setIndex = function(index){
-                $rootScope.id = index;
+            $scope.data =  Data.getData();
+            $scope.setIndex = function(obj){
+              $log.log("2132", obj);
             };
     	$log.debug("Catalog controller finish");
     }
@@ -174,9 +220,9 @@
 
     function listCtrl ($scope, $log, Data, $state, $rootScope) {
         $log.debug("List controller star");
+        $state.params.id;
 
-        $scope.src = $state.params.id;
-        $scope.item = Data.getDataItem();
+        $scope.item = Data.getDataItem(2);
         $log.debug("List controller finish");
     }
 
