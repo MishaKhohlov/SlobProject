@@ -7,9 +7,18 @@
 
     function listCtrl ($scope, $log, Data, $state, $rootScope) {
         $log.debug("List controller star");
-        $state.params.id;
 
-        $scope.item = Data.getDataItem(2);
+        if($rootScope.index >= 0) {
+            $scope.item = Data.getDataItem($rootScope.index);
+        } else {
+            var state = $state.params.id;
+            Data.getData().some(function (element, index) {
+                if (element.number_obj == state) {
+                    $scope.item = Data.getDataItem(index);
+                    return true;
+                }
+            });
+        }
         $log.debug("List controller finish");
     }
 

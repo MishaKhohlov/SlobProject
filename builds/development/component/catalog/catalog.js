@@ -8,8 +8,8 @@
     function catalogCtrl ($scope, $log, Data, $rootScope) {
     	$log.debug("Catalog controller star");
             $scope.data =  Data.getData();
-            $scope.setIndex = function(obj){
-              $log.log("2132", obj);
+            $scope.setIndex = function(index){
+              $rootScope.index = index;
             };
     	$log.debug("Catalog controller finish");
     }

@@ -2,7 +2,7 @@
 	"use strict";
 
 	angular.module('ngApp', ['ui.router', 'ngAnimate', 'ngCookies', 'ngCatalog',
-        'ngService', 'ngAbout', 'ngData', 'ngAuth', 'ngDataAbout', 'ngAdmin'])
+        'ngService', 'ngAbout', 'ngData', 'ngAuth', 'ngDataAbout', 'ngAdmin', 'ngDataAboutAdmin'])
         .config(slobConfig)
         .constant('firebase_url', '') 
         //.run(function(test, tw){});
@@ -64,8 +64,8 @@
                 'name_obj' : 'Квартира 2км',
                 'photo' : ['','','','',''],
                 'isolation_house' : 'дача', // часть дома, целый дом
-                'isolation_flat' : true,
-                'room' : 'laxury', // 1,2,3,4 many, laxury
+                'isolation_flat' : "Изолированные",
+                'room' : 'Элитные', // 1,2,3,4 many, laxury
                 'price': 2100,
                 'city' : 'true', // kharkiv prigorod
                 'district' : 'Алеексеевка',
@@ -82,7 +82,7 @@
                 'photo' : ['','','','',''],
                 'isolation_house' : 'дача', // часть дома, целый дом
                 'isolation_flat' : true,
-                'room' : 'laxury', // 1,2,3,4 many, laxury
+                'room' : 'Элитные', // 1,2,3,4 many, laxury
                 'price': 2100,
                 'city' : 'true', // kharkiv prigorod
                 'district' : 'Алеексеевка',
@@ -99,7 +99,24 @@
                 'photo' : ['','','','',''],
                 'isolation_house' : 'дача', // часть дома, целый дом
                 'isolation_flat' : true,
-                'room' : 'laxury', // 1,2,3,4 many, laxury
+                'room' : 'Элитные', // 1,2,3,4 many, laxury
+                'price': 2100,
+                'city' : 'true', // kharkiv prigorod
+                'district' : 'Алеексеевка',
+                'space' : 43,
+                'phone_agent' : [675729181,2121232,37465349],
+                'name_agent' : 'Karl',
+                'adress' : 'street artilliryiska house 2/a',
+                'discriptions' : 'This is descriptions'
+            },
+            {
+                'type' : 'квартира', // дом, участки, нежилая недвижимость
+                'number_obj' : 432,
+                'name_obj' : 'Квартира 2км',
+                'photo' : ['','','','',''],
+                'isolation_house' : 'дача', // часть дома, целый дом
+                'isolation_flat' : true,
+                'room' : 'Элитные', // 1,2,3,4 many, laxury
                 'price': 2100,
                 'city' : 'true', // kharkiv prigorod
                 'district' : 'Алеексеевка',
@@ -117,16 +134,11 @@
             getDataItem: function(id) {
                 return dataArr[id];
             },
-            auth: function() {
-                var dfd = $q.defer()
-
-                setTimeout(function() {
-                    dfd.resolve({
-                        name: 'Mittens Cat'
-                    })
-                }, 2000)
-
-                return dfd.promise
+            updateData: function(data, callback){
+                //var obj = {};
+                //obj[user.$id] = {name: user.name, age: user.age};
+                $log.log(data);
+                //return usersRef.update(obj, callback);
             }
     };
 
@@ -163,10 +175,13 @@
 		.config(adminConfig)
 		.controller('adminCtrl', adminCtrl);
 
-    function adminCtrl ($scope, $log, Auth, Data) {
+    function adminCtrl ($scope, $log, $rootScope, Auth, Data) {
     	$log.log("Admin controller star");
 		$scope.setImage = function(){
 
+		};
+		$scope.setIndex = function(index){
+			$rootScope.index_a = index;
 		};
 		$scope.data = Data.getData();
     	$log.log("Admin controller star");
@@ -196,8 +211,8 @@
     function catalogCtrl ($scope, $log, Data, $rootScope) {
     	$log.debug("Catalog controller star");
             $scope.data =  Data.getData();
-            $scope.setIndex = function(obj){
-              $log.log("2132", obj);
+            $scope.setIndex = function(index){
+              $rootScope.index = index;
             };
     	$log.debug("Catalog controller finish");
     }
@@ -214,15 +229,68 @@
 ;(function() {
     "use strict";
 
+    angular.module('ngDataAboutAdmin', ['ngAnimate', 'ngCookies'])
+        .config(aboutAdminConf)
+        .controller('aboutAdminCtrl', aboutAdminCtrl);
+
+    function aboutAdminCtrl ($scope, $log, Data, $state, $rootScope) {
+        $log.debug("List_a controller star");
+
+        if($rootScope.index >= 0) {
+            $log.log($rootScope.index_a);
+            $scope.item = Data.getDataItem($rootScope.index);
+        } else {
+            var state = $state.params.id;
+            Data.getData().some(function (element, index) {
+                if (element.number_obj == state) {
+                    $scope.item = Data.getDataItem(index);
+                    return true;
+                }
+            });
+        }
+        $scope.updateData = function(){
+          Data.updateData($scope.item, function(){
+              $log.log("Error");
+          })
+        };
+        $log.debug("List_a controller finish");
+    }
+
+    function aboutAdminConf($stateProvider){
+        $stateProvider
+            .state('adminAbout', {
+                url: '/catalog_admin/:id',
+                templateUrl: 'component/data.about/data.about.admin.html',
+                controller: 'adminCtrl',
+                resolve: {
+                    item: function(Auth) {
+                        return Auth.auth()
+                    }
+                }
+            })
+    }
+})();
+;(function() {
+    "use strict";
+
     angular.module('ngDataAbout', ['ngAnimate', 'ngCookies'])
         .config(listConf)
         .controller('listCtrl', listCtrl);
 
     function listCtrl ($scope, $log, Data, $state, $rootScope) {
         $log.debug("List controller star");
-        $state.params.id;
 
-        $scope.item = Data.getDataItem(2);
+        if($rootScope.index >= 0) {
+            $scope.item = Data.getDataItem($rootScope.index);
+        } else {
+            var state = $state.params.id;
+            Data.getData().some(function (element, index) {
+                if (element.number_obj == state) {
+                    $scope.item = Data.getDataItem(index);
+                    return true;
+                }
+            });
+        }
         $log.debug("List controller finish");
     }
 

@@ -1,8 +1,8 @@
 <main ng-controller="catalogCtrl">
 <h1>Catalog page</h1>
     <ul>
-        <li ng-repeat="item in data"><a  ng-click="setIndex(item)" href="#/catalog/{{item.number_obj}}">
-            <div>
+        <li ng-repeat="(key, item) in data"><a class="item_a" ng-click="setIndex(key)" href="#/catalog/{{item.number_obj}}">
+            <div class="item">
                 <p>{{$index+1}}</p>
                 <img ng-src="{{data.photo[0]}}" name="img">
                 <!--<img ng-repeat="photo in data.photo" ng-src="{{photo}}" name="img">-->

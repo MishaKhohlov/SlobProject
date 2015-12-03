@@ -19,20 +19,24 @@
     </div>
 </div>
 <div ng-show="auth_user()">
-    <div ng-repeat="item in data">
-        <p>{{$index+1}}</p>
-        <img ng-src="{{data.photo[0]}}" name="img">
-        <!--<img ng-repeat="photo in data.photo" ng-src="{{photo}}" name="img">-->
-        <p>{{item.number}}</p>
-        <p ng-show="item.isolation_house">Изолир Дома {{item.isolation_house}}</p>
-        <p ng-show="item.isolation_flat">Изолир Кварт {{item.isolation_flat}}</p>
-        <p ng-show="item.room">Кол-во комнат {{item.room}}</p>
-        <p ng-show="item.district">Район {{item.district}}</p>
-        <p ng-show="item.space">Площадь {{item.space}}</p>
-        <p ng-show="item.adress">Адресс {{item.adress}}</p>
-        <p>Имя Агента {{item.name_agent}}</p>
-        <p ng-repeat="phone in item.phone_agent">Телефон {{phone}}</p>
-        <p ng-show="item.discriptions">Описание {{item.discriptions}}</p>
-        <p>Стоимость {{item.price}}</p>
-    </div>
+    <ul>
+    <li ng-repeat="(key, item) in data"><a class="item_a" ng-click="setIndex(key)" href="#/catalog_admin/{{item.number_obj}}">
+        <div class="item">
+            <p>{{$index+1}}</p>
+            <img ng-src="{{data.photo[0]}}" name="img">
+            <!--<img ng-repeat="photo in data.photo" ng-src="{{photo}}" name="img">-->
+            <p>{{item.number}}</p>
+            <p ng-show="item.isolation_house">Изолир Дома {{item.isolation_house}}</p>
+            <p ng-show="item.isolation_flat">Изолир Кварт {{item.isolation_flat}}</p>
+            <p ng-show="item.room">Кол-во комнат {{item.room}}</p>
+            <p ng-show="item.district">Район {{item.district}}</p>
+            <p ng-show="item.space">Площадь {{item.space}}</p>
+            <p ng-show="item.adress">Адресс {{item.adress}}</p>
+            <p>Имя Агента {{item.name_agent}}</p>
+            <p ng-repeat="phone in item.phone_agent">Телефон {{phone}}</p>
+            <p ng-show="item.discriptions">Описание {{item.discriptions}}</p>
+            <p>Стоимость {{item.price}}</p>
+        </div>
+    </a></li>
+    </ul>
 </div>

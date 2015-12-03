@@ -5,10 +5,13 @@
 		.config(adminConfig)
 		.controller('adminCtrl', adminCtrl);
 
-    function adminCtrl ($scope, $log, Auth, Data) {
+    function adminCtrl ($scope, $log, $rootScope, Auth, Data) {
     	$log.log("Admin controller star");
 		$scope.setImage = function(){
 
+		};
+		$scope.setIndex = function(index){
+			$rootScope.index_a = index;
 		};
 		$scope.data = Data.getData();
     	$log.log("Admin controller star");

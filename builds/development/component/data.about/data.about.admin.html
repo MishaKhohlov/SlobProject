@@ -1,0 +1,34 @@
+<main ng-controller="aboutAdminCtrl">
+    <h1>This is Data About Administrator</h1>
+
+    <p ng-show="item.number_obj">Номер{{item.number_obj}}</p>
+    <p ng-show="item.isolation_house">Изолир Дома {{item.isolation_house}}</p>
+    <p ng-show="item.isolation_flat">Изолир Кварт {{item.isolation_flat}}</p>
+    <p ng-show="item.room">Кол-во комнат {{item.room}}</p>
+    <p ng-show="item.district">Район {{item.district}}</p>
+    <p ng-show="item.space">Площадь {{item.space}}</p>
+    <p ng-show="item.adress">Адресс {{item.adress}}</p>
+    <p>Имя Агента {{item.name_agent}}</p>
+    <p ng-repeat="phone in item.phone_agent">Телефон {{phone}}</p>
+    <p ng-show="item.discriptions">Описание {{item.discriptions}}</p>
+    <p>Стоимость {{item.price}}</p>
+
+    <div style="border: 1px solid palevioletred">
+        <select ng-model="item.room">
+            <option selected="selected">Choose rooms</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>Многокомнатные</option>
+            <option>Элитные</option>
+        </select>
+        <div>
+            <input type="radio" ng-model="item.isolation_flat" name="isolation_flat" value="Изолированные"> Изолированные<Br>
+            <input type="radio" ng-model="item.isolation_flat" name="isolation_flat" value="Гостинки"> Гостинки<Br>
+        </div>
+
+        <input type="button" value="Change" ng-click="updateData()">
+    </div>
+
+</main>
