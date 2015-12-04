@@ -1,12 +1,14 @@
-<main ng-controller="catalogCtrl">
+<main>
 <h1>Catalog page</h1>
+<input type="text" ng-model="search">
     <ul>
-        <li ng-repeat="(key, item) in data"><a class="item_a" ng-click="setIndex(key)" href="#/catalog/{{item.number_obj}}">
+        <li ng-repeat="(key, item) in data | filter : search"><a class="item_a" ng-click="setIndex(key)" href="#/catalog/{{item.number_obj}}">
             <div class="item">
                 <p>{{$index+1}}</p>
                 <img ng-src="{{data.photo[0]}}" name="img">
                 <!--<img ng-repeat="photo in data.photo" ng-src="{{photo}}" name="img">-->
                 <p>{{item.number}}</p>
+                <p>Number obj {{item.number_obj}}</p>
                 <p ng-show="item.isolation_house">Изолир Дома {{item.isolation_house}}</p>
                 <p ng-show="item.isolation_flat">Изолир Кварт {{item.isolation_flat}}</p>
                 <p ng-show="item.room">Кол-во комнат {{item.room}}</p>

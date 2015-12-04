@@ -212,6 +212,7 @@
     	$log.debug("Catalog controller star");
             $scope.data =  Data.getData();
             $scope.setIndex = function(index){
+                $log.log(index);
               $rootScope.index = index;
             };
     	$log.debug("Catalog controller finish");
@@ -281,8 +282,12 @@
         $log.debug("List controller star");
 
         if($rootScope.index >= 0) {
+            $log.log("rootScope");
             $scope.item = Data.getDataItem($rootScope.index);
+            $rootScope.index = -1;
+            $log.log("rootScope 2");
         } else {
+            $log.log("arr.some");
             var state = $state.params.id;
             Data.getData().some(function (element, index) {
                 if (element.number_obj == state) {
@@ -290,6 +295,7 @@
                     return true;
                 }
             });
+            $log.log("arr.some 2");
         }
         $log.debug("List controller finish");
     }

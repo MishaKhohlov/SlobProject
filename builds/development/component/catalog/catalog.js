@@ -9,6 +9,7 @@
     	$log.debug("Catalog controller star");
             $scope.data =  Data.getData();
             $scope.setIndex = function(index){
+                $log.log(index);
               $rootScope.index = index;
             };
     	$log.debug("Catalog controller finish");

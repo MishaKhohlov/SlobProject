@@ -22,32 +22,32 @@ gulp.task('html', function() {
     .pipe(gulp.dest('builds/dist/'))
 });
 
-gulp.task('img', function() {
-  gulp.src('builds/development/img/**/*')
-    .pipe(gulp.dest('builds/dist/img/'));
-});
+// gulp.task('img', function() {
+//   gulp.src('builds/development/img/**')
+//     .pipe(gulp.dest('builds/dist/img/'));
+// });
 
-gulp.task('css', function () {
-  gulp.src('builds/development/style/**/*.css')
-      .pipe(concat('style.min.css'))
-      // .pipe(csso())
-      .pipe(gulp.dest('builds/dist/css/'));
-});
+// gulp.task('css', function () {
+//   gulp.src('builds/development/style/**/*.css')
+//       .pipe(concat('style.min.css'))
+//       // .pipe(csso())
+//       .pipe(gulp.dest('builds/dist/css/'));
+// });
 
-gulp.task('css-ui', function () {
-  gulp.src(bc+'jquery-ui/themes/flick/jquery-ui.min.css')
-      .pipe(gulp.dest('builds/dist/css/'));
-});
+// gulp.task('css-ui', function () {
+//   gulp.src(bc+'jquery-ui/themes/flick/jquery-ui.min.css')
+//       .pipe(gulp.dest('builds/dist/css/'));
+// });
 
-gulp.task('css-ui-themse', function () {
-  gulp.src(bc+'jquery-ui/themes/flick/theme.css')
-      .pipe(gulp.dest('builds/dist/css/'));
-});
+// gulp.task('css-ui-themse', function () {
+//   gulp.src(bc+'jquery-ui/themes/flick/theme.css')
+//       .pipe(gulp.dest('builds/dist/css/'));
+// });
 
-gulp.task('normalize', function () {
-  gulp.src(bc+'normalize-css/normalize.css')
-      .pipe(gulp.dest('builds/dist/css/'));
-});
+// gulp.task('normalize', function () {
+//   gulp.src(bc+'normalize-css/normalize.css')
+//       .pipe(gulp.dest('builds/dist/css/'));
+// });
 
 gulp.task('watch', function() {
   gulp.watch('builds/development/component/**/*.js', ['js']);
@@ -57,31 +57,31 @@ gulp.task('watch', function() {
 });
 
 gulp.task('libs', function() {
-  gulp.src(bc+'jquery/dist/jquery.min.js')
-      .pipe(gulp.dest('./builds/dist/libs/jquery/'));
+  // gulp.src(bc+'jquery/dist/jquery.min.js')
+  //     .pipe(gulp.dest('./builds/dist/libs/jquery/'));
 
-  gulp.src(bc+'jquery-ui/jquery-ui.min.js')
-      .pipe(gulp.dest('./builds/dist/libs/jquery/'));
+  // gulp.src(bc+'jquery-ui/jquery-ui.min.js')
+  //     .pipe(gulp.dest('./builds/dist/libs/jquery/'));
 
-  gulp.src(bc+'ngInfiniteScroll/build/ng-infinite-scroll.min.js')
-      .pipe(gulp.dest('./builds/dist/libs/ngInfiniteScroll/'));
+  // gulp.src(bc+'ngInfiniteScroll/build/ng-infinite-scroll.min.js')
+  //     .pipe(gulp.dest('./builds/dist/libs/ngInfiniteScroll/'));
 
-  gulp.src([bc+'angular/angular.js',
-            bc+'angular-animate/angular-animate.js',
-            bc+'angular-cookies/angular-cookies.js',
-            bc+'angular-i18n/angular-locale_ru-ru.js',
-            bc+'angular-loader/angular-loader.js',
-            bc+'angular-resource/angular-resource.js',
-            bc+'angular-animate/angular-animate.js',
-            bc+'angular-ui-router/release/angular-ui-router.js',
-            bc+'angular-sanitize/angular-sanitize.js',
-            bc+'angular-touch/angular-touch.js',
-            bc+'firebase/firebase.js',
-            bc+'angularfire/dist/angularfire.js'
-          ])
-      .pipe(concat('angular.concat.js'))
-      // .pipe(uglify())
-      .pipe(gulp.dest('./builds/dist/libs/angular/'));
+  // gulp.src([bc+'angular/angular.js',
+  //           bc+'angular-animate/angular-animate.js',
+  //           bc+'angular-cookies/angular-cookies.js',
+  //           bc+'angular-i18n/angular-locale_ru-ru.js',
+  //           bc+'angular-loader/angular-loader.js',
+  //           bc+'angular-resource/angular-resource.js',
+  //           bc+'angular-animate/angular-animate.js',
+  //           bc+'angular-ui-router/release/angular-ui-router.js',
+  //           bc+'angular-sanitize/angular-sanitize.js',
+  //           bc+'angular-touch/angular-touch.js',
+  //           bc+'firebase/firebase.js',
+  //           bc+'angularfire/dist/angularfire.js'
+  //         ])
+  //     .pipe(concat('angular.concat.js'))
+  //     // .pipe(uglify())
+  //     .pipe(gulp.dest('./builds/dist/libs/angular/'));
 });
 
 gulp.task('webserver', function() {
@@ -93,14 +93,14 @@ gulp.task('webserver', function() {
 });
 
 gulp.task('default', [
-  'libs',
+  // 'libs',
   'html',
-  'img',
-  'css',
-  'css-ui',
-  'css-ui-themse',
+  // 'img',
+  // 'css',
+  // 'css-ui',
+  // 'css-ui-themse',
   'js',
-  'normalize',
+  // 'normalize',
   // 'sass',
   'webserver',
   'watch'

@@ -1,4 +1,4 @@
-<main ng-controller="aboutAdminCtrl">
+<main>
     <h1>This is Data About Administrator</h1>
 
     <p ng-show="item.number_obj">Номер{{item.number_obj}}</p>
@@ -14,8 +14,27 @@
     <p>Стоимость {{item.price}}</p>
 
     <div style="border: 1px solid palevioletred">
+        <select ng-model="item.type">
+            <option selected="selected">Выберите тип объекта</option>
+            <option>Квартира</option>
+            <option>Дом</option>
+            <option>Участки</option>
+            <option>Нежилая недвижимость</option>
+        </select>
+        <input ng-model="item.name_obj" type="text"> 
+        <select ng-show="item.isolation_house" ng-model="item.isolation_house">
+            <option selected="selected">Свойства объекта</option>
+            <option>Часть дома</option>
+            <option>Целый дом</option>
+            <option>Дача</option>
+        </select>
+        <select ng-show="item.isolation_flat" ng-model="item.isolation_flat">
+            <option selected="selected">Свойства объекта</option>
+            <option>Изолированные</option>
+            <option>Гостинки</option>
+        </select>
         <select ng-model="item.room">
-            <option selected="selected">Choose rooms</option>
+            <option selected="selected">Кол-во комнат</option>
             <option>1</option>
             <option>2</option>
             <option>3</option>
@@ -23,12 +42,28 @@
             <option>Многокомнатные</option>
             <option>Элитные</option>
         </select>
-        <div>
-            <input type="radio" ng-model="item.isolation_flat" name="isolation_flat" value="Изолированные"> Изолированные<Br>
-            <input type="radio" ng-model="item.isolation_flat" name="isolation_flat" value="Гостинки"> Гостинки<Br>
-        </div>
+        <input ng-model="item.price" value="{{item.price}}" placeholder="Цена" type="number">
+
+        <select ng-show="item.type !== 'Квартира'" ng-model="item.city">
+            <option selected="selected">Местоположение</option>
+            <option>Харьков</option>
+            <option>Пригород</option>
+        </select>
+
+        <select ng-show="item.district" ng-model="item.district">
+            <option selected="selected">Район</option>
+            <option>Алеексеевка</option>
+            <option>23 Августа</option>
+        </select>
+
+        <input type="number" ng-value="{{item.space}}" ng-show="item.space" ng-model="item.space" placeholder="Площадь">
+//idrjipd
+        <input type="number" ng-repeat="phone in item.phone_agent" placholder="Ведите номер" ng-model="item.phone_agent[]" value="{{phone}}">
+
+        <input type="number" ng-model="item.name_agent" placholder="Ведите номер" value="{{item.name_agent}}">
 
         <input type="button" value="Change" ng-click="updateData()">
+
     </div>
 
 </main>
