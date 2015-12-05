@@ -4,7 +4,7 @@
 	angular.module('ngApp', ['ui.router', 'ngAnimate', 'ngCookies', 'ngCatalog',
         'ngService', 'ngAbout', 'ngData', 'ngAuth', 'ngDataAbout', 'ngAdmin', 'ngDataAboutAdmin'])
         .config(slobConfig)
-        .constant('firebase_url', '') 
+        .constant('firebase_url', 'https://ngslob.firebaseio.com/');
         //.run(function(test, tw){});
 
     function slobConfig($stateProvider, $urlRouterProvider, $logProvider, $locationProvider){

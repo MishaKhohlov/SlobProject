@@ -4,7 +4,7 @@
 	angular.module('ngApp', ['ui.router', 'ngAnimate', 'ngCookies', 'ngCatalog',
         'ngService', 'ngAbout', 'ngData', 'ngAuth', 'ngDataAbout', 'ngAdmin', 'ngDataAboutAdmin'])
         .config(slobConfig)
-        .constant('firebase_url', '') 
+        .constant('firebase_url', 'https://ngslob.firebaseio.com/');
         //.run(function(test, tw){});
 
     function slobConfig($stateProvider, $urlRouterProvider, $logProvider, $locationProvider){
@@ -33,8 +33,12 @@
         .factory('Auth', authFact);
 
     function authFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url){
-
+        var ref = new Firebase(firebase_url);
+        var auth = $firebaseAuth(ref);
         var publickAuthObj = {
+            login:function(userObj){
+                return auth.$createUser(userObj);
+            },
             auth: function() {
                 var prom = $q.defer();
                 //доступ к администратору
@@ -59,11 +63,11 @@
     function dataFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url){
         var dataArr =  [
             {
-                'type' : 'квартира', // дом, участки, нежилая недвижимость
+                'type' : 'Квартира', // дом, участки, нежилая недвижимость
                 'number_obj' : 123,
                 'name_obj' : 'Квартира 2км',
                 'photo' : ['','','','',''],
-                'isolation_house' : 'дача', // часть дома, целый дом
+                'isolation_house' : 'Дача', // часть дома, целый дом
                 'isolation_flat' : "Изолированные",
                 'room' : 'Элитные', // 1,2,3,4 many, laxury
                 'price': 2100,
@@ -72,15 +76,15 @@
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Karl',
-                'adress' : 'street artilliryiska house 2/a',
+                'address' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions'
             },
             {
-                'type' : 'квартира', // дом, участки, нежилая недвижимость
+                'type' : 'Дом', // дом, участки, нежилая недвижимость
                 'number_obj' : 223,
                 'name_obj' : 'Квартира 2км',
                 'photo' : ['','','','',''],
-                'isolation_house' : 'дача', // часть дома, целый дом
+                'isolation_house' : 'Часть дома', // часть дома, целый дом
                 'isolation_flat' : true,
                 'room' : 'Элитные', // 1,2,3,4 many, laxury
                 'price': 2100,
@@ -89,32 +93,32 @@
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Karl',
-                'adress' : 'street artilliryiska house 2/a',
+                'address' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions'
             },
             {
-                'type' : 'квартира', // дом, участки, нежилая недвижимость
+                'type' : 'Участки', // дом, участки, нежилая недвижимость
                 'number_obj' : 332,
                 'name_obj' : 'Квартира 2км',
                 'photo' : ['','','','',''],
-                'isolation_house' : 'дача', // часть дома, целый дом
+                'isolation_house' : 'Целый дом', // часть дома, целый дом
                 'isolation_flat' : true,
                 'room' : 'Элитные', // 1,2,3,4 many, laxury
                 'price': 2100,
-                'city' : 'true', // kharkiv prigorod
+                'city' : 'Харьков', // kharkiv prigorod
                 'district' : 'Алеексеевка',
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Karl',
-                'adress' : 'street artilliryiska house 2/a',
+                'address' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions'
             },
             {
-                'type' : 'квартира', // дом, участки, нежилая недвижимость
+                'type' : 'Нежилая недвижимость', // дом, участки, нежилая недвижимость
                 'number_obj' : 432,
                 'name_obj' : 'Квартира 2км',
                 'photo' : ['','','','',''],
-                'isolation_house' : 'дача', // часть дома, целый дом
+                'isolation_house' : 'Дача', // часть дома, целый дом
                 'isolation_flat' : true,
                 'room' : 'Элитные', // 1,2,3,4 many, laxury
                 'price': 2100,
@@ -123,7 +127,7 @@
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Karl',
-                'adress' : 'street artilliryiska house 2/a',
+                'address' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions'
             }
         ];
@@ -177,6 +181,23 @@
 
     function adminCtrl ($scope, $log, $rootScope, Auth, Data) {
     	$log.log("Admin controller star");
+		$scope.userCredentials = {
+			email: null,
+			password: null
+		};
+		$scope.register = function(){
+			$log.log($scope.userCredentials);
+			Auth.login($scope.userCredentials).then(function(userData) {
+				$log.log("User created with uid: " + userData.uid);
+				$scope.messageForUser = "Пользователь зарегистрирован";
+				// здесь будет сохранятся информация об пользователе.
+				Auth.setItem(userData.uid, $scope.chexAdmin);
+				
+			}).catch(function(error) {
+				$log.log(error);
+				$scope.messageForUser = "Произошла ошибка сообщите администратору";
+			});
+		};
 		$scope.setImage = function(){
 
 		};
@@ -237,10 +258,13 @@
     function aboutAdminCtrl ($scope, $log, Data, $state, $rootScope) {
         $log.debug("List_a controller star");
 
-        if($rootScope.index >= 0) {
-            $log.log($rootScope.index_a);
-            $scope.item = Data.getDataItem($rootScope.index);
+        if($rootScope.index_a >= 0) {
+            $log.log("rootScope_a");
+            $scope.item = Data.getDataItem($rootScope.index_a);
+            $rootScope.index_a = -1;
+            $log.log("rootScope_a 2");
         } else {
+            $log.log("arr.some_a");
             var state = $state.params.id;
             Data.getData().some(function (element, index) {
                 if (element.number_obj == state) {
@@ -248,6 +272,7 @@
                     return true;
                 }
             });
+            $log.log("arr.some_a 2");
         }
         $scope.updateData = function(){
           Data.updateData($scope.item, function(){
@@ -262,7 +287,7 @@
             .state('adminAbout', {
                 url: '/catalog_admin/:id',
                 templateUrl: 'component/data.about/data.about.admin.html',
-                controller: 'adminCtrl',
+                controller: 'aboutAdminCtrl',
                 resolve: {
                     item: function(Auth) {
                         return Auth.auth()
