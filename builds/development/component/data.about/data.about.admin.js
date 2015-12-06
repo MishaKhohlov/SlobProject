@@ -39,9 +39,9 @@
                 templateUrl: 'component/data.about/data.about.admin.html',
                 controller: 'aboutAdminCtrl',
                 resolve: {
-                    item: function(Auth) {
-                        return Auth.auth()
-                    }
+                     item: function(Auth) {
+                        return Auth.auth();
+                     }
                 }
             })
     }

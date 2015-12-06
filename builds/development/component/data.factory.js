@@ -6,6 +6,8 @@
         .factory('Data', dataFact);
 
     function dataFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url){
+        var ref = new Firebase(firebase_url);
+
         var dataArr =  [
             {
                 'type' : 'Квартира', // дом, участки, нежилая недвижимость
@@ -82,6 +84,9 @@
             },
             getDataItem: function(id) {
                 return dataArr[id];
+            },
+            setDataUser: function(){
+
             },
             updateData: function(data, callback){
                 //var obj = {};

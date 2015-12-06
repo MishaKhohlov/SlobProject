@@ -22,3 +22,9 @@
 .active-link {
     color: red;
 }
+.border-red {
+    border: 2px solid red;
+}
+.border-normal {
+    border: 1px solid black;
+}

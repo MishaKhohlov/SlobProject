@@ -57,20 +57,18 @@
             logout: function(){
                 auth.$unauth();
             },
-            getAuth: function(){
-                return ref.getAuth();
-            },
+            //getAuth: function(){
+            //    return ref.getAuth();
+            //},
             auth: function() {
                 var prom = $q.defer();
-                //доступ к администратору
-                prom.resolve();
-
+                if($rootScope.authLogin) {
+                   prom.resolve();
+                } else {
+                    prom.reject();
+                }
                 return prom.promise
             }
-        };
-        $log.log(publickAuthObj.getAuth());
-        $rootScope.auth_user = function(){
-          return true;
         };
         return publickAuthObj;
     }
@@ -83,6 +81,8 @@
         .factory('Data', dataFact);
 
     function dataFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url){
+        var ref = new Firebase(firebase_url);
+
         var dataArr =  [
             {
                 'type' : 'Квартира', // дом, участки, нежилая недвижимость
@@ -160,6 +160,9 @@
             getDataItem: function(id) {
                 return dataArr[id];
             },
+            setDataUser: function(){
+
+            },
             updateData: function(data, callback){
                 //var obj = {};
                 //obj[user.$id] = {name: user.name, age: user.age};
@@ -201,64 +204,143 @@
 		.config(adminConfig)
 		.controller('adminCtrl', adminCtrl);
 
-    function adminCtrl ($scope, $log, $rootScope, Auth, Data) {
+    function adminCtrl ($state, $scope, $log, $rootScope, Auth, Data) {
     	$log.log("Admin controller star");
+		// Заготовки объектов
 		$scope.userLogin = {
 			email: null,
 			password: null
 		};
 		$scope.userCredentials = {
 			email: null,
-			password: null
+			password: null,
+			firstname: null,
+			lastname: null,
+			admin: false
 		};
-		function errorMessage(error){
-			$scope.messageLogin =  "Произошла ошибка сообщите администратору" + error;
+		// очистка классов формы для регистрации
+		function resetForm() {
+			$scope.emptyDataEmail = false;
+			$scope.emptyDataPassword = false;
+			$scope.emptyDataFirstName = false;
+			$scope.emptyDataLastName = false;
 		}
-		function completeMessage(userData){
-			$scope.messageLogin = "Вход выполнен" + userData.password.email;
+		// очистка классов формы для логина
+		function  resetFormLogin() {
+			$scope.emptyDataEmailUser = false;
+			$scope.emptyDataPasswordUser = false;
 		}
+		// валидация на пустые поля формы регистрации
+		function emptyParams(obj){
+			var params = '';
+			resetForm();
+			angular.forEach(obj, function(value, key) {
+				if(value == null || value == "") {
+					if(key !== "admin") {
+						switch (key) {
+							case 'email':
+								$scope.emptyDataEmail = true;
+								params += "Email; ";
+								break
+							case 'password':
+								$scope.emptyDataPassword = true;
+								params += "Пароль; ";
+								break
+							case 'firstname':
+								$scope.emptyDataFirstName = true;
+								params += "Имя; ";
+								break
+							case 'lastname':
+								$scope.emptyDataLastName = true;
+								params += "Фамилию; ";
+								break
+						}
+					}
+				}
+			});
+			return params;
+		}
+		// валидация на пустые поля формы логина
+		function emptyParamsLogin(obj){
+			var params = '';
+			resetFormLogin();
+			angular.forEach(obj, function(value, key) {
+				if(value == null || value == "") {
+						switch (key) {
+							case 'email':
+								$scope.emptyDataEmailUser = true;
+								params += "Email; ";
+								break
+							case 'password':
+								$scope.emptyDataPasswordUser = true;
+								params += "Пароль; ";
+								break
+						}
+				}
+			});
+			return params;
+		}
+		// очистка объектов
 		function clearAuthObj(){
-			$scope.userCredentials = {
+			$scope.userLogin = {
 				email: null,
 				password: null
 			};
 			$scope.userCredentials = {
 				email: null,
-				password: null
+				password: null,
+				firstname: null,
+				lastname: null,
+				admin: false
 			};
 		}
+		// Вход
 		$scope.login = function(){
-			Auth.login($scope.userLogin).then(function(userData) {
-				completeMessage(userData);
-				clearAuthObj();
-			}).catch(function(error) {
-				errorMessage(error);
-			});
+			if(!emptyParamsLogin($scope.userLogin)){
+				$scope.messageLogin = '';
+				Auth.login($scope.userLogin).then(function(userData) {
+					$scope.messageLogin = "Вход выполнен" + userData.password.email;
+					// объект с данными который возвращается после авторизации.
+					// Auth.getAuth();
+					clearAuthObj();
+				}).catch(function(error) {
+					$scope.messageLogin =  "Произошла ошибка сообщите администратору" + error;
+				});
+			} else {
+				$scope.messageLogin = "Заполните" + emptyParamsLogin($scope.userLogin);
+			}
 		};
+		// Регистрация
 		$scope.register = function(){
-			$log.log($scope.userCredentials);
-			Auth.register($scope.userCredentials).then(function(userData) {
-				$scope.messageForUser = "Пользователь зарегистрирован как" + userData.email + userData.password;
-				clearAuthObj();
-				// здесь будет сохранятся информация об пользователе.
-				// Auth.setItem(userData.uid, $scope.chexAdmin);
-			}).catch(function(error) {
-				errorMessage(error);
-			});
+			if(!emptyParams($scope.userCredentials)) {
+				$log.log("Data accept");
+				$scope.messageForUser = '';
+				/*Auth.register($scope.userCredentials).then(function (userData) {
+					$scope.messageForUser = "Пользователь зарегистрирован как" + $scope.userCredentials.email
+							+ $scope.userCredentials.password + $scope.userCredentials.admin;
+					Data.setDataUser($scope.userCredentials, userData);
+					clearAuthObj();
+					// здесь будет сохранятся информация об пользователе.
+					// Auth.setItem(userData.uid, $scope.chexAdmin);
+				}).catch(function (error) {
+					$scope.messageForUser = "Произошла ошибка сообщите администратору" + error;
+				});*/
+			} else {
+				$scope.messageForUser = "Заполните" + emptyParams($scope.userCredentials);
+			}
 		};
 		$scope.logout = function(){
+			$state.reload();
 			Auth.logout();
 		};
-		$log.log(Auth.ngAuthObj());
 		$scope.online = function(){
 
 		};
-		$scope.setImage = function(){
-
-		};
+		// передача индекса при переходе на страницу с детальной информацией
 		$scope.setIndex = function(index){
 			$rootScope.index_a = index;
 		};
+		// получение данных
 		$scope.data = Data.getData();
     	$log.log("Admin controller star");
     }
@@ -268,12 +350,7 @@
 				 .state('admin', {
 					 url: '/admin',
 					 templateUrl: 'component/admin/admin.html',
-					 controller: 'adminCtrl',
-					 resolve: {
-						 item: function(Auth) {
-							 return Auth.auth()
-						 }
-					 }
+					 controller: 'adminCtrl'
 				 })
     }
 })();
@@ -344,9 +421,9 @@
                 templateUrl: 'component/data.about/data.about.admin.html',
                 controller: 'aboutAdminCtrl',
                 resolve: {
-                    item: function(Auth) {
-                        return Auth.auth()
-                    }
+                     item: function(Auth) {
+                        return Auth.auth();
+                     }
                 }
             })
     }

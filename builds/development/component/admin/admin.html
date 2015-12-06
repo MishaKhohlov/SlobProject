@@ -2,22 +2,26 @@
 <div>
     <div>
         <p>Agent</p>
-        <input ng-model="userLogin.email" type="text" placeholder="Login"><br>
-        <input ng-model="userLogin.password" type="password" placeholder="Password">
+        <input ng-model="userLogin.email" ng-class="emptyDataEmailUser ? 'border-red' : ''" type="text" placeholder="Login"><br>
+        <input ng-model="userLogin.password" ng-class="emptyDataPasswordUser ? 'border-red' : ''" type="password" placeholder="Password">
         <input type="button" ng-click="login()" value="Login"><br>
         <input type="button" ng-click="logout()" value="Logout">
         <div>{{messageLogin}}</div>
     </div>
     <div ng-hide="authLogin">
         <p>Register</p>
-        <input ng-model="userCredentials.email" type="text" placeholder="Логин"><br>
-        <input ng-model="userCredentials.password" type="password" placeholder="Пароль"><br>
-        <label for="chex_admin">Права Администратора<input id="chex_admin" type="checkbox" ng-model="chexAdmin"></label><br>
+
+        <input ng-model="userCredentials.email" ng-class="emptyDataEmail ? 'border-red' : ''" type="text" placeholder="Логин"><br>
+        <input ng-model="userCredentials.password" ng-class="emptyDataPassword ? 'border-red' : ''" type="password" placeholder="Пароль"><br>
+        <input ng-model="userCredentials.firstname" ng-class="emptyDataFirstName ? 'border-red' : ''" type="text" placeholder="Имя"><br>
+        <input ng-model="userCredentials.lastname" ng-class="emptyDataLastName ? 'border-red' : ''" type="text" placeholder="Фамилия"><br>
+        <label for="chex_admin">Права Администратора<input id="chex_admin" type="checkbox" ng-model="userCredentials.admin"></label><br>
         <input type="button" ng-click="register()" value="Зарегистрировать"><br>
         <div>{{messageForUser}}</div>
     </div>
 </div>
-<div ng-show="auth_user()">
+<pre>{{Data}}</pre>
+<div ng-show="authLogin">
     <ul>
     <li ng-repeat="(key, item) in data"><a class="item_a" ng-click="setIndex(key)" href="#/catalog_admin/{{item.number_obj}}">
         <div class="item">

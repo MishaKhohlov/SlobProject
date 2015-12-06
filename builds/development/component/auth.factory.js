@@ -30,21 +30,18 @@
             logout: function(){
                 auth.$unauth();
             },
-            getAuth: function(){
-                // YYYYY
-                return ref.getAuth();
-            },
+            //getAuth: function(){
+            //    return ref.getAuth();
+            //},
             auth: function() {
                 var prom = $q.defer();
-                //доступ к администратору
-                prom.resolve();
-
+                if($rootScope.authLogin) {
+                   prom.resolve();
+                } else {
+                    prom.reject();
+                }
                 return prom.promise
             }
-        };
-        $log.log(publickAuthObj.getAuth());
-        $rootScope.auth_user = function(){
-          return true;
         };
         return publickAuthObj;
     }
