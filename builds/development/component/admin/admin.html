@@ -2,12 +2,13 @@
 <div>
     <div>
         <p>Agent</p>
-        <input ng-model="mail_agent" type="text" placeholder="Login"><br>
-        <input ng-model="password_agent" type="password" placeholder="Password">
-        <input type="button" value="Login"><br>
-        <input type="button" value="Logout">
+        <input ng-model="userLogin.email" type="text" placeholder="Login"><br>
+        <input ng-model="userLogin.password" type="password" placeholder="Password">
+        <input type="button" ng-click="login()" value="Login"><br>
+        <input type="button" ng-click="logout()" value="Logout">
+        <div>{{messageLogin}}</div>
     </div>
-    <div>
+    <div ng-hide="authLogin">
         <p>Register</p>
         <input ng-model="userCredentials.email" type="text" placeholder="Логин"><br>
         <input ng-model="userCredentials.password" type="password" placeholder="Пароль"><br>

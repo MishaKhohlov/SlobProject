@@ -35,9 +35,30 @@
     function authFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url){
         var ref = new Firebase(firebase_url);
         var auth = $firebaseAuth(ref);
+        auth.$onAuth(function(authData) {
+            if (authData) {
+                $rootScope.authLogin = true;
+                $log.log("Logged in as:", authData.uid);
+            } else {
+                $rootScope.authLogin = false;
+                $log.log("Logged out");
+            }
+        });
         var publickAuthObj = {
-            login:function(userObj){
+            ngAuthObj: function(authObj){
+                return ref.getAuth();
+            },
+            login: function(userObj){
+              return auth.$authWithPassword(userObj);
+            },
+            register:function(userObj){
                 return auth.$createUser(userObj);
+            },
+            logout: function(){
+                auth.$unauth();
+            },
+            getAuth: function(){
+                return ref.getAuth();
             },
             auth: function() {
                 var prom = $q.defer();
@@ -47,6 +68,7 @@
                 return prom.promise
             }
         };
+        $log.log(publickAuthObj.getAuth());
         $rootScope.auth_user = function(){
           return true;
         };
@@ -181,22 +203,55 @@
 
     function adminCtrl ($scope, $log, $rootScope, Auth, Data) {
     	$log.log("Admin controller star");
+		$scope.userLogin = {
+			email: null,
+			password: null
+		};
 		$scope.userCredentials = {
 			email: null,
 			password: null
 		};
+		function errorMessage(error){
+			$scope.messageLogin =  "Произошла ошибка сообщите администратору" + error;
+		}
+		function completeMessage(userData){
+			$scope.messageLogin = "Вход выполнен" + userData.password.email;
+		}
+		function clearAuthObj(){
+			$scope.userCredentials = {
+				email: null,
+				password: null
+			};
+			$scope.userCredentials = {
+				email: null,
+				password: null
+			};
+		}
+		$scope.login = function(){
+			Auth.login($scope.userLogin).then(function(userData) {
+				completeMessage(userData);
+				clearAuthObj();
+			}).catch(function(error) {
+				errorMessage(error);
+			});
+		};
 		$scope.register = function(){
 			$log.log($scope.userCredentials);
-			Auth.login($scope.userCredentials).then(function(userData) {
-				$log.log("User created with uid: " + userData.uid);
-				$scope.messageForUser = "Пользователь зарегистрирован";
+			Auth.register($scope.userCredentials).then(function(userData) {
+				$scope.messageForUser = "Пользователь зарегистрирован как" + userData.email + userData.password;
+				clearAuthObj();
 				// здесь будет сохранятся информация об пользователе.
-				Auth.setItem(userData.uid, $scope.chexAdmin);
-				
+				// Auth.setItem(userData.uid, $scope.chexAdmin);
 			}).catch(function(error) {
-				$log.log(error);
-				$scope.messageForUser = "Произошла ошибка сообщите администратору";
+				errorMessage(error);
 			});
+		};
+		$scope.logout = function(){
+			Auth.logout();
+		};
+		$log.log(Auth.ngAuthObj());
+		$scope.online = function(){
+
 		};
 		$scope.setImage = function(){
 
