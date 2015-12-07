@@ -35,6 +35,7 @@
     function authFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url){
         var ref = new Firebase(firebase_url);
         var auth = $firebaseAuth(ref);
+        
         auth.$onAuth(function(authData) {
             if (authData) {
                 $rootScope.authLogin = true;
@@ -57,9 +58,9 @@
             logout: function(){
                 auth.$unauth();
             },
-            //getAuth: function(){
-            //    return ref.getAuth();
-            //},
+            getAuth: function(){
+                return ref.getAuth();
+            },
             auth: function() {
                 var prom = $q.defer();
                 if($rootScope.authLogin) {
@@ -81,49 +82,64 @@
         .factory('Data', dataFact);
 
     function dataFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url){
-        var ref = new Firebase(firebase_url);
-
         var dataArr =  [
             {
-                'type' : 'Квартира', // дом, участки, нежилая недвижимость
+                'type' : 'квартира', // дом, участки, нежилая недвижимость
                 'number_obj' : 123,
                 'name_obj' : 'Квартира 2км',
                 'photo' : ['','','','',''],
-                'isolation_house' : 'Дача', // часть дома, целый дом
+                'isolation_house' : 'дача', // часть дома, целый дом
                 'isolation_flat' : "Изолированные",
                 'room' : 'Элитные', // 1,2,3,4 many, laxury
                 'price': 2100,
-                'city' : 'true', // kharkiv prigorod
+                'city' : 'Харьков', // kharkiv prigorod
                 'district' : 'Алеексеевка',
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Karl',
-                'address' : 'street artilliryiska house 2/a',
+                'adress' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions'
             },
             {
-                'type' : 'Дом', // дом, участки, нежилая недвижимость
+                'type' : 'квартира', // дом, участки, нежилая недвижимость
                 'number_obj' : 223,
                 'name_obj' : 'Квартира 2км',
                 'photo' : ['','','','',''],
-                'isolation_house' : 'Часть дома', // часть дома, целый дом
+                'isolation_house' : 'дача', // часть дома, целый дом
                 'isolation_flat' : true,
                 'room' : 'Элитные', // 1,2,3,4 many, laxury
                 'price': 2100,
-                'city' : 'true', // kharkiv prigorod
+                'city' : 'Пригород', // kharkiv prigorod
                 'district' : 'Алеексеевка',
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Karl',
-                'address' : 'street artilliryiska house 2/a',
+                'adress' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions'
             },
             {
-                'type' : 'Участки', // дом, участки, нежилая недвижимость
+                'type' : 'квартира', // дом, участки, нежилая недвижимость
                 'number_obj' : 332,
                 'name_obj' : 'Квартира 2км',
                 'photo' : ['','','','',''],
-                'isolation_house' : 'Целый дом', // часть дома, целый дом
+                'isolation_house' : 'дача', // часть дома, целый дом
+                'isolation_flat' : true,
+                'room' : 'Элитные', // 1,2,3,4 many, laxury
+                'price': 2100,
+                'city' : 'Пригород', // kharkiv prigorod
+                'district' : 'Алеексеевка',
+                'space' : 43,
+                'phone_agent' : [675729181,2121232,37465349],
+                'name_agent' : 'Karl',
+                'adress' : 'street artilliryiska house 2/a',
+                'discriptions' : 'This is descriptions'
+            },
+            {
+                'type' : 'квартира', // дом, участки, нежилая недвижимость
+                'number_obj' : 432,
+                'name_obj' : 'Квартира 2км',
+                'photo' : ['','','','',''],
+                'isolation_house' : 'дача', // часть дома, целый дом
                 'isolation_flat' : true,
                 'room' : 'Элитные', // 1,2,3,4 many, laxury
                 'price': 2100,
@@ -132,27 +148,15 @@
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Karl',
-                'address' : 'street artilliryiska house 2/a',
-                'discriptions' : 'This is descriptions'
-            },
-            {
-                'type' : 'Нежилая недвижимость', // дом, участки, нежилая недвижимость
-                'number_obj' : 432,
-                'name_obj' : 'Квартира 2км',
-                'photo' : ['','','','',''],
-                'isolation_house' : 'Дача', // часть дома, целый дом
-                'isolation_flat' : true,
-                'room' : 'Элитные', // 1,2,3,4 many, laxury
-                'price': 2100,
-                'city' : 'true', // kharkiv prigorod
-                'district' : 'Алеексеевка',
-                'space' : 43,
-                'phone_agent' : [675729181,2121232,37465349],
-                'name_agent' : 'Karl',
-                'address' : 'street artilliryiska house 2/a',
+                'adress' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions'
             }
         ];
+
+        var ref = new Firebase(firebase_url);
+        var usersRef = ref.child('user');
+        $rootScope.testData = $firebaseObject(ref);
+
         var publickDataObj = {
             getData: function(){
                 return dataArr;
@@ -160,8 +164,16 @@
             getDataItem: function(id) {
                 return dataArr[id];
             },
-            setDataUser: function(){
-
+            setDataUser: function (objUser) {
+                $log.log(objUser);
+                usersRef.set(objUser);
+            },
+            nameUser: function(){
+                // Looog
+                $log.log(Data.getAuth());
+                Data.getAuth().email;
+                usersRef.$load();
+                // emailUser
             },
             updateData: function(data, callback){
                 //var obj = {};
@@ -202,6 +214,11 @@
 
 	angular.module('ngAdmin', ['ngAnimate', 'ngCookies'])
 		.config(adminConfig)
+		.filter('userAccept', function() {
+			return function(inputData, params) {
+			    console.log(inputData, params);
+			  };
+			})
 		.controller('adminCtrl', adminCtrl);
 
     function adminCtrl ($state, $scope, $log, $rootScope, Auth, Data) {
@@ -294,12 +311,14 @@
 				admin: false
 			};
 		}
+
 		// Вход
 		$scope.login = function(){
 			if(!emptyParamsLogin($scope.userLogin)){
 				$scope.messageLogin = '';
 				Auth.login($scope.userLogin).then(function(userData) {
 					$scope.messageLogin = "Вход выполнен" + userData.password.email;
+					$scope.setAgent = ;
 					// объект с данными который возвращается после авторизации.
 					// Auth.getAuth();
 					clearAuthObj();
@@ -315,6 +334,7 @@
 			if(!emptyParams($scope.userCredentials)) {
 				$log.log("Data accept");
 				$scope.messageForUser = '';
+				Data.setDataUser($scope.userCredentials);
 				/*Auth.register($scope.userCredentials).then(function (userData) {
 					$scope.messageForUser = "Пользователь зарегистрирован как" + $scope.userCredentials.email
 							+ $scope.userCredentials.password + $scope.userCredentials.admin;

@@ -3,6 +3,11 @@
 
 	angular.module('ngAdmin', ['ngAnimate', 'ngCookies'])
 		.config(adminConfig)
+		.filter('userAccept', function() {
+			return function(inputData, params) {
+			    console.log(inputData, params);
+			  };
+			})
 		.controller('adminCtrl', adminCtrl);
 
     function adminCtrl ($state, $scope, $log, $rootScope, Auth, Data) {
@@ -95,12 +100,14 @@
 				admin: false
 			};
 		}
+
 		// Вход
 		$scope.login = function(){
 			if(!emptyParamsLogin($scope.userLogin)){
 				$scope.messageLogin = '';
 				Auth.login($scope.userLogin).then(function(userData) {
 					$scope.messageLogin = "Вход выполнен" + userData.password.email;
+					$scope.setAgent = ;
 					// объект с данными который возвращается после авторизации.
 					// Auth.getAuth();
 					clearAuthObj();
@@ -116,6 +123,7 @@
 			if(!emptyParams($scope.userCredentials)) {
 				$log.log("Data accept");
 				$scope.messageForUser = '';
+				Data.setDataUser($scope.userCredentials);
 				/*Auth.register($scope.userCredentials).then(function (userData) {
 					$scope.messageForUser = "Пользователь зарегистрирован как" + $scope.userCredentials.email
 							+ $scope.userCredentials.password + $scope.userCredentials.admin;

@@ -20,10 +20,10 @@
         <div>{{messageForUser}}</div>
     </div>
 </div>
-<pre>{{Data}}</pre>
+<pre>{{testData}}</pre>
 <div ng-show="authLogin">
     <ul>
-    <li ng-repeat="(key, item) in data"><a class="item_a" ng-click="setIndex(key)" href="#/catalog_admin/{{item.number_obj}}">
+    <li ng-repeat="(key, item) in data | userAccept: setAgent"><a class="item_a" ng-click="setIndex(key)" href="#/catalog_admin/{{item.number_obj}}">
         <div class="item">
             <p>{{$index+1}}</p>
             <img ng-src="{{data.photo[0]}}" name="img">

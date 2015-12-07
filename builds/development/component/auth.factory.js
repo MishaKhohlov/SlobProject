@@ -8,6 +8,7 @@
     function authFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url){
         var ref = new Firebase(firebase_url);
         var auth = $firebaseAuth(ref);
+        
         auth.$onAuth(function(authData) {
             if (authData) {
                 $rootScope.authLogin = true;
@@ -30,9 +31,9 @@
             logout: function(){
                 auth.$unauth();
             },
-            //getAuth: function(){
-            //    return ref.getAuth();
-            //},
+            getAuth: function(){
+                return ref.getAuth();
+            },
             auth: function() {
                 var prom = $q.defer();
                 if($rootScope.authLogin) {
