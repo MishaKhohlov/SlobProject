@@ -5,13 +5,23 @@
 		.config(adminConfig)
 		.filter('userAccept', function() {
 			return function(inputData, params) {
-			    console.log(inputData, params);
-			  };
-			})
+				var result = [];
+				if (params) {
+					angular.forEach(inputData, function(value, key) {
+						if(value.uid == params) {
+							result.push(value);
+						}
+					});
+				}
+					return result;
+			};
+		})
 		.controller('adminCtrl', adminCtrl);
 
-    function adminCtrl ($state, $scope, $log, $rootScope, Auth, Data) {
+    function adminCtrl ($timeout, $state, $scope, $log, $rootScope, Auth, Data) {
     	$log.log("Admin controller star");
+		$scope.setAgent = false;
+		// $scope.setAgent = '44dfc8ac-1c15-4332-aee6-306d066f60bd';
 		// Заготовки объектов
 		$scope.userLogin = {
 			email: null,
@@ -97,19 +107,43 @@
 				password: null,
 				firstname: null,
 				lastname: null,
-				admin: false
+				admin: false,
+				uid: null
 			};
 		}
-
+		// получение данных пользователя
+		function getDataUser(data){
+			$scope.userLogged = data;
+		}
+		// Переделать возврат всех этиъ объектов с помощью обещаний
+		// Устанавливаем индификатор для фильтров
+		$scope.setAgent = function(){
+			return Auth.getAuthUid();
+		};
+		// объект аунтификации
+		$scope.authLogin = function(){
+			return Auth.getAuth();
+		};
+		// Переделать возврат всех этиъ объектов с помощью обещаний
+		// подставляем данные анунтификации
+		$timeout(function(){
+			if(Auth.getAuthEmail()) {
+				Data.getDataUser(Auth.getAuthEmail(), function (data) {
+					$log.log("Значение которое возвращает запрос на одного пользователя", data);
+					$scope.userData = data;
+				})
+			}
+		}, 1000);
 		// Вход
 		$scope.login = function(){
 			if(!emptyParamsLogin($scope.userLogin)){
 				$scope.messageLogin = '';
 				Auth.login($scope.userLogin).then(function(userData) {
 					$scope.messageLogin = "Вход выполнен" + userData.password.email;
-					$scope.setAgent = ;
-					// объект с данными который возвращается после авторизации.
-					// Auth.getAuth();
+					Data.getDataUser("Khohlov Misha", function(data){
+						getDataUser(data);
+					});
+					$log.log(userData);
 					clearAuthObj();
 				}).catch(function(error) {
 					$scope.messageLogin =  "Произошла ошибка сообщите администратору" + error;
@@ -123,17 +157,14 @@
 			if(!emptyParams($scope.userCredentials)) {
 				$log.log("Data accept");
 				$scope.messageForUser = '';
-				Data.setDataUser($scope.userCredentials);
-				/*Auth.register($scope.userCredentials).then(function (userData) {
+				Auth.register($scope.userCredentials).then(function (userData) {
 					$scope.messageForUser = "Пользователь зарегистрирован как" + $scope.userCredentials.email
 							+ $scope.userCredentials.password + $scope.userCredentials.admin;
-					Data.setDataUser($scope.userCredentials, userData);
+					Data.setDataUser($scope.userCredentials, userData.uid);
 					clearAuthObj();
-					// здесь будет сохранятся информация об пользователе.
-					// Auth.setItem(userData.uid, $scope.chexAdmin);
 				}).catch(function (error) {
 					$scope.messageForUser = "Произошла ошибка сообщите администратору" + error;
-				});*/
+				});
 			} else {
 				$scope.messageForUser = "Заполните" + emptyParams($scope.userCredentials);
 			}
@@ -141,9 +172,6 @@
 		$scope.logout = function(){
 			$state.reload();
 			Auth.logout();
-		};
-		$scope.online = function(){
-
 		};
 		// передача индекса при переходе на страницу с детальной информацией
 		$scope.setIndex = function(index){

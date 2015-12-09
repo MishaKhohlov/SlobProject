@@ -5,7 +5,7 @@
         .module('ngData', ['firebase'])
         .factory('Data', dataFact);
 
-    function dataFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url){
+    function dataFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url, Auth){
         var dataArr =  [
             {
                 'type' : 'квартира', // дом, участки, нежилая недвижимость
@@ -22,7 +22,8 @@
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Karl',
                 'adress' : 'street artilliryiska house 2/a',
-                'discriptions' : 'This is descriptions'
+                'discriptions' : 'This is descriptions',
+                'uid' : '44dfc8ac-1c15-4332-aee6-306d066f60bd'
             },
             {
                 'type' : 'квартира', // дом, участки, нежилая недвижимость
@@ -39,7 +40,8 @@
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Karl',
                 'adress' : 'street artilliryiska house 2/a',
-                'discriptions' : 'This is descriptions'
+                'discriptions' : 'This is descriptions',
+                'uid' : '44dfc8ac-1c15-4332-aee6-306d066f60bd'
             },
             {
                 'type' : 'квартира', // дом, участки, нежилая недвижимость
@@ -54,9 +56,10 @@
                 'district' : 'Алеексеевка',
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
-                'name_agent' : 'Karl',
+                'name_agent' : 'Misha',
                 'adress' : 'street artilliryiska house 2/a',
-                'discriptions' : 'This is descriptions'
+                'discriptions' : 'This is descriptions',
+                'uid' : '41dfc8ac-1c15-4332-aee6-306d066f60bd'
             },
             {
                 'type' : 'квартира', // дом, участки, нежилая недвижимость
@@ -71,34 +74,41 @@
                 'district' : 'Алеексеевка',
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
-                'name_agent' : 'Karl',
+                'name_agent' : 'Misha',
                 'adress' : 'street artilliryiska house 2/a',
-                'discriptions' : 'This is descriptions'
+                'discriptions' : 'This is descriptions',
+                'uid' : '44dfc8ac-1c15-4332-aee6-306d066f60bd'
             }
         ];
 
         var ref = new Firebase(firebase_url);
-        var usersRef = ref.child('user');
-        $rootScope.testData = $firebaseObject(ref);
 
+        function loaded(child){
+                var usersRef = ref.child('user').child(child);
+                var userObj = $firebaseObject(usersRef);
+            return userObj;
+        }
         var publickDataObj = {
+            getDataUser: function(email, callback){
+                loaded(email).$loaded().then(callback, function(error) {
+                    console.log("Error dowload  user ", error);
+                });
+            },
             getData: function(){
                 return dataArr;
             },
             getDataItem: function(id) {
                 return dataArr[id];
             },
-            setDataUser: function (objUser) {
+            setDataUser: function (objUser, uid) {
+                var child = objUser.email;
                 $log.log(objUser);
-                usersRef.set(objUser);
+                delete objUser.password;
+                objUser.uid = uid;
+                $log.log(objUser);
+                usersRef.child(child).set(objUser);
             },
-            nameUser: function(){
-                // Looog
-                $log.log(Data.getAuth());
-                Data.getAuth().email;
-                usersRef.$load();
-                // emailUser
-            },
+
             updateData: function(data, callback){
                 //var obj = {};
                 //obj[user.$id] = {name: user.name, age: user.age};

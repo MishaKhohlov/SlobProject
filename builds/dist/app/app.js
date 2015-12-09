@@ -33,17 +33,18 @@
         .factory('Auth', authFact);
 
     function authFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url){
+        // private
         var ref = new Firebase(firebase_url);
         var auth = $firebaseAuth(ref);
-        
-        auth.$onAuth(function(authData) {
-            if (authData) {
-                $rootScope.authLogin = true;
-                $log.log("Logged in as:", authData.uid);
+
+        var authData = {};
+        auth.$onAuth(function(authDataUser) {
+            if(authDataUser) {
+                $log.log("Login", authDataUser)
             } else {
-                $rootScope.authLogin = false;
-                $log.log("Logged out");
+                $log.log("Log out")
             }
+            authData = authDataUser;
         });
         var publickAuthObj = {
             ngAuthObj: function(authObj){
@@ -58,12 +59,26 @@
             logout: function(){
                 auth.$unauth();
             },
+            // Добавить обещания
             getAuth: function(){
-                return ref.getAuth();
+                if(authData) {
+                    return authData
+                }
+            },
+            getAuthUid: function(){
+                if(authData) {
+                    return authData.uid
+                }
+            },
+            getAuthEmail: function(){
+                if(authData) {
+                    return "Khohlov Misha";
+                    // return authData.password.email
+                }
             },
             auth: function() {
                 var prom = $q.defer();
-                if($rootScope.authLogin) {
+                if(authData) {
                    prom.resolve();
                 } else {
                     prom.reject();
@@ -81,7 +96,7 @@
         .module('ngData', ['firebase'])
         .factory('Data', dataFact);
 
-    function dataFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url){
+    function dataFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url, Auth){
         var dataArr =  [
             {
                 'type' : 'квартира', // дом, участки, нежилая недвижимость
@@ -98,7 +113,8 @@
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Karl',
                 'adress' : 'street artilliryiska house 2/a',
-                'discriptions' : 'This is descriptions'
+                'discriptions' : 'This is descriptions',
+                'uid' : '44dfc8ac-1c15-4332-aee6-306d066f60bd'
             },
             {
                 'type' : 'квартира', // дом, участки, нежилая недвижимость
@@ -115,7 +131,8 @@
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Karl',
                 'adress' : 'street artilliryiska house 2/a',
-                'discriptions' : 'This is descriptions'
+                'discriptions' : 'This is descriptions',
+                'uid' : '44dfc8ac-1c15-4332-aee6-306d066f60bd'
             },
             {
                 'type' : 'квартира', // дом, участки, нежилая недвижимость
@@ -130,9 +147,10 @@
                 'district' : 'Алеексеевка',
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
-                'name_agent' : 'Karl',
+                'name_agent' : 'Misha',
                 'adress' : 'street artilliryiska house 2/a',
-                'discriptions' : 'This is descriptions'
+                'discriptions' : 'This is descriptions',
+                'uid' : '41dfc8ac-1c15-4332-aee6-306d066f60bd'
             },
             {
                 'type' : 'квартира', // дом, участки, нежилая недвижимость
@@ -147,34 +165,41 @@
                 'district' : 'Алеексеевка',
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
-                'name_agent' : 'Karl',
+                'name_agent' : 'Misha',
                 'adress' : 'street artilliryiska house 2/a',
-                'discriptions' : 'This is descriptions'
+                'discriptions' : 'This is descriptions',
+                'uid' : '44dfc8ac-1c15-4332-aee6-306d066f60bd'
             }
         ];
 
         var ref = new Firebase(firebase_url);
-        var usersRef = ref.child('user');
-        $rootScope.testData = $firebaseObject(ref);
 
+        function loaded(child){
+                var usersRef = ref.child('user').child(child);
+                var userObj = $firebaseObject(usersRef);
+            return userObj;
+        }
         var publickDataObj = {
+            getDataUser: function(email, callback){
+                loaded(email).$loaded().then(callback, function(error) {
+                    console.log("Error dowload  user ", error);
+                });
+            },
             getData: function(){
                 return dataArr;
             },
             getDataItem: function(id) {
                 return dataArr[id];
             },
-            setDataUser: function (objUser) {
+            setDataUser: function (objUser, uid) {
+                var child = objUser.email;
                 $log.log(objUser);
-                usersRef.set(objUser);
+                delete objUser.password;
+                objUser.uid = uid;
+                $log.log(objUser);
+                usersRef.child(child).set(objUser);
             },
-            nameUser: function(){
-                // Looog
-                $log.log(Data.getAuth());
-                Data.getAuth().email;
-                usersRef.$load();
-                // emailUser
-            },
+
             updateData: function(data, callback){
                 //var obj = {};
                 //obj[user.$id] = {name: user.name, age: user.age};
@@ -216,13 +241,23 @@
 		.config(adminConfig)
 		.filter('userAccept', function() {
 			return function(inputData, params) {
-			    console.log(inputData, params);
-			  };
-			})
+				var result = [];
+				if (params) {
+					angular.forEach(inputData, function(value, key) {
+						if(value.uid == params) {
+							result.push(value);
+						}
+					});
+				}
+					return result;
+			};
+		})
 		.controller('adminCtrl', adminCtrl);
 
-    function adminCtrl ($state, $scope, $log, $rootScope, Auth, Data) {
+    function adminCtrl ($timeout, $state, $scope, $log, $rootScope, Auth, Data) {
     	$log.log("Admin controller star");
+		$scope.setAgent = false;
+		// $scope.setAgent = '44dfc8ac-1c15-4332-aee6-306d066f60bd';
 		// Заготовки объектов
 		$scope.userLogin = {
 			email: null,
@@ -308,19 +343,43 @@
 				password: null,
 				firstname: null,
 				lastname: null,
-				admin: false
+				admin: false,
+				uid: null
 			};
 		}
-
+		// получение данных пользователя
+		function getDataUser(data){
+			$scope.userLogged = data;
+		}
+		// Переделать возврат всех этиъ объектов с помощью обещаний
+		// Устанавливаем индификатор для фильтров
+		$scope.setAgent = function(){
+			return Auth.getAuthUid();
+		};
+		// объект аунтификации
+		$scope.authLogin = function(){
+			return Auth.getAuth();
+		};
+		// Переделать возврат всех этиъ объектов с помощью обещаний
+		// подставляем данные анунтификации
+		$timeout(function(){
+			if(Auth.getAuthEmail()) {
+				Data.getDataUser(Auth.getAuthEmail(), function (data) {
+					$log.log("Значение которое возвращает запрос на одного пользователя", data);
+					$scope.userData = data;
+				})
+			}
+		}, 1000);
 		// Вход
 		$scope.login = function(){
 			if(!emptyParamsLogin($scope.userLogin)){
 				$scope.messageLogin = '';
 				Auth.login($scope.userLogin).then(function(userData) {
 					$scope.messageLogin = "Вход выполнен" + userData.password.email;
-					$scope.setAgent = ;
-					// объект с данными который возвращается после авторизации.
-					// Auth.getAuth();
+					Data.getDataUser("Khohlov Misha", function(data){
+						getDataUser(data);
+					});
+					$log.log(userData);
 					clearAuthObj();
 				}).catch(function(error) {
 					$scope.messageLogin =  "Произошла ошибка сообщите администратору" + error;
@@ -334,17 +393,14 @@
 			if(!emptyParams($scope.userCredentials)) {
 				$log.log("Data accept");
 				$scope.messageForUser = '';
-				Data.setDataUser($scope.userCredentials);
-				/*Auth.register($scope.userCredentials).then(function (userData) {
+				Auth.register($scope.userCredentials).then(function (userData) {
 					$scope.messageForUser = "Пользователь зарегистрирован как" + $scope.userCredentials.email
 							+ $scope.userCredentials.password + $scope.userCredentials.admin;
-					Data.setDataUser($scope.userCredentials, userData);
+					Data.setDataUser($scope.userCredentials, userData.uid);
 					clearAuthObj();
-					// здесь будет сохранятся информация об пользователе.
-					// Auth.setItem(userData.uid, $scope.chexAdmin);
 				}).catch(function (error) {
 					$scope.messageForUser = "Произошла ошибка сообщите администратору" + error;
-				});*/
+				});
 			} else {
 				$scope.messageForUser = "Заполните" + emptyParams($scope.userCredentials);
 			}
@@ -352,9 +408,6 @@
 		$scope.logout = function(){
 			$state.reload();
 			Auth.logout();
-		};
-		$scope.online = function(){
-
 		};
 		// передача индекса при переходе на страницу с детальной информацией
 		$scope.setIndex = function(index){

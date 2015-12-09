@@ -1,14 +1,13 @@
 <h1>Hello word Administrator</h1>
-<div>
+<div ng-hide="authLogin()">
     <div>
-        <p>Agent</p>
+        <p>Agent {{setAgent()}}</p>
         <input ng-model="userLogin.email" ng-class="emptyDataEmailUser ? 'border-red' : ''" type="text" placeholder="Login"><br>
         <input ng-model="userLogin.password" ng-class="emptyDataPasswordUser ? 'border-red' : ''" type="password" placeholder="Password">
         <input type="button" ng-click="login()" value="Login"><br>
-        <input type="button" ng-click="logout()" value="Logout">
         <div>{{messageLogin}}</div>
     </div>
-    <div ng-hide="authLogin">
+    <div ng-hide="authLogin()">
         <p>Register</p>
 
         <input ng-model="userCredentials.email" ng-class="emptyDataEmail ? 'border-red' : ''" type="text" placeholder="Логин"><br>
@@ -20,10 +19,17 @@
         <div>{{messageForUser}}</div>
     </div>
 </div>
-<pre>{{testData}}</pre>
-<div ng-show="authLogin">
+<div ng-show="authLogin()">
+    <div>{{userData.$id}}</div>
+    <div>{{userData.firstname}}</div>
+    <div>{{userData.lastname}}</div>
+    <div>{{userData.email}}</div>
+    <input type="button" ng-click="logout()" value="Logout">
+</div>
+<pre>{{userLogged}}</pre>
+<div ng-show="authLogin()">
     <ul>
-    <li ng-repeat="(key, item) in data | userAccept: setAgent"><a class="item_a" ng-click="setIndex(key)" href="#/catalog_admin/{{item.number_obj}}">
+    <li ng-repeat="(key, item) in data | userAccept: setAgent()"><a class="item_a" ng-click="setIndex(key)" href="#/catalog_admin/{{item.number_obj}}">
         <div class="item">
             <p>{{$index+1}}</p>
             <img ng-src="{{data.photo[0]}}" name="img">

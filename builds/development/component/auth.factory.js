@@ -6,17 +6,18 @@
         .factory('Auth', authFact);
 
     function authFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url){
+        // private
         var ref = new Firebase(firebase_url);
         var auth = $firebaseAuth(ref);
-        
-        auth.$onAuth(function(authData) {
-            if (authData) {
-                $rootScope.authLogin = true;
-                $log.log("Logged in as:", authData.uid);
+
+        var authData = {};
+        auth.$onAuth(function(authDataUser) {
+            if(authDataUser) {
+                $log.log("Login", authDataUser)
             } else {
-                $rootScope.authLogin = false;
-                $log.log("Logged out");
+                $log.log("Log out")
             }
+            authData = authDataUser;
         });
         var publickAuthObj = {
             ngAuthObj: function(authObj){
@@ -31,12 +32,26 @@
             logout: function(){
                 auth.$unauth();
             },
+            // Добавить обещания
             getAuth: function(){
-                return ref.getAuth();
+                if(authData) {
+                    return authData
+                }
+            },
+            getAuthUid: function(){
+                if(authData) {
+                    return authData.uid
+                }
+            },
+            getAuthEmail: function(){
+                if(authData) {
+                    return "Khohlov Misha";
+                    // return authData.password.email
+                }
             },
             auth: function() {
                 var prom = $q.defer();
-                if($rootScope.authLogin) {
+                if(authData) {
                    prom.resolve();
                 } else {
                     prom.reject();
