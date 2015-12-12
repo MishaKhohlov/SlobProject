@@ -36,19 +36,22 @@
         // private
         var ref = new Firebase(firebase_url);
         var auth = $firebaseAuth(ref);
-
-        var authData = {};
-        auth.$onAuth(function(authDataUser) {
-            if(authDataUser) {
-                $log.log("Login", authDataUser)
-            } else {
-                $log.log("Log out")
-            }
-            authData = authDataUser;
-        });
+        function getDataPromises () {
+            return $q(function(resolve, reject) {
+                auth.$onAuth(function(authDataUser) {
+                    $log.log('this', authDataUser);
+                    // delete ! and resolve (authDataUser)
+                    if(authDataUser) {
+                        resolve(authDataUser)
+                    } else {
+                        reject("Log out")
+                    }
+                })
+            });
+        }
         var publickAuthObj = {
-            ngAuthObj: function(authObj){
-                return ref.getAuth();
+            getAuth: function(callback, callbackError){
+                getDataPromises().then(callback, callbackError);
             },
             login: function(userObj){
               return auth.$authWithPassword(userObj);
@@ -59,30 +62,24 @@
             logout: function(){
                 auth.$unauth();
             },
-            // Добавить обещания
-            getAuth: function(){
-                if(authData) {
-                    return authData
-                }
-            },
-            getAuthUid: function(){
-                if(authData) {
-                    return authData.uid
-                }
+            /*getAuthUid: function(){
+                // getDataPromises().then(callback, callbackError);
             },
             getAuthEmail: function(){
-                if(authData) {
-                    return "Khohlov Misha";
-                    // return authData.password.email
-                }
-            },
+                // if(authData) {
+                //     return "Khohlov Misha";
+                //     // return authData.password.email
+                // }
+            },*/
             auth: function() {
                 var prom = $q.defer();
-                if(authData) {
-                   prom.resolve();
-                } else {
-                    prom.reject();
-                }
+                    getDataPromises().then(function(data){
+                        if(data) {
+                          prom.resolve();
+                        } else {
+                            prom.reject();
+                        }
+                    })
                 return prom.promise
             }
         };
@@ -99,11 +96,11 @@
     function dataFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url, Auth){
         var dataArr =  [
             {
-                'type' : 'квартира', // дом, участки, нежилая недвижимость
+                'type' : 'Квартира', // дом, участки, нежилая недвижимость
                 'number_obj' : 123,
                 'name_obj' : 'Квартира 2км',
                 'photo' : ['','','','',''],
-                'isolation_house' : 'дача', // часть дома, целый дом
+                'isolation_house' : 'Дача', // часть дома, целый дом
                 'isolation_flat' : "Изолированные",
                 'room' : 'Элитные', // 1,2,3,4 many, laxury
                 'price': 2100,
@@ -112,9 +109,9 @@
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Karl',
-                'adress' : 'street artilliryiska house 2/a',
+                'address' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions',
-                'uid' : '44dfc8ac-1c15-4332-aee6-306d066f60bd'
+                'uid' : '24b2b4eb-9486-4d60-b1d7-157c031fdcf1'
             },
             {
                 'type' : 'квартира', // дом, участки, нежилая недвижимость
@@ -130,9 +127,9 @@
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Karl',
-                'adress' : 'street artilliryiska house 2/a',
+                'address' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions',
-                'uid' : '44dfc8ac-1c15-4332-aee6-306d066f60bd'
+                'uid' : '5bd43971-a152-4ac5-93eb-ebb4279823f1'
             },
             {
                 'type' : 'квартира', // дом, участки, нежилая недвижимость
@@ -148,9 +145,9 @@
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Misha',
-                'adress' : 'street artilliryiska house 2/a',
+                'address' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions',
-                'uid' : '41dfc8ac-1c15-4332-aee6-306d066f60bd'
+                'uid' : '5bd43971-a152-4ac5-93eb-ebb4279823f1'
             },
             {
                 'type' : 'квартира', // дом, участки, нежилая недвижимость
@@ -166,13 +163,14 @@
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Misha',
-                'adress' : 'street artilliryiska house 2/a',
+                'address' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions',
                 'uid' : '44dfc8ac-1c15-4332-aee6-306d066f60bd'
             }
         ];
 
         var ref = new Firebase(firebase_url);
+        var usersRef = ref.child('user');
 
         function loaded(child){
                 var usersRef = ref.child('user').child(child);
@@ -180,8 +178,8 @@
             return userObj;
         }
         var publickDataObj = {
-            getDataUser: function(email, callback){
-                loaded(email).$loaded().then(callback, function(error) {
+            getDataUser: function(uid, callback){
+                loaded(uid).$loaded().then(callback, function(error) {
                     console.log("Error dowload  user ", error);
                 });
             },
@@ -192,12 +190,13 @@
                 return dataArr[id];
             },
             setDataUser: function (objUser, uid) {
-                var child = objUser.email;
-                $log.log(objUser);
-                delete objUser.password;
-                objUser.uid = uid;
-                $log.log(objUser);
-                usersRef.child(child).set(objUser);
+                var cloneObj = {};
+                for(var key in objUser)
+                    cloneObj[key] = objUser[key];
+                delete cloneObj.password;
+                cloneObj.uid = uid;
+                $log.log(cloneObj);
+                usersRef.child(cloneObj.uid).set(cloneObj);
             },
 
             updateData: function(data, callback){
@@ -250,6 +249,7 @@
 					});
 				}
 					return result;
+
 			};
 		})
 		.controller('adminCtrl', adminCtrl);
@@ -257,7 +257,7 @@
     function adminCtrl ($timeout, $state, $scope, $log, $rootScope, Auth, Data) {
     	$log.log("Admin controller star");
 		$scope.setAgent = false;
-		// $scope.setAgent = '44dfc8ac-1c15-4332-aee6-306d066f60bd';
+		//$scope.setAgent = '44dfc8ac-1c15-4332-aee6-306d066f60bd';
 		// Заготовки объектов
 		$scope.userLogin = {
 			email: null,
@@ -347,55 +347,44 @@
 				uid: null
 			};
 		}
-		// получение данных пользователя
-		function getDataUser(data){
-			$scope.userLogged = data;
-		}
-		// Переделать возврат всех этиъ объектов с помощью обещаний
-		// Устанавливаем индификатор для фильтров
-		$scope.setAgent = function(){
-			return Auth.getAuthUid();
-		};
-		// объект аунтификации
-		$scope.authLogin = function(){
-			return Auth.getAuth();
-		};
-		// Переделать возврат всех этиъ объектов с помощью обещаний
-		// подставляем данные анунтификации
-		$timeout(function(){
-			if(Auth.getAuthEmail()) {
-				Data.getDataUser(Auth.getAuthEmail(), function (data) {
-					$log.log("Значение которое возвращает запрос на одного пользователя", data);
-					$scope.userData = data;
-				})
-			}
-		}, 1000);
+		Auth.getAuth(function(data) {
+			$log.log("Значение которое возвращает запрос на одного пользователя", data);
+				$scope.authLogin = function(){
+					return data;
+				}
+				$scope.setAgent = data.uid;
+					Data.getDataUser(data.uid, function (data) {
+						$scope.userData = data;
+					})
+		});
 		// Вход
 		$scope.login = function(){
 			if(!emptyParamsLogin($scope.userLogin)){
 				$scope.messageLogin = '';
 				Auth.login($scope.userLogin).then(function(userData) {
 					$scope.messageLogin = "Вход выполнен" + userData.password.email;
-					Data.getDataUser("Khohlov Misha", function(data){
-						getDataUser(data);
-					});
 					$log.log(userData);
 					clearAuthObj();
+					$state.reload();
 				}).catch(function(error) {
 					$scope.messageLogin =  "Произошла ошибка сообщите администратору" + error;
 				});
 			} else {
 				$scope.messageLogin = "Заполните" + emptyParamsLogin($scope.userLogin);
 			}
-		};
+		};	
+
 		// Регистрация
 		$scope.register = function(){
 			if(!emptyParams($scope.userCredentials)) {
 				$log.log("Data accept");
 				$scope.messageForUser = '';
+				// Data.setDataUser($scope.userCredentials, 32376423);
 				Auth.register($scope.userCredentials).then(function (userData) {
 					$scope.messageForUser = "Пользователь зарегистрирован как" + $scope.userCredentials.email
 							+ $scope.userCredentials.password + $scope.userCredentials.admin;
+							// userData.uid
+							$log.log($scope.userCredentials, userData.uid);
 					Data.setDataUser($scope.userCredentials, userData.uid);
 					clearAuthObj();
 				}).catch(function (error) {
@@ -416,6 +405,11 @@
 		// получение данных
 		$scope.data = Data.getData();
     	$log.log("Admin controller star");
+    	//Добавление нового объекта
+    	$scope.addNewObject = function(obj) {
+    		$log.log(obj);
+    	}
+
     }
 
      function adminConfig($stateProvider){

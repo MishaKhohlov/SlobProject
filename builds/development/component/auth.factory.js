@@ -9,19 +9,22 @@
         // private
         var ref = new Firebase(firebase_url);
         var auth = $firebaseAuth(ref);
-
-        var authData = {};
-        auth.$onAuth(function(authDataUser) {
-            if(authDataUser) {
-                $log.log("Login", authDataUser)
-            } else {
-                $log.log("Log out")
-            }
-            authData = authDataUser;
-        });
+        function getDataPromises () {
+            return $q(function(resolve, reject) {
+                auth.$onAuth(function(authDataUser) {
+                    $log.log('this', authDataUser);
+                    // delete ! and resolve (authDataUser)
+                    if(authDataUser) {
+                        resolve(authDataUser)
+                    } else {
+                        reject("Log out")
+                    }
+                })
+            });
+        }
         var publickAuthObj = {
-            ngAuthObj: function(authObj){
-                return ref.getAuth();
+            getAuth: function(callback, callbackError){
+                getDataPromises().then(callback, callbackError);
             },
             login: function(userObj){
               return auth.$authWithPassword(userObj);
@@ -32,30 +35,24 @@
             logout: function(){
                 auth.$unauth();
             },
-            // Добавить обещания
-            getAuth: function(){
-                if(authData) {
-                    return authData
-                }
-            },
-            getAuthUid: function(){
-                if(authData) {
-                    return authData.uid
-                }
+            /*getAuthUid: function(){
+                // getDataPromises().then(callback, callbackError);
             },
             getAuthEmail: function(){
-                if(authData) {
-                    return "Khohlov Misha";
-                    // return authData.password.email
-                }
-            },
+                // if(authData) {
+                //     return "Khohlov Misha";
+                //     // return authData.password.email
+                // }
+            },*/
             auth: function() {
                 var prom = $q.defer();
-                if(authData) {
-                   prom.resolve();
-                } else {
-                    prom.reject();
-                }
+                    getDataPromises().then(function(data){
+                        if(data) {
+                          prom.resolve();
+                        } else {
+                            prom.reject();
+                        }
+                    })
                 return prom.promise
             }
         };

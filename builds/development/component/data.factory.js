@@ -8,11 +8,11 @@
     function dataFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url, Auth){
         var dataArr =  [
             {
-                'type' : 'квартира', // дом, участки, нежилая недвижимость
+                'type' : 'Квартира', // дом, участки, нежилая недвижимость
                 'number_obj' : 123,
                 'name_obj' : 'Квартира 2км',
                 'photo' : ['','','','',''],
-                'isolation_house' : 'дача', // часть дома, целый дом
+                'isolation_house' : 'Дача', // часть дома, целый дом
                 'isolation_flat' : "Изолированные",
                 'room' : 'Элитные', // 1,2,3,4 many, laxury
                 'price': 2100,
@@ -21,9 +21,9 @@
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Karl',
-                'adress' : 'street artilliryiska house 2/a',
+                'address' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions',
-                'uid' : '44dfc8ac-1c15-4332-aee6-306d066f60bd'
+                'uid' : '24b2b4eb-9486-4d60-b1d7-157c031fdcf1'
             },
             {
                 'type' : 'квартира', // дом, участки, нежилая недвижимость
@@ -39,9 +39,9 @@
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Karl',
-                'adress' : 'street artilliryiska house 2/a',
+                'address' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions',
-                'uid' : '44dfc8ac-1c15-4332-aee6-306d066f60bd'
+                'uid' : '5bd43971-a152-4ac5-93eb-ebb4279823f1'
             },
             {
                 'type' : 'квартира', // дом, участки, нежилая недвижимость
@@ -57,9 +57,9 @@
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Misha',
-                'adress' : 'street artilliryiska house 2/a',
+                'address' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions',
-                'uid' : '41dfc8ac-1c15-4332-aee6-306d066f60bd'
+                'uid' : '5bd43971-a152-4ac5-93eb-ebb4279823f1'
             },
             {
                 'type' : 'квартира', // дом, участки, нежилая недвижимость
@@ -75,13 +75,14 @@
                 'space' : 43,
                 'phone_agent' : [675729181,2121232,37465349],
                 'name_agent' : 'Misha',
-                'adress' : 'street artilliryiska house 2/a',
+                'address' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions',
                 'uid' : '44dfc8ac-1c15-4332-aee6-306d066f60bd'
             }
         ];
 
         var ref = new Firebase(firebase_url);
+        var usersRef = ref.child('user');
 
         function loaded(child){
                 var usersRef = ref.child('user').child(child);
@@ -89,8 +90,8 @@
             return userObj;
         }
         var publickDataObj = {
-            getDataUser: function(email, callback){
-                loaded(email).$loaded().then(callback, function(error) {
+            getDataUser: function(uid, callback){
+                loaded(uid).$loaded().then(callback, function(error) {
                     console.log("Error dowload  user ", error);
                 });
             },
@@ -101,12 +102,13 @@
                 return dataArr[id];
             },
             setDataUser: function (objUser, uid) {
-                var child = objUser.email;
-                $log.log(objUser);
-                delete objUser.password;
-                objUser.uid = uid;
-                $log.log(objUser);
-                usersRef.child(child).set(objUser);
+                var cloneObj = {};
+                for(var key in objUser)
+                    cloneObj[key] = objUser[key];
+                delete cloneObj.password;
+                cloneObj.uid = uid;
+                $log.log(cloneObj);
+                usersRef.child(cloneObj.uid).set(cloneObj);
             },
 
             updateData: function(data, callback){
