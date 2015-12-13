@@ -29,7 +29,7 @@
 </div>
 
 <div ng-show="authLogin()">
-    <p>Catalog</p>
+
     <input type="button" value="Добавить новый объект." ng-click="addForm ? addForm = false : addForm = true">
 
     <div ng-show="addForm">   
@@ -42,18 +42,18 @@
             <option>Нежилая недвижимость</option>
         </select><br/>
         Имя объекта<input ng-model="item.name_obj" type="text"> <br/>
-        Свойства дома<select ng-model="item.isolation_house">
+        Свойства дома<select ng-show="item.type == 'Дом'" ng-model="item.isolation_house">
             <option selected="selected">Свойства объекта</option>
             <option>Часть дома</option>
             <option>Целый дом</option>
             <option>Дача</option>
         </select><br/>
-        Свойства Квартиры<select ng-model="item.isolation_flat">
+        Свойства Квартиры<select ng-show="item.type == 'Квартира'" ng-model="item.isolation_flat">
             <option selected="selected">Свойства объекта</option>
             <option>Изолированные</option>
             <option>Гостинки</option>
         </select><br/>
-        Кол-во комнат<select ng-model="item.room">
+        Кол-во комнат<select ng-model="item.room" ng-show="item.type == 'Квартира' || item.type == 'Дом'">
             <option selected="selected">Кол-во комнат</option>
             <option>1</option>
             <option>2</option>
@@ -62,34 +62,38 @@
             <option>Многокомнатные</option>
             <option>Элитные</option>
         </select><br/>
-        Цена <input ng-model="item.price" value="{{item.price}}" placeholder="Цена" type="number"><br/>
-        Метоположение дома<select ng-model="item.city">
+        Цена <input ng-model="item.price" placeholder="Цена" type="number"><br/>
+        Метоположение<select  ng-show="item.type == 'Квартира' || item.type == 'Дом'" ng-model="item.city">
             <option selected="selected">Местоположение</option>
             <option>Харьков</option>
             <option>Пригород</option>
         </select><br/>
-        Район<select ng-model="item.district">
+        Район<select ng-model="item.district" placeholder="Ведите номер">
             <option selected="selected">Район</option>
             <option>Алеексеевка</option>
             <option>23 Августа</option>
         </select><br/>
-        Площадь<input type="number" value="{{item.space}}" ng-model="item.space" placeholder="Площадь"><br/>
-        ////
-        Телефон<input type="number" ng-repeat="(key, phone) in item.phone_agent" placholder="Ведите номер" ng-model="item.phone_agent[key]" value="{{phone}}"><br/>
+        Площадь<input type="number"  ng-model="item.space" placeholder="Площадь"><br/>
+        Телефон<input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[0]" value=""><br/>
+            <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[1]" value=""><br/>
+            <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[2]" value=""><br/>
         Адресс<textarea placholder="Jg" ng-model="item.address" rows="5" cols="25">{{item.address}}</textarea><br/>
-        Описание<textarea ng-model="item.discriptions" rows="10" cols="35"
+        Описание<textarea ng-model="item.discriptions" rows="10" cols="35" placeholder="Описание"
                           maxlength="200"
     >{{item.discriptions}}</textarea><br/>
          <input type="button" value="Добавить" ng-click="addNewObject(item)">
     </div>
-
+</div>
     <ul>
-    <li ng-repeat="(key, item) in data | userAccept: setAgent"><a class="item_a" ng-click="setIndex(key)" href="#/catalog_admin/{{item.number_obj}}">
+    <p>Catalog</p>
+    <li ng-repeat="(key, item) in data | userAccept: setAgent"><a class="item_a" href="#/catalog_admin/{{item.number_obj}}">
         <div class="item">
-            <p>{{$index+1}}</p>
-            <img ng-src="{{data.photo[0]}}" name="img">
+            <p>Индекс {{$index+1}}</p>
+            <p>Фото будут тут<img ng-src="{{data.photo[0]}}" name="img"></p>
             <!--<img ng-repeat="photo in data.photo" ng-src="{{photo}}" name="img">-->
-            <p>{{item.number}}</p>
+            <p>Имя {{item.type}}</p>
+            <p ng-show="item.name_obj">Имя {{item.name_obj}}</p>
+            <p>Номер объекта {{item.number_obj}}</p>
             <p ng-show="item.isolation_house">Изолир Дома {{item.isolation_house}}</p>
             <p ng-show="item.isolation_flat">Изолир Кварт {{item.isolation_flat}}</p>
             <p ng-show="item.room">Кол-во комнат {{item.room}}</p>
@@ -97,9 +101,9 @@
             <p ng-show="item.space">Площадь {{item.space}}</p>
             <p ng-show="item.address">Адресс {{item.address}}</p>
             <p>Имя Агента {{item.name_agent}}</p>
-            <p ng-repeat="phone in item.phone_agent">Телефон {{phone}}</p>
+            <p ng-show="item.phone_agent" ng-repeat="phone in item.phone_agent">Телефон {{phone}}</p>
             <p ng-show="item.discriptions">Описание {{item.discriptions}}</p>
-            <p>Стоимость {{item.price}}</p>
+            <p ng-show="item.price">Стоимость {{item.price}}</p>
         </div>
     </a></li>
     </ul>

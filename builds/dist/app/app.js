@@ -62,15 +62,6 @@
             logout: function(){
                 auth.$unauth();
             },
-            /*getAuthUid: function(){
-                // getDataPromises().then(callback, callbackError);
-            },
-            getAuthEmail: function(){
-                // if(authData) {
-                //     return "Khohlov Misha";
-                //     // return authData.password.email
-                // }
-            },*/
             auth: function() {
                 var prom = $q.defer();
                     getDataPromises().then(function(data){
@@ -93,7 +84,7 @@
         .module('ngData', ['firebase'])
         .factory('Data', dataFact);
 
-    function dataFact($firebaseAuth, $firebaseObject, $q, $log, $rootScope, firebase_url, Auth){
+    function dataFact($firebaseAuth, $firebaseObject, $firebaseArray, $q, $log, $rootScope, firebase_url, Auth){
         var dataArr =  [
             {
                 'type' : 'Квартира', // дом, участки, нежилая недвижимость
@@ -129,7 +120,7 @@
                 'name_agent' : 'Karl',
                 'address' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions',
-                'uid' : '5bd43971-a152-4ac5-93eb-ebb4279823f1'
+                'uid' : '24b2b4eb-9486-4d60-b1d7-157c031fdcf1'
             },
             {
                 'type' : 'квартира', // дом, участки, нежилая недвижимость
@@ -147,7 +138,7 @@
                 'name_agent' : 'Misha',
                 'address' : 'street artilliryiska house 2/a',
                 'discriptions' : 'This is descriptions',
-                'uid' : '5bd43971-a152-4ac5-93eb-ebb4279823f1'
+                'uid' : '24b2b4eb-9486-4d60-b1d7-157c031fdcf1'
             },
             {
                 'type' : 'квартира', // дом, участки, нежилая недвижимость
@@ -171,23 +162,34 @@
 
         var ref = new Firebase(firebase_url);
         var usersRef = ref.child('user');
+        var objRef = ref.child('object');
+        var dataObj = $firebaseArray(objRef);
 
         function loaded(child){
                 var usersRef = ref.child('user').child(child);
                 var userObj = $firebaseObject(usersRef);
             return userObj;
         }
+        function loadedObj(child){
+            var dataRef = ref.child('object').child(child);
+            var dataObj = $firebaseObject(dataRef);
+            return dataObj;
+        }
         var publickDataObj = {
             getDataUser: function(uid, callback){
                 loaded(uid).$loaded().then(callback, function(error) {
-                    console.log("Error dowload  user ", error);
+                    console.log("Error dowload  user(1)", error);
                 });
             },
-            getData: function(){
-                return dataArr;
+            getData: function(callback){
+                dataObj.$loaded().then(callback, function(error) {
+                    console.log("Error dowload  data obj ", error);
+                });
             },
-            getDataItem: function(id) {
-                return dataArr[id];
+            getDataItem: function(id, callback) {
+                loadedObj(id).$loaded().then(callback, function(error) {
+                    console.log("Error dowload data obj(1)", error);
+                });
             },
             setDataUser: function (objUser, uid) {
                 var cloneObj = {};
@@ -198,12 +200,15 @@
                 $log.log(cloneObj);
                 usersRef.child(cloneObj.uid).set(cloneObj);
             },
-
+            setDataObj : function(obj){
+                objRef.child(obj.number_obj).set(obj);
+            },
             updateData: function(data, callback){
-                //var obj = {};
-                //obj[user.$id] = {name: user.name, age: user.age};
-                $log.log(data);
-                //return usersRef.update(obj, callback);
+                // Сделать перезапись данных тут!!!
+                // Сверить везде что бы был одинаковый вывод данных в маркапе
+                // Можно думать о загрузке картинок на сервер
+                // Работать над фильтрами
+                // Форма заявки
             }
     };
 
@@ -256,6 +261,7 @@
 
     function adminCtrl ($timeout, $state, $scope, $log, $rootScope, Auth, Data) {
     	$log.log("Admin controller star");
+		resetFormAddObjOther();
 		$scope.setAgent = false;
 		//$scope.setAgent = '44dfc8ac-1c15-4332-aee6-306d066f60bd';
 		// Заготовки объектов
@@ -270,6 +276,23 @@
 			lastname: null,
 			admin: false
 		};
+		function resetFormAddObjOther(){
+			$scope.item = {
+				type : 'Выберите тип объекта',
+				isolation_house : 'Свойства объекта',
+				isolation_flat : 'Свойства объекта',
+				room : 'Кол-во комнат',
+				city: 'Местоположение',
+				district : 'Район'
+
+			};
+		}
+		function resetFormAddObj(obj) {
+			for (var key in obj) {
+				obj[key] = null;
+			}
+			resetFormAddObjOther();
+		}
 		// очистка классов формы для регистрации
 		function resetForm() {
 			$scope.emptyDataEmail = false;
@@ -347,12 +370,14 @@
 				uid: null
 			};
 		}
+		// получеиие данных пользователя
 		Auth.getAuth(function(data) {
 			$log.log("Значение которое возвращает запрос на одного пользователя", data);
 				$scope.authLogin = function(){
 					return data;
-				}
-				$scope.setAgent = data.uid;
+				};
+					$scope.setAgent = data.uid;
+
 					Data.getDataUser(data.uid, function (data) {
 						$scope.userData = data;
 					})
@@ -398,18 +423,42 @@
 			$state.reload();
 			Auth.logout();
 		};
-		// передача индекса при переходе на страницу с детальной информацией
-		$scope.setIndex = function(index){
-			$rootScope.index_a = index;
-		};
 		// получение данных
-		$scope.data = Data.getData();
-    	$log.log("Admin controller star");
+		Data.getData(function(data){
+			$scope.data = data;
+		});
+		// рандомные числа
+		function randomInteger(min, max) {
+			var rand = min + Math.random() * (max + 1 - min);
+			rand = Math.floor(rand);
+			return rand;
+		}
     	//Добавление нового объекта
+		// Добавить валидацию, нельзя три одинаковых номер и что бы были заполненны обязательные поля.
     	$scope.addNewObject = function(obj) {
-    		$log.log(obj);
-    	}
-
+			for (var key in obj) {
+				if(obj[key] == 'Выберите тип объекта' || obj[key] == 'Свойства объекта'
+						|| obj[key] == 'Кол-во комнат' || obj[key] == 'Местоположение' || obj[key] == 'Район') {
+					delete obj[key]
+				}
+			}
+    		if(obj.type == 'Дом') {
+				delete obj.isolation_flat;
+			} else if(obj.type == 'Квартира') {
+				delete obj.isolation_house;
+			}  else {
+				delete obj.isolation_flat;
+				delete obj.isolation_house;
+				delete obj.room;
+			}
+			obj.number_obj = randomInteger(0, 500);
+			obj.name_agent = $scope.userData.lastname + " " + $scope.userData.firstname;
+			obj.uid = $scope.setAgent;
+			Data.setDataObj(obj);
+			$log.log(obj);
+			resetFormAddObj(obj);
+    	};
+		$log.log("Admin controller finish");
     }
 
      function adminConfig($stateProvider){
@@ -430,11 +479,9 @@
 
     function catalogCtrl ($scope, $log, Data, $rootScope) {
     	$log.debug("Catalog controller star");
-            $scope.data =  Data.getData();
-            $scope.setIndex = function(index){
-                $log.log(index);
-              $rootScope.index = index;
-            };
+            Data.getData(function(data){
+                $scope.data = data;
+            });
     	$log.debug("Catalog controller finish");
     }
 
@@ -457,22 +504,13 @@
     function aboutAdminCtrl ($scope, $log, Data, $state, $rootScope) {
         $log.debug("List_a controller star");
 
-        if($rootScope.index_a >= 0) {
-            $log.log("rootScope_a");
-            $scope.item = Data.getDataItem($rootScope.index_a);
-            $rootScope.index_a = -1;
-            $log.log("rootScope_a 2");
-        } else {
-            $log.log("arr.some_a");
-            var state = $state.params.id;
-            Data.getData().some(function (element, index) {
-                if (element.number_obj == state) {
-                    $scope.item = Data.getDataItem(index);
-                    return true;
-                }
-            });
-            $log.log("arr.some_a 2");
-        }
+        var id = $state.params.id;
+        $log.log('индефикатор в строке ', id);
+        Data.getDataItem(id, function(data) {
+            $log.log('Загруженно одиночным запросом', data);
+            $scope.item = data;
+        });
+
         $scope.updateData = function(){
           Data.updateData($scope.item, function(){
               $log.log("Error");
@@ -504,23 +542,12 @@
 
     function listCtrl ($scope, $log, Data, $state, $rootScope) {
         $log.debug("List controller star");
-
-        if($rootScope.index >= 0) {
-            $log.log("rootScope");
-            $scope.item = Data.getDataItem($rootScope.index);
-            $rootScope.index = -1;
-            $log.log("rootScope 2");
-        } else {
-            $log.log("arr.some");
-            var state = $state.params.id;
-            Data.getData().some(function (element, index) {
-                if (element.number_obj == state) {
-                    $scope.item = Data.getDataItem(index);
-                    return true;
-                }
-            });
-            $log.log("arr.some 2");
-        }
+                    var id = $state.params.id;
+                    $log.log('индефикатор в строке ', id);
+                    Data.getDataItem(id, function(data) {
+                        $log.log('Загруженно одиночным запросом', data);
+                        $scope.item = data;
+                    });
         $log.debug("List controller finish");
     }
 

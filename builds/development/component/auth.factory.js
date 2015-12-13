@@ -35,15 +35,6 @@
             logout: function(){
                 auth.$unauth();
             },
-            /*getAuthUid: function(){
-                // getDataPromises().then(callback, callbackError);
-            },
-            getAuthEmail: function(){
-                // if(authData) {
-                //     return "Khohlov Misha";
-                //     // return authData.password.email
-                // }
-            },*/
             auth: function() {
                 var prom = $q.defer();
                     getDataPromises().then(function(data){

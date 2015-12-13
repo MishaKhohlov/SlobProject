@@ -7,23 +7,12 @@
 
     function listCtrl ($scope, $log, Data, $state, $rootScope) {
         $log.debug("List controller star");
-
-        if($rootScope.index >= 0) {
-            $log.log("rootScope");
-            $scope.item = Data.getDataItem($rootScope.index);
-            $rootScope.index = -1;
-            $log.log("rootScope 2");
-        } else {
-            $log.log("arr.some");
-            var state = $state.params.id;
-            Data.getData().some(function (element, index) {
-                if (element.number_obj == state) {
-                    $scope.item = Data.getDataItem(index);
-                    return true;
-                }
-            });
-            $log.log("arr.some 2");
-        }
+                    var id = $state.params.id;
+                    $log.log('индефикатор в строке ', id);
+                    Data.getDataItem(id, function(data) {
+                        $log.log('Загруженно одиночным запросом', data);
+                        $scope.item = data;
+                    });
         $log.debug("List controller finish");
     }
 

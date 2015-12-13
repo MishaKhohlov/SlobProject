@@ -21,6 +21,7 @@
 
     function adminCtrl ($timeout, $state, $scope, $log, $rootScope, Auth, Data) {
     	$log.log("Admin controller star");
+		resetFormAddObjOther();
 		$scope.setAgent = false;
 		//$scope.setAgent = '44dfc8ac-1c15-4332-aee6-306d066f60bd';
 		// Заготовки объектов
@@ -35,6 +36,23 @@
 			lastname: null,
 			admin: false
 		};
+		function resetFormAddObjOther(){
+			$scope.item = {
+				type : 'Выберите тип объекта',
+				isolation_house : 'Свойства объекта',
+				isolation_flat : 'Свойства объекта',
+				room : 'Кол-во комнат',
+				city: 'Местоположение',
+				district : 'Район'
+
+			};
+		}
+		function resetFormAddObj(obj) {
+			for (var key in obj) {
+				obj[key] = null;
+			}
+			resetFormAddObjOther();
+		}
 		// очистка классов формы для регистрации
 		function resetForm() {
 			$scope.emptyDataEmail = false;
@@ -112,12 +130,14 @@
 				uid: null
 			};
 		}
+		// получеиие данных пользователя
 		Auth.getAuth(function(data) {
 			$log.log("Значение которое возвращает запрос на одного пользователя", data);
 				$scope.authLogin = function(){
 					return data;
-				}
-				$scope.setAgent = data.uid;
+				};
+					$scope.setAgent = data.uid;
+
 					Data.getDataUser(data.uid, function (data) {
 						$scope.userData = data;
 					})
@@ -163,18 +183,42 @@
 			$state.reload();
 			Auth.logout();
 		};
-		// передача индекса при переходе на страницу с детальной информацией
-		$scope.setIndex = function(index){
-			$rootScope.index_a = index;
-		};
 		// получение данных
-		$scope.data = Data.getData();
-    	$log.log("Admin controller star");
+		Data.getData(function(data){
+			$scope.data = data;
+		});
+		// рандомные числа
+		function randomInteger(min, max) {
+			var rand = min + Math.random() * (max + 1 - min);
+			rand = Math.floor(rand);
+			return rand;
+		}
     	//Добавление нового объекта
+		// Добавить валидацию, нельзя три одинаковых номер и что бы были заполненны обязательные поля.
     	$scope.addNewObject = function(obj) {
-    		$log.log(obj);
-    	}
-
+			for (var key in obj) {
+				if(obj[key] == 'Выберите тип объекта' || obj[key] == 'Свойства объекта'
+						|| obj[key] == 'Кол-во комнат' || obj[key] == 'Местоположение' || obj[key] == 'Район') {
+					delete obj[key]
+				}
+			}
+    		if(obj.type == 'Дом') {
+				delete obj.isolation_flat;
+			} else if(obj.type == 'Квартира') {
+				delete obj.isolation_house;
+			}  else {
+				delete obj.isolation_flat;
+				delete obj.isolation_house;
+				delete obj.room;
+			}
+			obj.number_obj = randomInteger(0, 500);
+			obj.name_agent = $scope.userData.lastname + " " + $scope.userData.firstname;
+			obj.uid = $scope.setAgent;
+			Data.setDataObj(obj);
+			$log.log(obj);
+			resetFormAddObj(obj);
+    	};
+		$log.log("Admin controller finish");
     }
 
      function adminConfig($stateProvider){

@@ -7,11 +7,9 @@
 
     function catalogCtrl ($scope, $log, Data, $rootScope) {
     	$log.debug("Catalog controller star");
-            $scope.data =  Data.getData();
-            $scope.setIndex = function(index){
-                $log.log(index);
-              $rootScope.index = index;
-            };
+            Data.getData(function(data){
+                $scope.data = data;
+            });
     	$log.debug("Catalog controller finish");
     }
 

@@ -8,22 +8,13 @@
     function aboutAdminCtrl ($scope, $log, Data, $state, $rootScope) {
         $log.debug("List_a controller star");
 
-        if($rootScope.index_a >= 0) {
-            $log.log("rootScope_a");
-            $scope.item = Data.getDataItem($rootScope.index_a);
-            $rootScope.index_a = -1;
-            $log.log("rootScope_a 2");
-        } else {
-            $log.log("arr.some_a");
-            var state = $state.params.id;
-            Data.getData().some(function (element, index) {
-                if (element.number_obj == state) {
-                    $scope.item = Data.getDataItem(index);
-                    return true;
-                }
-            });
-            $log.log("arr.some_a 2");
-        }
+        var id = $state.params.id;
+        $log.log('индефикатор в строке ', id);
+        Data.getDataItem(id, function(data) {
+            $log.log('Загруженно одиночным запросом', data);
+            $scope.item = data;
+        });
+
         $scope.updateData = function(){
           Data.updateData($scope.item, function(){
               $log.log("Error");
