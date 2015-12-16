@@ -48,10 +48,37 @@
             <option>Харьков</option>
             <option>Пригород</option>
         </select><br/>
-        Район<select ng-show="item.district" ng-model="item.district">
+        Район<select ng-show="item.district && item.city !== 'Пригород'" ng-model="item.district">
             <option selected="selected">Район</option>
             <option>Алеексеевка</option>
-            <option>23 Августа</option>
+            <option>Аэропорт</option>
+            <option>Восточный</option>
+            <option>пл.Восстания(Конный рынок)</option>
+            <option>Гагарина</option>
+            <option>Бавария</option>
+            <option>Жуковского</option>
+            <option>Журавлёвка</option>
+            <option>Завод им. Шевченко (ХПЗ)</option>
+            <option>Залютина</option>
+            <option>Ивановка</option>
+            <option>Лысая гора</option>
+            <option>Москалёвка</option>
+            <option>Немышля</option>
+            <option>Новые Дома</option>
+            <option>Одеская</option>
+            <option>Основа</option>
+            <option>Павлово Поле</option>
+            <option>Павловка</option>
+            <option>Песочин</option>
+            <option>Петихатки</option>
+            <option>Рогань</option>
+            <option>Салтовка</option>
+            <option>Северная Салтовка</option>
+            <option>Сортировка</option>
+            <option>Холодная гора</option>
+            <option>ХТЗ</option>
+            <option>Шишковка</option>
+            <option>Центр</option>
         </select><br/>
         Площадь<input type="number" value="{{item.space}}" ng-show="item.space" ng-model="item.space" placeholder="Площадь"><br/>
         Телефон<input type="number" ng-repeat="(key, phone) in item.phone_agent" placholder="Ведите номер" ng-model="item.phone_agent[key]" value="{{phone}}"><br/>

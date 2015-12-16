@@ -1,7 +1,7 @@
 <main>
 <h1>Catalog page</h1>
 <input type="text" ng-model="search">
-    <li ng-repeat="(key, item) in data | filter : search"><a class="item_a" href="#/catalog/{{item.number_obj}}">
+    <li ng-repeat="(key, item) in data | filter : search" ng-animate=" 'animate' "><a class="item_a" href="#/catalog/{{item.number_obj}}">
         <div class="item">
             <p>Индекс {{$index+1}}</p>
             <p>Фото будут тут<img ng-src="{{data.photo[0]}}" name="img"></p>
