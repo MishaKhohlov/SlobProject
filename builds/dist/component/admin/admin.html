@@ -109,6 +109,7 @@
                           maxlength="200"
     >{{item.discriptions}}</textarea><br/>
          <input type="button" value="Добавить" ng-click="addNewObject(item)">
+            <div ng-show="messageAddData">Ошибка{{messageAddData}}</div>
     </div>
 </div>
     <ul>

@@ -16,9 +16,21 @@
         });
 
         $scope.updateData = function(){
-          Data.updateData($scope.item, function(){
-              $log.log("Error");
-          })
+            if($scope.item.type !== 'Выберите тип объекта') {
+                // переписать что бы одинаковые телефоны нельзя было добавить
+                // сделать что бы форма регистрации открывалась только для нескольких человек.
+                // заявки
+                if( $scope.item.phone_agent[0] !== $scope.item.phone_agent[1]
+                    && $scope.item.phone_agent[1] !== $scope.item.phone_agent[2]
+                    && $scope.item.phone_agent[0] !== $scope.item.phone_agent[2]) {
+
+                }
+                $scope.messageAddData = null;
+                Data.updateData($scope.item);
+                    $scope.messageAddData = 'Данные успешно перезаписанны';
+            } else {
+                    $scope.messageAddData = 'Укажите тип объекта';
+            }
         };
         $log.debug("List_a controller finish");
     }

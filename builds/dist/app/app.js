@@ -170,12 +170,37 @@
                 var userObj = $firebaseObject(usersRef);
             return userObj;
         }
+        // Дописать цикл перебора срванения
+        //function arrValid(){
+        //    var arr = [123, 321, 456, 786, 321];
+        //    for (){}
+        //}
         function loadedObj(child){
             var dataRef = ref.child('object').child(child);
             var dataObj = $firebaseObject(dataRef);
             return dataObj;
         }
         var publickDataObj = {
+            validData: function(obj) {
+                for (var key in obj) {
+                    if(obj[key] == 'Свойства объекта' || obj[key] == 'Кол-во комнат' || obj[key] == 'Местоположение' || obj[key] == 'Район') {
+                        delete obj[key]
+                    }
+                }
+                if(obj.city) {
+                    delete obj.district;
+                }
+                if(obj.type == 'Дом') {
+                    delete obj.isolation_flat;
+                } else if(obj.type == 'Квартира') {
+                    delete obj.isolation_house;
+                }  else {
+                    delete obj.isolation_flat;
+                    delete obj.isolation_house;
+                    delete obj.room;
+                }
+                return obj;
+            },
             getDataUser: function(uid, callback){
                 loaded(uid).$loaded().then(callback, function(error) {
                     console.log("Error dowload  user(1)", error);
@@ -203,18 +228,31 @@
             setDataObj : function(obj){
                 objRef.child(obj.number_obj).set(obj);
             },
-            updateData: function(data, callback){
-                // Сделать перезапись данных тут!!!
-                // Сверить везде что бы был одинаковый вывод данных в маркапе
-                // Можно думать о загрузке картинок на сервер
-                // Работать над фильтрами
-                // Форма заявки
+            updateData: function(obj){
+                var obj = publickDataObj.validData(obj);
+                $log.log(obj);
+                var cloneObj = {};
+                for(var key in obj) {
+
+                    if(key == 'address' || key == 'city' || key == 'discriptions' || key == 'district'
+                     || key == 'isolation_house' || key == 'isolation_flat' || key == 'name_agent' || key == 'name_obj' || key == 'number_obj' || key == 'phone_agent'
+                     || key == 'price' || key == 'room' || key == 'space' || 
+                     key == 'type' || key == 'uid') {
+                        cloneObj[key] = obj[key];
+                    }
+                  }
+                $log.log(cloneObj);
+                objRef.child(obj.number_obj).update(cloneObj);
             }
     };
 
         return publickDataObj;
     }
 })();
+
+                // Можно думать о загрузке картинок на сервер
+                // Работать над фильтрами
+                // Форма заявки
 ;(function() {
     "use strict";
 
@@ -436,27 +474,19 @@
     	//Добавление нового объекта
 		// Добавить валидацию, нельзя три одинаковых номер и что бы были заполненны обязательные поля.
     	$scope.addNewObject = function(obj) {
-			for (var key in obj) {
-				if(obj[key] == 'Выберите тип объекта' || obj[key] == 'Свойства объекта'
-						|| obj[key] == 'Кол-во комнат' || obj[key] == 'Местоположение' || obj[key] == 'Район') {
-					delete obj[key]
-				}
+			if(obj.type !== 'Выберите тип объекта') {
+				var objVal = Data.validData(obj);
+				objVal.number_obj = randomInteger(0, 500);
+				objVal.name_agent = $scope.userData.lastname + " " + $scope.userData.firstname;
+				objVal.uid = $scope.setAgent;
+				Data.setDataObj(objVal);
+				$log.log(objVal);
+				resetFormAddObj(objVal);
+				$scope.messageAddData = null;
+				$scope.addForm = false;
+			} else {
+				$scope.messageAddData = 'Укажите тип объекта';
 			}
-    		if(obj.type == 'Дом') {
-				delete obj.isolation_flat;
-			} else if(obj.type == 'Квартира') {
-				delete obj.isolation_house;
-			}  else {
-				delete obj.isolation_flat;
-				delete obj.isolation_house;
-				delete obj.room;
-			}
-			obj.number_obj = randomInteger(0, 500);
-			obj.name_agent = $scope.userData.lastname + " " + $scope.userData.firstname;
-			obj.uid = $scope.setAgent;
-			Data.setDataObj(obj);
-			$log.log(obj);
-			resetFormAddObj(obj);
     	};
 		$log.log("Admin controller finish");
     }
@@ -512,9 +542,21 @@
         });
 
         $scope.updateData = function(){
-          Data.updateData($scope.item, function(){
-              $log.log("Error");
-          })
+            if($scope.item.type !== 'Выберите тип объекта') {
+                // переписать что бы одинаковые телефоны нельзя было добавить
+                // сделать что бы форма регистрации открывалась только для нескольких человек.
+                // заявки
+                if( $scope.item.phone_agent[0] !== $scope.item.phone_agent[1]
+                    && $scope.item.phone_agent[1] !== $scope.item.phone_agent[2]
+                    && $scope.item.phone_agent[0] !== $scope.item.phone_agent[2]) {
+
+                }
+                $scope.messageAddData = null;
+                Data.updateData($scope.item);
+                    $scope.messageAddData = 'Данные успешно перезаписанны';
+            } else {
+                    $scope.messageAddData = 'Укажите тип объекта';
+            }
         };
         $log.debug("List_a controller finish");
     }

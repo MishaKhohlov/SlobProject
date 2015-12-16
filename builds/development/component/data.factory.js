@@ -91,12 +91,37 @@
                 var userObj = $firebaseObject(usersRef);
             return userObj;
         }
+        // Дописать цикл перебора срванения
+        //function arrValid(){
+        //    var arr = [123, 321, 456, 786, 321];
+        //    for (){}
+        //}
         function loadedObj(child){
             var dataRef = ref.child('object').child(child);
             var dataObj = $firebaseObject(dataRef);
             return dataObj;
         }
         var publickDataObj = {
+            validData: function(obj) {
+                for (var key in obj) {
+                    if(obj[key] == 'Свойства объекта' || obj[key] == 'Кол-во комнат' || obj[key] == 'Местоположение' || obj[key] == 'Район') {
+                        delete obj[key]
+                    }
+                }
+                if(obj.city) {
+                    delete obj.district;
+                }
+                if(obj.type == 'Дом') {
+                    delete obj.isolation_flat;
+                } else if(obj.type == 'Квартира') {
+                    delete obj.isolation_house;
+                }  else {
+                    delete obj.isolation_flat;
+                    delete obj.isolation_house;
+                    delete obj.room;
+                }
+                return obj;
+            },
             getDataUser: function(uid, callback){
                 loaded(uid).$loaded().then(callback, function(error) {
                     console.log("Error dowload  user(1)", error);
@@ -124,15 +149,28 @@
             setDataObj : function(obj){
                 objRef.child(obj.number_obj).set(obj);
             },
-            updateData: function(data, callback){
-                // Сделать перезапись данных тут!!!
-                // Сверить везде что бы был одинаковый вывод данных в маркапе
-                // Можно думать о загрузке картинок на сервер
-                // Работать над фильтрами
-                // Форма заявки
+            updateData: function(obj){
+                var obj = publickDataObj.validData(obj);
+                $log.log(obj);
+                var cloneObj = {};
+                for(var key in obj) {
+
+                    if(key == 'address' || key == 'city' || key == 'discriptions' || key == 'district'
+                     || key == 'isolation_house' || key == 'isolation_flat' || key == 'name_agent' || key == 'name_obj' || key == 'number_obj' || key == 'phone_agent'
+                     || key == 'price' || key == 'room' || key == 'space' || 
+                     key == 'type' || key == 'uid') {
+                        cloneObj[key] = obj[key];
+                    }
+                  }
+                $log.log(cloneObj);
+                objRef.child(obj.number_obj).update(cloneObj);
             }
     };
 
         return publickDataObj;
     }
 })();
+
+                // Можно думать о загрузке картинок на сервер
+                // Работать над фильтрами
+                // Форма заявки

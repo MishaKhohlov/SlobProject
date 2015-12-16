@@ -196,27 +196,19 @@
     	//Добавление нового объекта
 		// Добавить валидацию, нельзя три одинаковых номер и что бы были заполненны обязательные поля.
     	$scope.addNewObject = function(obj) {
-			for (var key in obj) {
-				if(obj[key] == 'Выберите тип объекта' || obj[key] == 'Свойства объекта'
-						|| obj[key] == 'Кол-во комнат' || obj[key] == 'Местоположение' || obj[key] == 'Район') {
-					delete obj[key]
-				}
+			if(obj.type !== 'Выберите тип объекта') {
+				var objVal = Data.validData(obj);
+				objVal.number_obj = randomInteger(0, 500);
+				objVal.name_agent = $scope.userData.lastname + " " + $scope.userData.firstname;
+				objVal.uid = $scope.setAgent;
+				Data.setDataObj(objVal);
+				$log.log(objVal);
+				resetFormAddObj(objVal);
+				$scope.messageAddData = null;
+				$scope.addForm = false;
+			} else {
+				$scope.messageAddData = 'Укажите тип объекта';
 			}
-    		if(obj.type == 'Дом') {
-				delete obj.isolation_flat;
-			} else if(obj.type == 'Квартира') {
-				delete obj.isolation_house;
-			}  else {
-				delete obj.isolation_flat;
-				delete obj.isolation_house;
-				delete obj.room;
-			}
-			obj.number_obj = randomInteger(0, 500);
-			obj.name_agent = $scope.userData.lastname + " " + $scope.userData.firstname;
-			obj.uid = $scope.setAgent;
-			Data.setDataObj(obj);
-			$log.log(obj);
-			resetFormAddObj(obj);
     	};
 		$log.log("Admin controller finish");
     }
