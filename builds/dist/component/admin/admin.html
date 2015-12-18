@@ -7,29 +7,29 @@
         <input type="button" ng-click="login()" value="Login"><br>
         <div>{{messageLogin}}</div>
     </div>
-    <div ng-hide="authLogin()">
-        <p>Register</p>
-
-        <input ng-model="userCredentials.email" ng-class="emptyDataEmail ? 'border-red' : ''" type="text" placeholder="Логин"><br>
-        <input ng-model="userCredentials.password" ng-class="emptyDataPassword ? 'border-red' : ''" type="password" placeholder="Пароль"><br>
-        <input ng-model="userCredentials.firstname" ng-class="emptyDataFirstName ? 'border-red' : ''" type="text" placeholder="Имя"><br>
-        <input ng-model="userCredentials.lastname" ng-class="emptyDataLastName ? 'border-red' : ''" type="text" placeholder="Фамилия"><br>
-        <label for="chex_admin">Права Администратора<input id="chex_admin" type="checkbox" ng-model="userCredentials.admin"></label><br>
-        <input type="button" ng-click="register()" value="Зарегистрировать"><br>
-        <div>{{messageForUser}}</div>
-    </div>
 </div>
 
 <div ng-show="authLogin()">
+    <div ng-show="admin">{{admin}}</div>
     <div>{{userData.$id}}</div>
     <div>{{userData.firstname}}</div>
     <div>{{userData.lastname}}</div>
     <div>{{userData.email}}</div>
     <input type="button" ng-click="logout()" value="Logout">
 </div>
+<div ng-show="adminComplete">
+    <p>Регистрация нового пользователя</p>
 
+    <input ng-model="userCredentials.email" ng-class="emptyDataEmail ? 'border-red' : ''" type="text" placeholder="Логин"><br>
+    <input ng-model="userCredentials.password" ng-class="emptyDataPassword ? 'border-red' : ''" type="password" placeholder="Пароль"><br>
+    <input ng-model="userCredentials.firstname" ng-class="emptyDataFirstName ? 'border-red' : ''" type="text" placeholder="Имя"><br>
+    <input ng-model="userCredentials.lastname" ng-class="emptyDataLastName ? 'border-red' : ''" type="text" placeholder="Фамилия"><br>
+    <label for="chex_admin">Права Администратора<input id="chex_admin" type="checkbox" ng-model="userCredentials.admin"></label><br>
+    <input type="button" ng-click="register()" value="Зарегистрировать"><br>
+    <div>{{messageForUser}}</div>
+</div>
 <div ng-show="authLogin()">
-
+    <p>Добавление нового объекта</p>
     <input type="button" value="Добавить новый объект." ng-click="addForm ? addForm = false : addForm = true">
 
     <div ng-show="addForm">   
@@ -112,9 +112,9 @@
             <div ng-show="messageAddData">Ошибка{{messageAddData}}</div>
     </div>
 </div>
-    <ul>
+    <ul ng-show="authLogin()">
     <p>Catalog</p>
-    <li ng-repeat="(key, item) in data | userAccept: setAgent"><a class="item_a" href="#/catalog_admin/{{item.number_obj}}">
+    <li ng-repeat="(key, item) in data | userAccept: setAgent : adminComplete"><a class="item_a" href="#/catalog_admin/{{item.number_obj}}">
         <div class="item">
             <p>Индекс {{$index+1}}</p>
             <p>Фото будут тут<img ng-src="{{data.photo[0]}}" name="img"></p>

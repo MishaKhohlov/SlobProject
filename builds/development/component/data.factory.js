@@ -102,6 +102,7 @@
             return dataObj;
         }
         var publickDataObj = {
+            // Валидация данных на пустные поле и на отсуутсвия полей которые не нужны для данного типа объекта
             validData: function(obj) {
                 for (var key in obj) {
                     if(obj[key] == 'Свойства объекта' || obj[key] == 'Кол-во комнат' || obj[key] == 'Местоположение' || obj[key] == 'Район') {
@@ -122,21 +123,42 @@
                 }
                 return obj;
             },
+            // Проверка что бы в массиве не было одинаковых значений
+            validArr: function(arr){
+                var index = 0;
+                var result = true;
+                arr.forEach(function(inter){
+                    var perem = inter;
+                      for (var i = 0; i < arr.length; i++) {
+                          if(i !== index) {
+                              if(perem == arr[i]) {
+                                  result = false;
+                              }
+                          }
+                      }
+                    index++;
+                });
+                return result;
+            },
+            // Загрузка пользователя
             getDataUser: function(uid, callback){
                 loaded(uid).$loaded().then(callback, function(error) {
                     console.log("Error dowload  user(1)", error);
                 });
             },
+            // Загрузка данных
             getData: function(callback){
                 dataObj.$loaded().then(callback, function(error) {
                     console.log("Error dowload  data obj ", error);
                 });
             },
+            // Загрузка одного объекта по запросуу
             getDataItem: function(id, callback) {
                 loadedObj(id).$loaded().then(callback, function(error) {
                     console.log("Error dowload data obj(1)", error);
                 });
             },
+            // Добавление Агента
             setDataUser: function (objUser, uid) {
                 var cloneObj = {};
                 for(var key in objUser)
@@ -146,9 +168,11 @@
                 $log.log(cloneObj);
                 usersRef.child(cloneObj.uid).set(cloneObj);
             },
+            // Добавление объекта недвижимости
             setDataObj : function(obj){
                 objRef.child(obj.number_obj).set(obj);
             },
+            // Изменение объекта недвижимости
             updateData: function(obj){
                 var obj = publickDataObj.validData(obj);
                 $log.log(obj);

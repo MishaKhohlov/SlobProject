@@ -5,29 +5,35 @@
         .config(aboutAdminConf)
         .controller('aboutAdminCtrl', aboutAdminCtrl);
 
-    function aboutAdminCtrl ($scope, $log, Data, $state, $rootScope) {
+    function aboutAdminCtrl ($scope, $rootScope, $log, $state, Auth, Data) {
         $log.debug("List_a controller star");
-
         var id = $state.params.id;
-        $log.log('индефикатор в строке ', id);
+        
         Data.getDataItem(id, function(data) {
-            $log.log('Загруженно одиночным запросом', data);
-            $scope.item = data;
+
+            // повторить с sessionStorage.
+            // sessionStorage == data.uid
+            if(data.uid) {
+                $scope.messageClosePageAbout = null;
+                $scope.closeDataAbout = false;
+                $log.log('Загруженно одиночным запросом', data);
+                $scope.item = data;
+            } else {
+              $scope.messageClosePageAbout = 'Вы пытаетесь зайти на запрещёную страницу';
+              $scope.closeDataAbout = true;
+            }
         });
 
         $scope.updateData = function(){
             if($scope.item.type !== 'Выберите тип объекта') {
-                // переписать что бы одинаковые телефоны нельзя было добавить
-                // сделать что бы форма регистрации открывалась только для нескольких человек.
-                // заявки
-                if( $scope.item.phone_agent[0] !== $scope.item.phone_agent[1]
-                    && $scope.item.phone_agent[1] !== $scope.item.phone_agent[2]
-                    && $scope.item.phone_agent[0] !== $scope.item.phone_agent[2]) {
-
-                }
-                $scope.messageAddData = null;
-                Data.updateData($scope.item);
+                if(Data.validArr($scope.item.phone_agent)) {
+                    Data.validArr($scope.item.phone_agent);
+                    $scope.messageAddData = null;
+                    Data.updateData($scope.item);
                     $scope.messageAddData = 'Данные успешно перезаписанны';
+                } else {
+                    $scope.messageAddData = 'Вы ввели одинаковые телефон';
+                }
             } else {
                     $scope.messageAddData = 'Укажите тип объекта';
             }

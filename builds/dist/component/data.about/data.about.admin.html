@@ -1,4 +1,4 @@
-<main>
+<main ng-hide="closeDataAbout">
     <h1>This is Data About Administrator</h1>
 
     <p>Индекс {{$index+1}}</p>
@@ -96,7 +96,8 @@
         </div>
 
         <input type="button" value="Change" ng-click="updateData(item)"><br/>
-    <div ng-show="messageAddData">Ошибка{{messageAddData}}</div>
+    <div ng-show="messageAddData">{{messageAddData}}</div>
     </div>
 
 </main>
+<div ng-show="messageClosePageAbout">{{messageClosePageAbout}}</div>

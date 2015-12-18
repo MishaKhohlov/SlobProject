@@ -181,6 +181,7 @@
             return dataObj;
         }
         var publickDataObj = {
+            // Валидация данных на пустные поле и на отсуутсвия полей которые не нужны для данного типа объекта
             validData: function(obj) {
                 for (var key in obj) {
                     if(obj[key] == 'Свойства объекта' || obj[key] == 'Кол-во комнат' || obj[key] == 'Местоположение' || obj[key] == 'Район') {
@@ -201,21 +202,42 @@
                 }
                 return obj;
             },
+            // Проверка что бы в массиве не было одинаковых значений
+            validArr: function(arr){
+                var index = 0;
+                var result = true;
+                arr.forEach(function(inter){
+                    var perem = inter;
+                      for (var i = 0; i < arr.length; i++) {
+                          if(i !== index) {
+                              if(perem == arr[i]) {
+                                  result = false;
+                              }
+                          }
+                      }
+                    index++;
+                });
+                return result;
+            },
+            // Загрузка пользователя
             getDataUser: function(uid, callback){
                 loaded(uid).$loaded().then(callback, function(error) {
                     console.log("Error dowload  user(1)", error);
                 });
             },
+            // Загрузка данных
             getData: function(callback){
                 dataObj.$loaded().then(callback, function(error) {
                     console.log("Error dowload  data obj ", error);
                 });
             },
+            // Загрузка одного объекта по запросуу
             getDataItem: function(id, callback) {
                 loadedObj(id).$loaded().then(callback, function(error) {
                     console.log("Error dowload data obj(1)", error);
                 });
             },
+            // Добавление Агента
             setDataUser: function (objUser, uid) {
                 var cloneObj = {};
                 for(var key in objUser)
@@ -225,9 +247,11 @@
                 $log.log(cloneObj);
                 usersRef.child(cloneObj.uid).set(cloneObj);
             },
+            // Добавление объекта недвижимости
             setDataObj : function(obj){
                 objRef.child(obj.number_obj).set(obj);
             },
+            // Изменение объекта недвижимости
             updateData: function(obj){
                 var obj = publickDataObj.validData(obj);
                 $log.log(obj);
@@ -282,16 +306,18 @@
 	angular.module('ngAdmin', ['ngAnimate', 'ngCookies'])
 		.config(adminConfig)
 		.filter('userAccept', function() {
-			return function(inputData, params) {
-				var result = [];
-				if (params) {
-					angular.forEach(inputData, function(value, key) {
-						if(value.uid == params) {
-							result.push(value);
-						}
-					});
-				}
-					return result;
+			return function(inputData, params, admin) {
+					var result = [];
+					if (params && !admin) {
+						angular.forEach(inputData, function(value, key) {
+							if(value.uid == params) {
+								result.push(value);
+							}
+						});
+						return result;
+					} else {
+						return inputData;
+					}
 
 			};
 		})
@@ -410,14 +436,19 @@
 		}
 		// получеиие данных пользователя
 		Auth.getAuth(function(data) {
-			$log.log("Значение которое возвращает запрос на одного пользователя", data);
+			$log.log("Значение которое возвращает запрос на одного пользователя ", data);
 				$scope.authLogin = function(){
 					return data;
 				};
+					// повторить с sessionStorage.
 					$scope.setAgent = data.uid;
 
 					Data.getDataUser(data.uid, function (data) {
 						$scope.userData = data;
+						$scope.adminComplete = data.admin;
+						if(data.admin) {
+							$scope.admin = 'Добро пожаловать, Вы наделенны полномочиями администратора';
+						}
 					})
 		});
 		// Вход
@@ -430,7 +461,7 @@
 					clearAuthObj();
 					$state.reload();
 				}).catch(function(error) {
-					$scope.messageLogin =  "Произошла ошибка сообщите администратору" + error;
+					$scope.messageLogin =  "Произошла ошибка сообщите администратору " + error;
 				});
 			} else {
 				$scope.messageLogin = "Заполните" + emptyParamsLogin($scope.userLogin);
@@ -444,22 +475,24 @@
 				$scope.messageForUser = '';
 				// Data.setDataUser($scope.userCredentials, 32376423);
 				Auth.register($scope.userCredentials).then(function (userData) {
-					$scope.messageForUser = "Пользователь зарегистрирован как" + $scope.userCredentials.email
+					$scope.messageForUser = "Пользователь зарегистрирован как " + $scope.userCredentials.email
 							+ $scope.userCredentials.password + $scope.userCredentials.admin;
 							// userData.uid
 							$log.log($scope.userCredentials, userData.uid);
 					Data.setDataUser($scope.userCredentials, userData.uid);
 					clearAuthObj();
 				}).catch(function (error) {
-					$scope.messageForUser = "Произошла ошибка сообщите администратору" + error;
+					$scope.messageForUser = "Произошла ошибка сообщите администратору " + error;
 				});
 			} else {
-				$scope.messageForUser = "Заполните" + emptyParams($scope.userCredentials);
+				$scope.messageForUser = "Заполните " + emptyParams($scope.userCredentials);
 			}
 		};
 		$scope.logout = function(){
 			$state.reload();
 			Auth.logout();
+			$rootScope.setAgent = null;
+			$scope.admin = null;
 		};
 		// получение данных
 		Data.getData(function(data){
@@ -531,29 +564,35 @@
         .config(aboutAdminConf)
         .controller('aboutAdminCtrl', aboutAdminCtrl);
 
-    function aboutAdminCtrl ($scope, $log, Data, $state, $rootScope) {
+    function aboutAdminCtrl ($scope, $rootScope, $log, $state, Auth, Data) {
         $log.debug("List_a controller star");
-
         var id = $state.params.id;
-        $log.log('индефикатор в строке ', id);
+        
         Data.getDataItem(id, function(data) {
-            $log.log('Загруженно одиночным запросом', data);
-            $scope.item = data;
+
+            // повторить с sessionStorage.
+            // sessionStorage == data.uid
+            if(data.uid) {
+                $scope.messageClosePageAbout = null;
+                $scope.closeDataAbout = false;
+                $log.log('Загруженно одиночным запросом', data);
+                $scope.item = data;
+            } else {
+              $scope.messageClosePageAbout = 'Вы пытаетесь зайти на запрещёную страницу';
+              $scope.closeDataAbout = true;
+            }
         });
 
         $scope.updateData = function(){
             if($scope.item.type !== 'Выберите тип объекта') {
-                // переписать что бы одинаковые телефоны нельзя было добавить
-                // сделать что бы форма регистрации открывалась только для нескольких человек.
-                // заявки
-                if( $scope.item.phone_agent[0] !== $scope.item.phone_agent[1]
-                    && $scope.item.phone_agent[1] !== $scope.item.phone_agent[2]
-                    && $scope.item.phone_agent[0] !== $scope.item.phone_agent[2]) {
-
-                }
-                $scope.messageAddData = null;
-                Data.updateData($scope.item);
+                if(Data.validArr($scope.item.phone_agent)) {
+                    Data.validArr($scope.item.phone_agent);
+                    $scope.messageAddData = null;
+                    Data.updateData($scope.item);
                     $scope.messageAddData = 'Данные успешно перезаписанны';
+                } else {
+                    $scope.messageAddData = 'Вы ввели одинаковые телефон';
+                }
             } else {
                     $scope.messageAddData = 'Укажите тип объекта';
             }

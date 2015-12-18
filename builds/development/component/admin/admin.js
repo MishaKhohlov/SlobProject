@@ -4,16 +4,18 @@
 	angular.module('ngAdmin', ['ngAnimate', 'ngCookies'])
 		.config(adminConfig)
 		.filter('userAccept', function() {
-			return function(inputData, params) {
-				var result = [];
-				if (params) {
-					angular.forEach(inputData, function(value, key) {
-						if(value.uid == params) {
-							result.push(value);
-						}
-					});
-				}
-					return result;
+			return function(inputData, params, admin) {
+					var result = [];
+					if (params && !admin) {
+						angular.forEach(inputData, function(value, key) {
+							if(value.uid == params) {
+								result.push(value);
+							}
+						});
+						return result;
+					} else {
+						return inputData;
+					}
 
 			};
 		})
@@ -132,14 +134,19 @@
 		}
 		// получеиие данных пользователя
 		Auth.getAuth(function(data) {
-			$log.log("Значение которое возвращает запрос на одного пользователя", data);
+			$log.log("Значение которое возвращает запрос на одного пользователя ", data);
 				$scope.authLogin = function(){
 					return data;
 				};
+					// повторить с sessionStorage.
 					$scope.setAgent = data.uid;
 
 					Data.getDataUser(data.uid, function (data) {
 						$scope.userData = data;
+						$scope.adminComplete = data.admin;
+						if(data.admin) {
+							$scope.admin = 'Добро пожаловать, Вы наделенны полномочиями администратора';
+						}
 					})
 		});
 		// Вход
@@ -152,7 +159,7 @@
 					clearAuthObj();
 					$state.reload();
 				}).catch(function(error) {
-					$scope.messageLogin =  "Произошла ошибка сообщите администратору" + error;
+					$scope.messageLogin =  "Произошла ошибка сообщите администратору " + error;
 				});
 			} else {
 				$scope.messageLogin = "Заполните" + emptyParamsLogin($scope.userLogin);
@@ -166,22 +173,24 @@
 				$scope.messageForUser = '';
 				// Data.setDataUser($scope.userCredentials, 32376423);
 				Auth.register($scope.userCredentials).then(function (userData) {
-					$scope.messageForUser = "Пользователь зарегистрирован как" + $scope.userCredentials.email
+					$scope.messageForUser = "Пользователь зарегистрирован как " + $scope.userCredentials.email
 							+ $scope.userCredentials.password + $scope.userCredentials.admin;
 							// userData.uid
 							$log.log($scope.userCredentials, userData.uid);
 					Data.setDataUser($scope.userCredentials, userData.uid);
 					clearAuthObj();
 				}).catch(function (error) {
-					$scope.messageForUser = "Произошла ошибка сообщите администратору" + error;
+					$scope.messageForUser = "Произошла ошибка сообщите администратору " + error;
 				});
 			} else {
-				$scope.messageForUser = "Заполните" + emptyParams($scope.userCredentials);
+				$scope.messageForUser = "Заполните " + emptyParams($scope.userCredentials);
 			}
 		};
 		$scope.logout = function(){
 			$state.reload();
 			Auth.logout();
+			$rootScope.setAgent = null;
+			$scope.admin = null;
 		};
 		// получение данных
 		Data.getData(function(data){
