@@ -21,7 +21,7 @@
 		})
 		.controller('adminCtrl', adminCtrl);
 
-    function adminCtrl ($timeout, $state, $scope, $log, $rootScope, Auth, Data) {
+    function adminCtrl ($timeout, $state, $scope, $log, $rootScope, $localStorage, Auth, Data) {
     	$log.log("Admin controller star");
 		resetFormAddObjOther();
 		$scope.setAgent = false;
@@ -132,6 +132,18 @@
 				uid: null
 			};
 		}
+
+
+
+
+		//$scope.$storage = $localStorage;
+		//$storage.counter = 1;
+		//$log.log($storage.counter);
+
+		//$scope.counter = 42;
+		//$localStorage.counter = $scope.counter;
+		//$log.log($localStorage.counter);
+
 		// получеиие данных пользователя
 		Auth.getAuth(function(data) {
 			$log.log("Значение которое возвращает запрос на одного пользователя ", data);
@@ -140,10 +152,12 @@
 				};
 					// повторить с sessionStorage.
 					$scope.setAgent = data.uid;
+					$localStorage.setAgent = data.uid;
 
 					Data.getDataUser(data.uid, function (data) {
 						$scope.userData = data;
 						$scope.adminComplete = data.admin;
+						$localStorage.adminComplete = data.admin;
 						if(data.admin) {
 							$scope.admin = 'Добро пожаловать, Вы наделенны полномочиями администратора';
 						}
@@ -191,6 +205,8 @@
 			Auth.logout();
 			$rootScope.setAgent = null;
 			$scope.admin = null;
+			delete $localStorage.setAgent;
+			delete $localStorage.adminComplete;
 		};
 		// получение данных
 		Data.getData(function(data){

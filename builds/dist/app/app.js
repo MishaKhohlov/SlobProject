@@ -1,7 +1,7 @@
 ;(function() {
 	"use strict";
 
-	angular.module('ngApp', ['ui.router', 'ngAnimate', 'ngCookies', 'ngCatalog',
+	angular.module('ngApp', ['ui.router', 'ngAnimate', 'ngCookies', 'ngStorage', 'ngCatalog',
         'ngService', 'ngAbout', 'ngData', 'ngAuth', 'ngDataAbout', 'ngAdmin', 'ngDataAboutAdmin'])
         .config(slobConfig)
         .constant('firebase_url', 'https://ngslob.firebaseio.com/');
@@ -323,7 +323,7 @@
 		})
 		.controller('adminCtrl', adminCtrl);
 
-    function adminCtrl ($timeout, $state, $scope, $log, $rootScope, Auth, Data) {
+    function adminCtrl ($timeout, $state, $scope, $log, $rootScope, $localStorage, Auth, Data) {
     	$log.log("Admin controller star");
 		resetFormAddObjOther();
 		$scope.setAgent = false;
@@ -434,6 +434,18 @@
 				uid: null
 			};
 		}
+
+
+
+
+		//$scope.$storage = $localStorage;
+		//$storage.counter = 1;
+		//$log.log($storage.counter);
+
+		//$scope.counter = 42;
+		//$localStorage.counter = $scope.counter;
+		//$log.log($localStorage.counter);
+
 		// получеиие данных пользователя
 		Auth.getAuth(function(data) {
 			$log.log("Значение которое возвращает запрос на одного пользователя ", data);
@@ -442,10 +454,12 @@
 				};
 					// повторить с sessionStorage.
 					$scope.setAgent = data.uid;
+					$localStorage.setAgent = data.uid;
 
 					Data.getDataUser(data.uid, function (data) {
 						$scope.userData = data;
 						$scope.adminComplete = data.admin;
+						$localStorage.adminComplete = data.admin;
 						if(data.admin) {
 							$scope.admin = 'Добро пожаловать, Вы наделенны полномочиями администратора';
 						}
@@ -493,6 +507,8 @@
 			Auth.logout();
 			$rootScope.setAgent = null;
 			$scope.admin = null;
+			delete $localStorage.setAgent;
+			delete $localStorage.adminComplete;
 		};
 		// получение данных
 		Data.getData(function(data){
@@ -560,19 +576,137 @@
 ;(function() {
     "use strict";
 
-    angular.module('ngDataAboutAdmin', ['ngAnimate', 'ngCookies'])
+    angular.module('ngDataAboutAdmin', ['ngAnimate', 'ngCookies', 'angularFileUpload'])
         .config(aboutAdminConf)
+        .directive('ngThumb', ['$window', function($window) {
+            var helper = {
+                support: !!($window.FileReader && $window.CanvasRenderingContext2D),
+                isFile: function(item) {
+                    return angular.isObject(item) && item instanceof $window.File;
+                },
+                isImage: function(file) {
+                    var type =  '|' + file.type.slice(file.type.lastIndexOf('/') + 1) + '|';
+                    return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+                }
+            };
+
+            return {
+                restrict: 'A',
+                template: '<canvas/>',
+                link: function(scope, element, attributes) {
+                    if (!helper.support) return;
+
+                    var params = scope.$eval(attributes.ngThumb);
+
+                    if (!helper.isFile(params.file)) return;
+                    if (!helper.isImage(params.file)) return;
+
+                    var canvas = element.find('canvas');
+                    var reader = new FileReader();
+
+                    reader.onload = onLoadFile;
+                    reader.readAsDataURL(params.file);
+
+                    function onLoadFile(event) {
+                        var img = new Image();
+                        img.onload = onLoadImage;
+                        img.src = event.target.result;
+                    }
+
+                    function onLoadImage() {
+                        var width = params.width || this.width / this.height * params.height;
+                        var height = params.height || this.height / this.width * params.width;
+                        canvas.attr({ width: width, height: height });
+                        canvas[0].getContext('2d').drawImage(this, 0, 0, width, height);
+                    }
+                }
+            };
+        }])
+        .controller('AppController', appController )
         .controller('aboutAdminCtrl', aboutAdminCtrl);
 
-    function aboutAdminCtrl ($scope, $rootScope, $log, $state, Auth, Data) {
+    function appController($scope, FileUploader){
+
+        var uploader = $scope.uploader = new FileUploader({
+            url: '/app/upload.php'
+        });
+
+        // FILTERS
+
+        uploader.filters.push({
+            name: 'customFilter',
+            fn: function(item /*{File|FileLikeObject}*/, options) {
+                return this.queue.length < 10;
+            }
+        });
+        uploader.filters.push({
+            name: 'imageFilter',
+            fn: function(item /*{File|FileLikeObject}*/, options) {
+                var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+                return '|jpg|JPG|jpeg|'.indexOf(type) !== -1;
+            }
+        });
+
+        // CALLBACKS
+
+        uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+            console.info('onWhenAddingFileFailed', item, filter, options);
+            $scope.messageImg = 'Произошла ошибка'
+        };
+        uploader.onAfterAddingFile = function(fileItem) {
+            console.info('onAfterAddingFile', fileItem);
+            $scope.messageImg = 'Файл добавлен'
+        };
+        uploader.onAfterAddingAll = function(addedFileItems) {
+            console.info('onAfterAddingAll', addedFileItems);
+        };
+        uploader.onBeforeUploadItem = function(item) {
+            console.info('onBeforeUploadItem', item);
+        };
+        uploader.onProgressItem = function(fileItem, progress) {
+            console.info('onProgressItem', fileItem, progress);
+        };
+        uploader.onProgressAll = function(progress) {
+            console.info('onProgressAll', progress);
+        };
+        uploader.onSuccessItem = function(fileItem, response, status, headers) {
+            console.info('onSuccessItem', fileItem, response, status, headers);
+            $scope.messageImg = 'Файл загружен'
+        };
+        uploader.onErrorItem = function(fileItem, response, status, headers) {
+            console.info('onErrorItem', fileItem, response, status, headers);
+            $scope.messageImg = 'Произошла ошибка загрузки одного файла обратитесь к Администратору'
+        };
+        uploader.onCancelItem = function(fileItem, response, status, headers) {
+            console.info('onCancelItem', fileItem, response, status, headers);
+        };
+        uploader.onCompleteItem = function(fileItem, response, status, headers) {
+            console.info('onCompleteItem', fileItem, response, status, headers);
+        };
+        uploader.onCompleteAll = function() {
+            console.info('onCompleteAll');
+        };
+
+        console.info('uploader', uploader);
+
+
+        // -------------------------------
+
+
+        var controller = $scope.controller = {
+            isImage: function(item) {
+                var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+                return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+            }
+        };
+
+    }
+    function aboutAdminCtrl ($scope, $rootScope, $localStorage, $log, $state, Auth, Data) {
         $log.debug("List_a controller star");
         var id = $state.params.id;
-        
-        Data.getDataItem(id, function(data) {
 
-            // повторить с sessionStorage.
-            // sessionStorage == data.uid
-            if(data.uid) {
+        Data.getDataItem(id, function(data) {
+            if($localStorage.setAgent == data.uid || $localStorage.adminComplete) {
                 $scope.messageClosePageAbout = null;
                 $scope.closeDataAbout = false;
                 $log.log('Загруженно одиночным запросом', data);

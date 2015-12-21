@@ -17,8 +17,55 @@
     <p ng-repeat="phone in item.phone_agent">Телефон {{phone}}</p>
     <p ng-show="item.discriptions">Описание {{item.discriptions}}</p>
     <p>Стоимость {{item.price}}</p>
+        <button ng-click="addImg ? addImg = false : addImg = true">Открыть редактирование фотографий</button></br>
+        <div ng-show="addImg" ng-controller="AppController" nv-file-drop="" uploader="uploader" >
+            <!-- 3. nv-file-over uploader="link" over-class="className" -->
+            <div ng-show="uploader.isHTML5">
+                <div class="drobzone over-zoney zone" nv-file-over="" uploader="uploader">
+                    Перетащите файл сюда
+                </div>
+            </div>
 
-        <div style="border: 1px solid palevioletred">
+            <br />
+
+            <input type="file" nv-file-select="" uploader="uploader" multiple filters="imageFilter" />
+            <div ng-show="messageImg">{{messageImg}}</div>
+            <h2>Количество добавленных файлов {{ uploader.queue.length }}</h2>
+            <ul>
+                <li ng-repeat="item in uploader.queue">
+                    <div>Имя: {{ item.file.name }}</div>
+                    <div>Размер: {{ item.file.size/1024/1024|number:2 }} Mb</div>
+                    <div ng-show="uploader.isHTML5">
+                        Прогресс загрузки: {{ item.progress }}
+                        <div class="item-progress-box">
+                            <div class="item-progress" ng-style="{ 'width': item.progress + '%' }"></div>
+                        </div>
+                    </div>
+                    <div ng-if="controller.isImage(item._file)">
+                        Предпросмотр:
+                        <div ng-thumb="{ file: item._file, height: 200 }"></div>
+                    </div>
+                    <div>
+                        <button ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">Загрузить</button>
+                        <button ng-click="item.cancel()" ng-disabled="!item.isUploading">Отмена</button>
+                        <button ng-click="item.remove()" ng-click="item.progress = 0" >Удалить</button>
+                    </div>
+                </li>
+            </ul>
+            <div>
+                <div>
+                    <div ng-show="uploader.progress">Общий прогресс загрузки: {{ uploader.progress }}</div>
+                    <div ng-hide="uploader.progress">Общий прогресс загрузки: 0</div>
+                    <div class="total-progress-box">
+                        <div class="total-progress" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                    </div>
+                </div>
+                <button ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">Загрузить изображения</button>
+                <button ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">Отмена загрузки изображений</button>
+                <button ng-click="uploader.clearQueue()" ng-click="uploader.progress = 0" ng-disabled="!uploader.queue.length">Удалить изображения</button>
+            </div>
+        </div>
+
             Объект <select ng-model="item.type">
             <option selected="selected">Выберите тип объекта</option>
             <option>Квартира</option>

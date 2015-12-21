@@ -17,9 +17,12 @@
   "author": "Misha Khohlov",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "latest",
+    "browser-sync": "^2.10.1",
+    "gulp": "^3.9.0",
     "gulp-concat": "latest",
+    "gulp-connect-php": "0.0.7",
     "gulp-csso": "latest",
+    "gulp-livereload": "^3.8.1",
     "gulp-ng-annotate": "latest",
     "gulp-sass": "latest",
     "gulp-uglify": "latest",

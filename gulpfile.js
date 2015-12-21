@@ -22,10 +22,10 @@ gulp.task('html', function() {
     .pipe(gulp.dest('builds/dist/'))
 });
 
-// gulp.task('img', function() {
-//   gulp.src('builds/development/img/**')
-//     .pipe(gulp.dest('builds/dist/img/'));
-// });
+ gulp.task('img', function() {
+   gulp.src('builds/development/img/**')
+     .pipe(gulp.dest('builds/dist/img/'));
+ });
 
  gulp.task('css', function () {
    gulp.src('builds/development/style/**/*.css')
@@ -57,31 +57,33 @@ gulp.task('watch', function() {
 });
 
 gulp.task('libs', function() {
-  // gulp.src(bc+'jquery/dist/jquery.min.js')
-  //     .pipe(gulp.dest('./builds/dist/libs/jquery/'));
+   gulp.src(bc+'jquery/dist/jquery.min.js')
+       .pipe(gulp.dest('./builds/dist/libs/jquery/'));
 
-  // gulp.src(bc+'jquery-ui/jquery-ui.min.js')
-  //     .pipe(gulp.dest('./builds/dist/libs/jquery/'));
+   gulp.src(bc+'jquery-ui/jquery-ui.min.js')
+       .pipe(gulp.dest('./builds/dist/libs/jquery/'));
 
-  // gulp.src(bc+'ngInfiniteScroll/build/ng-infinite-scroll.min.js')
-  //     .pipe(gulp.dest('./builds/dist/libs/ngInfiniteScroll/'));
+   gulp.src(bc+'ngInfiniteScroll/build/ng-infinite-scroll.min.js')
+       .pipe(gulp.dest('./builds/dist/libs/ngInfiniteScroll/'));
 
-  // gulp.src([bc+'angular/angular.js',
-  //           bc+'angular-animate/angular-animate.js',
-  //           bc+'angular-cookies/angular-cookies.js',
-  //           bc+'angular-i18n/angular-locale_ru-ru.js',
-  //           bc+'angular-loader/angular-loader.js',
-  //           bc+'angular-resource/angular-resource.js',
-  //           bc+'angular-animate/angular-animate.js',
-  //           bc+'angular-ui-router/release/angular-ui-router.js',
-  //           bc+'angular-sanitize/angular-sanitize.js',
-  //           bc+'angular-touch/angular-touch.js',
-  //           bc+'firebase/firebase.js',
-  //           bc+'angularfire/dist/angularfire.js'
-  //         ])
-  //     .pipe(concat('angular.concat.js'))
-  //     // .pipe(uglify())
-  //     .pipe(gulp.dest('./builds/dist/libs/angular/'));
+   gulp.src([bc+'angular/angular.js',
+             bc+'angular-animate/angular-animate.js',
+             bc+'angular-cookies/angular-cookies.js',
+             bc+'ngstorage/ngStorage.js',
+             bc+'angular-file-upload/dist/angular-file-upload.js',
+             bc+'angular-i18n/angular-locale_ru-ru.js',
+             bc+'angular-loader/angular-loader.js',
+             bc+'angular-resource/angular-resource.js',
+             bc+'angular-animate/angular-animate.js',
+             bc+'angular-ui-router/release/angular-ui-router.js',
+             bc+'angular-sanitize/angular-sanitize.js',
+             bc+'angular-touch/angular-touch.js',
+             bc+'firebase/firebase.js',
+             bc+'angularfire/dist/angularfire.js'
+           ])
+       .pipe(concat('angular.concat.js'))
+       // .pipe(uglify())
+       .pipe(gulp.dest('./builds/dist/libs/angular/'));
 });
 
 gulp.task('webserver', function() {
@@ -93,9 +95,9 @@ gulp.task('webserver', function() {
 });
 
 gulp.task('default', [
-  // 'libs',
+   'libs',
   'html',
-  // 'img',
+   'img',
    'css',
   // 'css-ui',
   // 'css-ui-themse',

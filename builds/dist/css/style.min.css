@@ -29,12 +29,43 @@
     border: 1px solid black;
 }
 
-.animate-enter {
-    -webkit-transition: 1s linear all; /* Chrome */
-    transition: 1s linear all;
-    opacity: 0;
-}
 
-.animate-enter.animate-enter-active {
-    opacity: 1;
+.another-file-over-class { border: dotted 3px green; }
+
+canvas {
+    background-color: #f3f3f3;
+    -webkit-box-shadow: 3px 3px 3px 0 #e3e3e3;
+    -moz-box-shadow: 3px 3px 3px 0 #e3e3e3;
+    box-shadow: 3px 3px 3px 0 #e3e3e3;
+    border: 1px solid #c3c3c3;
+    margin: 6px 0 0 6px;
+}
+.test {
+    border: solid 3px red;
+    background: red;
+}
+.drobzone {
+    display: block;
+    border: 1px solid #0b93d5;
+}
+.nv-file-over { border: dotted 3px red; } /* Включается когда наводим файл */
+.total-progress {
+    background: blue;
+    height: 20px;
+    display: block;
+}
+.item-progress {
+    border: 1px solid  pink;
+}
+.item-progress {
+    width: 5px;
+    display: block;
+    height: 10px;
+    border: 1px solid  pink;
+}
+.total-progress {
+    width: 5px;
+    display: block;
+    height: 10px;
+    border: 1px solid  pink;
 }
