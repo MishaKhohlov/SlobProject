@@ -628,7 +628,7 @@
     function appController($scope, FileUploader){
 
         var uploader = $scope.uploader = new FileUploader({
-            url: '/app/upload.php'
+            url: 'upload.php'
         });
 
         // FILTERS
@@ -647,47 +647,50 @@
             }
         });
 
+        $scope.messageImg = [];
+        var indexMessage = 1;
         // CALLBACKS
-
+        function messageForClient(message){
+            $scope.messageImg.push(indexMessage + ' - ' + message);
+            indexMessage++;
+        }
         uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
             console.info('onWhenAddingFileFailed', item, filter, options);
-            $scope.messageImg = 'Произошла ошибка'
+            messageForClient('Произошла ошибка');
         };
         uploader.onAfterAddingFile = function(fileItem) {
             console.info('onAfterAddingFile', fileItem);
-            $scope.messageImg = 'Файл добавлен'
+            messageForClient('Файл добавлен');
         };
         uploader.onAfterAddingAll = function(addedFileItems) {
             console.info('onAfterAddingAll', addedFileItems);
         };
         uploader.onBeforeUploadItem = function(item) {
             console.info('onBeforeUploadItem', item);
-        };
-        uploader.onProgressItem = function(fileItem, progress) {
-            console.info('onProgressItem', fileItem, progress);
-        };
-        uploader.onProgressAll = function(progress) {
-            console.info('onProgressAll', progress);
+            messageForClient('Загрузка Началась');
         };
         uploader.onSuccessItem = function(fileItem, response, status, headers) {
             console.info('onSuccessItem', fileItem, response, status, headers);
-            $scope.messageImg = 'Файл загружен'
+            messageForClient('Загрузка файла началась');
         };
         uploader.onErrorItem = function(fileItem, response, status, headers) {
             console.info('onErrorItem', fileItem, response, status, headers);
-            $scope.messageImg = 'Произошла ошибка загрузки одного файла обратитесь к Администратору'
+            messageForClient('Произошла ошибка загрузки одного файла обратитесь к Администратору');
         };
         uploader.onCancelItem = function(fileItem, response, status, headers) {
             console.info('onCancelItem', fileItem, response, status, headers);
+            messageForClient('Отмена загрузки одного файла');
         };
         uploader.onCompleteItem = function(fileItem, response, status, headers) {
             console.info('onCompleteItem', fileItem, response, status, headers);
+            messageForClient('Файл загружен');
         };
         uploader.onCompleteAll = function() {
             console.info('onCompleteAll');
+            messageForClient('Все файлы загружены');
         };
 
-        console.info('uploader', uploader);
+        console.info('Общая информация', uploader);
 
 
         // -------------------------------

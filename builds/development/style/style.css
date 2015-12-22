@@ -49,15 +49,11 @@ canvas {
     border: 1px solid #0b93d5;
 }
 .nv-file-over { border: dotted 3px red; } /* Включается когда наводим файл */
-.total-progress {
-    background: blue;
-    height: 20px;
-    display: block;
-}
 .item-progress {
     border: 1px solid  pink;
 }
 .item-progress {
+    background: blue;
     width: 5px;
     display: block;
     height: 10px;

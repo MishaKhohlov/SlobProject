@@ -17,6 +17,7 @@
     <p ng-repeat="phone in item.phone_agent">Телефон {{phone}}</p>
     <p ng-show="item.discriptions">Описание {{item.discriptions}}</p>
     <p>Стоимость {{item.price}}</p>
+
         <button ng-click="addImg ? addImg = false : addImg = true">Открыть редактирование фотографий</button></br>
         <div ng-show="addImg" ng-controller="AppController" nv-file-drop="" uploader="uploader" >
             <!-- 3. nv-file-over uploader="link" over-class="className" -->
@@ -29,7 +30,12 @@
             <br />
 
             <input type="file" nv-file-select="" uploader="uploader" multiple filters="imageFilter" />
-            <div ng-show="messageImg">{{messageImg}}</div>
+            <div ng-show="messageImg">
+                <ul>
+                    <li>Журнал событий</li>
+                    <li ng-repeat="item in messageImg">{{item}}</li>
+                </ul>
+            </div>
             <h2>Количество добавленных файлов {{ uploader.queue.length }}</h2>
             <ul>
                 <li ng-repeat="item in uploader.queue">
