@@ -168,8 +168,9 @@
                     }
                 });
             },
-            deleteImageItem: function(idFile, id){
-                objRef.child(id).child("photo_object").child(2).set(null);
+            deleteImageItem: function(newArray, id){
+                $log.log('Delete Photo 2', newArray, id);
+                objRef.child(id).child("photo_object").set(newArray);
             },
             deleteObjItem: function(id){
                 objRef.child(id).set(null);

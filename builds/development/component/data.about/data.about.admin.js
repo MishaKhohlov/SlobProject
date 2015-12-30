@@ -50,7 +50,7 @@
         .controller('AppController', appController )
         .controller('aboutAdminCtrl', aboutAdminCtrl);
 
-    function appController($scope, $log, FileUploader, Data, $state){
+    function appController($scope, $log, FileUploader, Data, $state, $rootScope, $timeout){
         var id = $state.params.id;
         var uploader = $scope.uploader = new FileUploader({
             url: 'upload.php'
@@ -74,11 +74,17 @@
 
         $scope.messageImg = [];
         var indexMessage = 1;
-        var arrImageName = [];
-        // добавление имён файлов
+        // пока пустой массив в который потом добавятся имена файлов
+        $rootScope.arrImageName = [];
+        // test
+        //$timeout(function(){
+        //    $log.log($rootScope.arrImageName);
+        //}, 4000);
+
+        // добавление имёна файлов в массив
         function addNamePhoto () {
-            if(arrImageName[0]) {
-                Data.addImageItem(arrImageName, id);
+            if($rootScope.arrImageName[0]) {
+                Data.addImageItem($rootScope.arrImageName, id);
             } else {
                 $log.log("arrImageName empty")
             }
@@ -111,7 +117,7 @@
         uploader.onCompleteItem = function(fileItem, response, status, headers) {
             console.info('onCompleteItem', fileItem, response, status, headers);
             $log.log(fileItem.file.name);
-            arrImageName.push(fileItem.file.name);
+            $rootScope.arrImageName.push(fileItem.file.name);
             messageForClient('Файл загружен');
         };
         uploader.onCompleteAll = function() {
@@ -141,7 +147,9 @@
 
         // Удаление файлов фотографий основной информации
         $scope.deletePhoto = function(idFile){
-            Data.deleteImageItem(idFile, id);
+            //delete $rootScope.arrImageName[idFile];
+            $rootScope.arrImageName.splice(idFile, 1);
+            Data.deleteImageItem($rootScope.arrImageName, id);
         };
         $scope.deleteObj = function(id){
             Data.deleteObjItem(id);
@@ -154,6 +162,10 @@
                 $scope.closeDataAbout = false;
                 $log.log('Загруженно одиночным запросом', data);
                 $scope.item = data;
+                if(data.photo_object) {
+                    $log.log("promises array", data.photo_object);
+                    $rootScope.arrImageName = data.photo_object;
+                }
             } else {
               $scope.messageClosePageAbout = 'Вы пытаетесь зайти на запрещёную страницу';
               $scope.closeDataAbout = true;
