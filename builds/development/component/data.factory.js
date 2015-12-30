@@ -158,6 +158,22 @@
                     console.log("Error dowload data obj(1)", error);
                 });
             },
+            // добавление имени файла картинки в базу объекта
+            addImageItem: function(arrImage, id) {
+                objRef.child(id).update({"photo_object" : arrImage}, function(error) {
+                    if (error) {
+                        $log.log("Data could not be saved(Image object)." + error);
+                    } else {
+                        $log.log("Data saved successfully(Image object).");
+                    }
+                });
+            },
+            deleteImageItem: function(idFile, id){
+                objRef.child(id).child("photo_object").child(2).set(null);
+            },
+            deleteObjItem: function(id){
+                objRef.child(id).set(null);
+            },
             // Добавление Агента
             setDataUser: function (objUser, uid) {
                 var cloneObj = {};

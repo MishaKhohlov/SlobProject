@@ -50,8 +50,8 @@
         .controller('AppController', appController )
         .controller('aboutAdminCtrl', aboutAdminCtrl);
 
-    function appController($scope, FileUploader){
-
+    function appController($scope, $log, FileUploader, Data, $state){
+        var id = $state.params.id;
         var uploader = $scope.uploader = new FileUploader({
             url: 'upload.php'
         });
@@ -74,6 +74,15 @@
 
         $scope.messageImg = [];
         var indexMessage = 1;
+        var arrImageName = [];
+        // добавление имён файлов
+        function addNamePhoto () {
+            if(arrImageName[0]) {
+                Data.addImageItem(arrImageName, id);
+            } else {
+                $log.log("arrImageName empty")
+            }
+        }
         // CALLBACKS
         function messageForClient(message){
             $scope.messageImg.push(indexMessage + ' - ' + message);
@@ -87,9 +96,6 @@
             console.info('onAfterAddingFile', fileItem);
             messageForClient('Файл добавлен');
         };
-        uploader.onAfterAddingAll = function(addedFileItems) {
-            console.info('onAfterAddingAll', addedFileItems);
-        };
         uploader.onBeforeUploadItem = function(item) {
             console.info('onBeforeUploadItem', item);
             messageForClient('Загрузка Началась');
@@ -102,17 +108,17 @@
             console.info('onErrorItem', fileItem, response, status, headers);
             messageForClient('Произошла ошибка загрузки одного файла обратитесь к Администратору');
         };
-        uploader.onCancelItem = function(fileItem, response, status, headers) {
-            console.info('onCancelItem', fileItem, response, status, headers);
-            messageForClient('Отмена загрузки одного файла');
-        };
         uploader.onCompleteItem = function(fileItem, response, status, headers) {
             console.info('onCompleteItem', fileItem, response, status, headers);
+            $log.log(fileItem.file.name);
+            arrImageName.push(fileItem.file.name);
             messageForClient('Файл загружен');
         };
         uploader.onCompleteAll = function() {
             console.info('onCompleteAll');
             messageForClient('Все файлы загружены');
+            addNamePhoto ();
+            $state.reload();
         };
 
         console.info('Общая информация', uploader);
@@ -133,6 +139,15 @@
         $log.debug("List_a controller star");
         var id = $state.params.id;
 
+        // Удаление файлов фотографий основной информации
+        $scope.deletePhoto = function(idFile){
+            Data.deleteImageItem(idFile, id);
+        };
+        $scope.deleteObj = function(id){
+            Data.deleteObjItem(id);
+            $log.log("Объект " + id +" Удалён");
+            $state.go('admin');
+        };
         Data.getDataItem(id, function(data) {
             if($localStorage.setAgent == data.uid || $localStorage.adminComplete) {
                 $scope.messageClosePageAbout = null;
@@ -147,8 +162,8 @@
 
         $scope.updateData = function(){
             if($scope.item.type !== 'Выберите тип объекта') {
+                $log.log($scope.item.phone_agent)
                 if(Data.validArr($scope.item.phone_agent)) {
-                    Data.validArr($scope.item.phone_agent);
                     $scope.messageAddData = null;
                     Data.updateData($scope.item);
                     $scope.messageAddData = 'Данные успешно перезаписанны';

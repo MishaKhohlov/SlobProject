@@ -114,7 +114,7 @@
 </div>
     <ul ng-show="authLogin()">
     <p>Catalog</p>
-    <li ng-repeat="(key, item) in data | userAccept: setAgent : adminComplete"><a class="item_a" href="#/catalog_admin/{{item.number_obj}}">
+    <li style="margin-top: 50px" ng-repeat="(key, item) in data | userAccept: setAgent : adminComplete"><a class="item_a" href="#/catalog_admin/{{item.number_obj}}">
         <div class="item">
             <p>Индекс {{$index+1}}</p>
             <p>Фото будут тут<img ng-src="{{data.photo[0]}}" name="img"></p>
@@ -133,6 +133,13 @@
             <p ng-show="item.discriptions">Описание {{item.discriptions}}</p>
             <p ng-show="item.price">Стоимость {{item.price}}</p>
         </div>
-    </a></li>
+    </a>
+        <button ng-click="delete ? delete = false : delete = true">Удалить Объект</button></br>
+        <div ng-show="delete">
+            <p>Вы уверены</p>
+            <button ng-click="deleteObj(item.number_obj)">Да, объект {{item.number_obj}} будет удалён навсегда</button>
+            <button ng-click="delete = false">Нет</button>
+        </div>
+    </li>
     </ul>
 </div>

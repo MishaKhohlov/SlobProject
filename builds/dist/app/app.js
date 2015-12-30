@@ -237,6 +237,22 @@
                     console.log("Error dowload data obj(1)", error);
                 });
             },
+            // добавление имени файла картинки в базу объекта
+            addImageItem: function(arrImage, id) {
+                objRef.child(id).update({"photo_object" : arrImage}, function(error) {
+                    if (error) {
+                        $log.log("Data could not be saved(Image object)." + error);
+                    } else {
+                        $log.log("Data saved successfully(Image object).");
+                    }
+                });
+            },
+            deleteImageItem: function(idFile, id){
+                objRef.child(id).child("photo_object").child(2).set(null);
+            },
+            deleteObjItem: function(id){
+                objRef.child(id).set(null);
+            },
             // Добавление Агента
             setDataUser: function (objUser, uid) {
                 var cloneObj = {};
@@ -520,23 +536,33 @@
 			rand = Math.floor(rand);
 			return rand;
 		}
-    	//Добавление нового объекта
-		// Добавить валидацию, нельзя три одинаковых номер и что бы были заполненны обязательные поля.
     	$scope.addNewObject = function(obj) {
 			if(obj.type !== 'Выберите тип объекта') {
-				var objVal = Data.validData(obj);
-				objVal.number_obj = randomInteger(0, 500);
-				objVal.name_agent = $scope.userData.lastname + " " + $scope.userData.firstname;
-				objVal.uid = $scope.setAgent;
-				Data.setDataObj(objVal);
-				$log.log(objVal);
-				resetFormAddObj(objVal);
-				$scope.messageAddData = null;
-				$scope.addForm = false;
+				var objForArr = [];
+				angular.forEach($scope.item.phone_agent, function(value, key) {
+					this.push(value);
+				}, objForArr);
+				if(Data.validArr(objForArr)) {
+					var objVal = Data.validData(obj);
+					objVal.number_obj = randomInteger(0, 500);
+					objVal.name_agent = $scope.userData.lastname + " " + $scope.userData.firstname;
+					objVal.uid = $scope.setAgent;
+					Data.setDataObj(objVal);
+					$log.log(objVal);
+					resetFormAddObj(objVal);
+					$scope.messageAddData = null;
+					$scope.addForm = false;
+				} else {
+					$scope.messageAddData = 'Вы ввели одинаковые телефон';
+				}
 			} else {
 				$scope.messageAddData = 'Укажите тип объекта';
 			}
     	};
+		$scope.deleteObj = function(id){
+			Data.deleteObjItem(id);
+			$log.log("Объект " + id +" Удалён");
+		};
 		$log.log("Admin controller finish");
     }
 
@@ -625,8 +651,8 @@
         .controller('AppController', appController )
         .controller('aboutAdminCtrl', aboutAdminCtrl);
 
-    function appController($scope, FileUploader){
-
+    function appController($scope, $log, FileUploader, Data, $state){
+        var id = $state.params.id;
         var uploader = $scope.uploader = new FileUploader({
             url: 'upload.php'
         });
@@ -649,6 +675,15 @@
 
         $scope.messageImg = [];
         var indexMessage = 1;
+        var arrImageName = [];
+        // добавление имён файлов
+        function addNamePhoto () {
+            if(arrImageName[0]) {
+                Data.addImageItem(arrImageName, id);
+            } else {
+                $log.log("arrImageName empty")
+            }
+        }
         // CALLBACKS
         function messageForClient(message){
             $scope.messageImg.push(indexMessage + ' - ' + message);
@@ -662,9 +697,6 @@
             console.info('onAfterAddingFile', fileItem);
             messageForClient('Файл добавлен');
         };
-        uploader.onAfterAddingAll = function(addedFileItems) {
-            console.info('onAfterAddingAll', addedFileItems);
-        };
         uploader.onBeforeUploadItem = function(item) {
             console.info('onBeforeUploadItem', item);
             messageForClient('Загрузка Началась');
@@ -677,17 +709,17 @@
             console.info('onErrorItem', fileItem, response, status, headers);
             messageForClient('Произошла ошибка загрузки одного файла обратитесь к Администратору');
         };
-        uploader.onCancelItem = function(fileItem, response, status, headers) {
-            console.info('onCancelItem', fileItem, response, status, headers);
-            messageForClient('Отмена загрузки одного файла');
-        };
         uploader.onCompleteItem = function(fileItem, response, status, headers) {
             console.info('onCompleteItem', fileItem, response, status, headers);
+            $log.log(fileItem.file.name);
+            arrImageName.push(fileItem.file.name);
             messageForClient('Файл загружен');
         };
         uploader.onCompleteAll = function() {
             console.info('onCompleteAll');
             messageForClient('Все файлы загружены');
+            addNamePhoto ();
+            $state.reload();
         };
 
         console.info('Общая информация', uploader);
@@ -708,6 +740,15 @@
         $log.debug("List_a controller star");
         var id = $state.params.id;
 
+        // Удаление файлов фотографий основной информации
+        $scope.deletePhoto = function(idFile){
+            Data.deleteImageItem(idFile, id);
+        };
+        $scope.deleteObj = function(id){
+            Data.deleteObjItem(id);
+            $log.log("Объект " + id +" Удалён");
+            $state.go('admin');
+        };
         Data.getDataItem(id, function(data) {
             if($localStorage.setAgent == data.uid || $localStorage.adminComplete) {
                 $scope.messageClosePageAbout = null;
@@ -722,8 +763,8 @@
 
         $scope.updateData = function(){
             if($scope.item.type !== 'Выберите тип объекта') {
+                $log.log($scope.item.phone_agent)
                 if(Data.validArr($scope.item.phone_agent)) {
-                    Data.validArr($scope.item.phone_agent);
                     $scope.messageAddData = null;
                     Data.updateData($scope.item);
                     $scope.messageAddData = 'Данные успешно перезаписанны';

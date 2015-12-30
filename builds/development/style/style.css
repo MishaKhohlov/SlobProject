@@ -59,6 +59,13 @@ canvas {
     height: 10px;
     border: 1px solid  pink;
 }
+.image_photo {
+    height: 150px;
+}
+.li_image_photo {
+    margin-left: 15px;
+    display: inline-block;
+}
 .total-progress {
     width: 5px;
     display: block;

@@ -17,7 +17,14 @@
     <p ng-repeat="phone in item.phone_agent">Телефон {{phone}}</p>
     <p ng-show="item.discriptions">Описание {{item.discriptions}}</p>
     <p>Стоимость {{item.price}}</p>
+        <div> <p>Photo</p>
+            <ul>
+                <li style="width: 150px" class="li_image_photo" ng-repeat="(key, item) in item.photo_object"><img class="image_photo" ng-src="./uploads/{{item}}"></br>
+                    <button ng-click="deletePhoto(key)">Удалить {{key}}</button>
+                </li>
 
+            </ul>
+        </div>
         <button ng-click="addImg ? addImg = false : addImg = true">Открыть редактирование фотографий</button></br>
         <div ng-show="addImg" ng-controller="AppController" nv-file-drop="" uploader="uploader" >
             <!-- 3. nv-file-over uploader="link" over-class="className" -->
@@ -52,9 +59,7 @@
                         <div ng-thumb="{ file: item._file, height: 200 }"></div>
                     </div>
                     <div>
-                        <button ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">Загрузить</button>
-                        <button ng-click="item.cancel()" ng-disabled="!item.isUploading">Отмена</button>
-                        <button ng-click="item.remove()" ng-click="item.progress = 0" >Удалить</button>
+                        <button ng-click="item.remove()" ng-click="item.progress = 0">Удалить</button>
                     </div>
                 </li>
             </ul>
@@ -66,8 +71,8 @@
                         <div class="total-progress" ng-style="{ 'width': uploader.progress + '%' }"></div>
                     </div>
                 </div>
+                <button ng-click="addName()">Test</button>
                 <button ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">Загрузить изображения</button>
-                <button ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">Отмена загрузки изображений</button>
                 <button ng-click="uploader.clearQueue()" ng-click="uploader.progress = 0" ng-disabled="!uploader.queue.length">Удалить изображения</button>
             </div>
         </div>
@@ -149,6 +154,13 @@
         </div>
 
         <input type="button" value="Change" ng-click="updateData(item)"><br/>
+        <button ng-click="delete ? delete = false : delete = true">Удалить Объект</button></br>
+         <div ng-show="delete">
+             <p>Вы уверены</p>
+             <button ng-click="deleteObj(item.number_obj)">Да, объект {{item.number_obj}} будет удалён навсегда</button>
+             <button ng-click="delete = false">Нет</button>
+         </div>
+
     <div ng-show="messageAddData">{{messageAddData}}</div>
     </div>
 

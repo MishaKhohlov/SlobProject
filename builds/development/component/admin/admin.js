@@ -218,23 +218,33 @@
 			rand = Math.floor(rand);
 			return rand;
 		}
-    	//Добавление нового объекта
-		// Добавить валидацию, нельзя три одинаковых номер и что бы были заполненны обязательные поля.
     	$scope.addNewObject = function(obj) {
 			if(obj.type !== 'Выберите тип объекта') {
-				var objVal = Data.validData(obj);
-				objVal.number_obj = randomInteger(0, 500);
-				objVal.name_agent = $scope.userData.lastname + " " + $scope.userData.firstname;
-				objVal.uid = $scope.setAgent;
-				Data.setDataObj(objVal);
-				$log.log(objVal);
-				resetFormAddObj(objVal);
-				$scope.messageAddData = null;
-				$scope.addForm = false;
+				var objForArr = [];
+				angular.forEach($scope.item.phone_agent, function(value, key) {
+					this.push(value);
+				}, objForArr);
+				if(Data.validArr(objForArr)) {
+					var objVal = Data.validData(obj);
+					objVal.number_obj = randomInteger(0, 500);
+					objVal.name_agent = $scope.userData.lastname + " " + $scope.userData.firstname;
+					objVal.uid = $scope.setAgent;
+					Data.setDataObj(objVal);
+					$log.log(objVal);
+					resetFormAddObj(objVal);
+					$scope.messageAddData = null;
+					$scope.addForm = false;
+				} else {
+					$scope.messageAddData = 'Вы ввели одинаковые телефон';
+				}
 			} else {
 				$scope.messageAddData = 'Укажите тип объекта';
 			}
     	};
+		$scope.deleteObj = function(id){
+			Data.deleteObjItem(id);
+			$log.log("Объект " + id +" Удалён");
+		};
 		$log.log("Admin controller finish");
     }
 
