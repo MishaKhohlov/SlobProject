@@ -7,7 +7,7 @@
 			return function(inputData, params, admin) {
 					var result = [];
 					if (params && !admin) {
-						angular.forEach(inputData, function(value, key) {
+						angular.forEach(inputData, function(value) {
 							if(value.uid == params) {
 								result.push(value);
 							}
@@ -21,7 +21,7 @@
 		})
 		.controller('adminCtrl', adminCtrl);
 
-    function adminCtrl ($timeout, $state, $scope, $log, $rootScope, $localStorage, Auth, Data) {
+    function adminCtrl ($state, $scope, $log, $rootScope, $localStorage, Auth, Data) {
     	$log.log("Admin controller star");
 		resetFormAddObjOther();
 		$scope.setAgent = false;
@@ -41,11 +41,11 @@
 		function resetFormAddObjOther(){
 			$scope.item = {
 				type : 'Выберите тип объекта',
-				isolation_house : 'Свойства объекта',
-				isolation_flat : 'Свойства объекта',
-				room : 'Кол-во комнат',
-				city: 'Местоположение',
-				district : 'Район'
+				isolation_house : 'Выберите свойства объекта',
+				isolation_flat : 'Выберите свойства объекта',
+				room : 'Выберите кол-во комнат',
+				city: 'Выберите местоположение',
+				district : 'Выберите район'
 
 			};
 		}
@@ -78,15 +78,15 @@
 							case 'email':
 								$scope.emptyDataEmail = true;
 								params += "Email; ";
-								break
+								break;
 							case 'password':
 								$scope.emptyDataPassword = true;
 								params += "Пароль; ";
-								break
+								break;
 							case 'firstname':
 								$scope.emptyDataFirstName = true;
 								params += "Имя; ";
-								break
+								break;
 							case 'lastname':
 								$scope.emptyDataLastName = true;
 								params += "Фамилию; ";
@@ -107,7 +107,7 @@
 							case 'email':
 								$scope.emptyDataEmailUser = true;
 								params += "Email; ";
-								break
+								break;
 							case 'password':
 								$scope.emptyDataPasswordUser = true;
 								params += "Пароль; ";
@@ -173,7 +173,13 @@
 					clearAuthObj();
 					$state.reload();
 				}).catch(function(error) {
-					$scope.messageLogin =  "Произошла ошибка сообщите администратору " + error;
+					if(String(error).indexOf("email") !== -1) {
+						$scope.messageLogin =  "Вы ввели неправильный адресс электронной почты";
+					} else if (String(error).indexOf("password") !== -1) {
+						$scope.messageLogin =  "Вы ввели неправильный пароль";
+					} else {
+						$scope.messageLogin =  "Произошла незвестная ошибка сообщите администратору " + error;
+					}
 				});
 			} else {
 				$scope.messageLogin = "Заполните" + emptyParamsLogin($scope.userLogin);
@@ -218,10 +224,11 @@
 			rand = Math.floor(rand);
 			return rand;
 		}
+		// Добавление нового объекта
     	$scope.addNewObject = function(obj) {
 			if(obj.type !== 'Выберите тип объекта') {
 				var objForArr = [];
-				angular.forEach($scope.item.phone_agent, function(value, key) {
+				angular.forEach($scope.item.phone_agent, function(value) {
 					this.push(value);
 				}, objForArr);
 				if(Data.validArr(objForArr)) {
@@ -231,6 +238,8 @@
 					objVal.uid = $scope.setAgent;
 					Data.setDataObj(objVal);
 					$log.log(objVal);
+					// убрать из этой функции обнуление селекты должны
+					// сами становится в определённое положение при отсутсвие данных
 					resetFormAddObj(objVal);
 					$scope.messageAddData = null;
 					$scope.addForm = false;
@@ -241,6 +250,30 @@
 				$scope.messageAddData = 'Укажите тип объекта';
 			}
     	};
+		// Реальзован поиск одной строкой.
+		$scope.$watch('searchOr', function(newValue) {
+			if(!/[^[0-9]/.test(newValue)){
+				$scope.search = {
+					'number_obj' : newValue,
+					'name_obj' : ''
+				};
+				$scope.messageForSearch = 'Поиск по номеру объекта';
+			} else if(/[^[0-9]/.test(newValue) && newValue !== undefined){
+				$scope.search = {
+					'number_obj' : '',
+					'name_obj' : newValue
+				};
+				$scope.messageForSearch = 'Поиск имени';
+			}
+
+			if(newValue == '' || newValue == undefined){
+				$scope.search = {
+					'number_obj' : '',
+					'name_obj' : ''
+				};
+				$scope.messageForSearch = 'Начните вводить Имя объекта или его номер';
+			}
+		});
 		$scope.deleteObj = function(id){
 			Data.deleteObjItem(id);
 			$log.log("Объект " + id +" Удалён");

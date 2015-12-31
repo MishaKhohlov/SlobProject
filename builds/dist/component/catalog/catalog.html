@@ -1,12 +1,109 @@
 <main>
 <h1>Catalog page</h1>
-<input type="text" ng-model="search">
+    <div>Поиск<br>
+        Поиск по имени объекта или номеру<input type="text" ng-model="searchOr"><br>
+        <div>{{messageForSearch}}</div>
+        </div>
+    <div>
+        <h1>Sort</h1>
+
+        <p>Объект</p>
+        <select ng-model="filter.type">
+            <option value="">Выберите тип объекта</option>
+            <option>Квартира</option>
+            <option>Дом</option>
+            <option>Участки</option>
+            <option>Нежилая недвижимость</option>
+        </select><br/>
+
+        <p>Свойства дома</p>
+    <select ng-show="filter.type == 'Дом'" ng-model="filter.isolation_house">
+        <option value="">Выбирете свойства объекта</option>
+        <option>Часть дома</option>
+        <option>Целый дом</option>
+        <option>Дача</option>
+    </select><br/>
+
+        <p>Свойства Квартиры</p>
+    <select ng-show="filter.type == 'Квартира'"  ng-model="filter.isolation_flat">
+        <option value="">Выбирете  свойства объекта</option>
+        <option>Изолированные</option>
+        <option>Гостинки</option>
+    </select><br/>
+
+        <p> Кол-во комнат</p>
+    <select ng-model="filter.room" ng-show="filter.type == 'Квартира' || filter.type == 'Дом'">
+        <option value="">Выбирете кол-во комнат</option>
+        <option>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>Многокомнатные</option>
+        <option>Элитные</option>
+    </select><br/>
+
+        <p> Цена </p>
+       <input ng-model="filter.price.from" placeholder="От" type="number"><br/>
+       <input ng-model="filter.price.to" placeholder="До" type="number"><br/>
+
+        <p>Местоположение</p>
+    <select ng-model="filter.city">
+        <option value="">Выбирете местоположение</option>
+        <option>Харьков</option>
+        <option>Пригород</option>
+    </select><br/>
+
+        <p>Район</p>
+    <select ng-show="filter.city == 'Харьков'" ng-model="filter.district">
+        <option value="">Район</option>
+        <option>Алеексеевка</option>
+        <option>Аэропорт</option>
+        <option>Восточный</option>
+        <option>пл.Восстания(Конный рынок)</option>
+        <option>Гагарина</option>
+        <option>Бавария</option>
+        <option>Жуковского</option>
+        <option>Журавлёвка</option>
+        <option>Завод им. Шевченко (ХПЗ)</option>
+        <option>Залютина</option>
+        <option>Ивановка</option>
+        <option>Лысая гора</option>
+        <option>Москалёвка</option>
+        <option>Немышля</option>
+        <option>Новые Дома</option>
+        <option>Одеская</option>
+        <option>Основа</option>
+        <option>Павлово Поле</option>
+        <option>Павловка</option>
+        <option>Песочин</option>
+        <option>Петихатки</option>
+        <option>Рогань</option>
+        <option>Салтовка</option>
+        <option>Северная Салтовка</option>
+        <option>Сортировка</option>
+        <option>Холодная гора</option>
+        <option>ХТЗ</option>
+        <option>Шишковка</option>
+        <option>Центр</option>
+    </select><br/>
+
+        <p>Площадь</p>
+        <input type="number"  ng-model="filter.space.from" placeholder="От"><br/>
+        <input type="number"  ng-model="filter.space.to" placeholder="До"><br/>
+
+    </div>
+    <p>Catalog ----------------------------------------------------------------------------------------------------------------</p>
     <li ng-repeat="(key, item) in data | filter : search" ng-animate=" 'animate' "><a class="item_a" href="#/catalog/{{item.number_obj}}">
         <div class="item">
             <p>Индекс {{$index+1}}</p>
-            <p>Фото будут тут<img ng-src="{{data.photo[0]}}" name="img"></p>
-            <!--<img ng-repeat="photo in data.photo" ng-src="{{photo}}" name="img">-->
-            <p>Имя {{item.type}}</p>
+            <div> <p>Photo</p>
+                <ul>
+                    <li style="width: 150px" class="li_image_photo" ng-repeat="(key, item) in item.photo_object"><img class="image_photo" ng-src="./uploads/{{item}}"></br>
+                    </li>
+
+                </ul>
+            </div>
+            <p>Тип {{item.type}}</p>
             <p ng-show="item.name_obj">Имя {{item.name_obj}}</p>
             <p>Номер объекта {{item.number_obj}}</p>
             <p ng-show="item.isolation_house">Изолир Дома {{item.isolation_house}}</p>

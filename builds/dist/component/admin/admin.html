@@ -35,7 +35,7 @@
     <div ng-show="addForm">   
         <div style="border: 1px solid palevioletred">
        Объект <select ng-model="item.type">
-            <option selected="selected">Выберите тип объекта</option>
+            <option>Выберите тип объекта</option>
             <option>Квартира</option>
             <option>Дом</option>
             <option>Участки</option>
@@ -43,18 +43,18 @@
         </select><br/>
         Имя объекта<input ng-model="item.name_obj" type="text"> <br/>
         Свойства дома<select ng-show="item.type == 'Дом'" ng-model="item.isolation_house">
-            <option selected="selected">Свойства объекта</option>
+            <option>Выберите свойства объекта</option>
             <option>Часть дома</option>
             <option>Целый дом</option>
             <option>Дача</option>
         </select><br/>
         Свойства Квартиры<select ng-show="item.type == 'Квартира'" ng-model="item.isolation_flat">
-            <option selected="selected">Свойства объекта</option>
+            <option>Выберите свойства объекта</option>
             <option>Изолированные</option>
             <option>Гостинки</option>
         </select><br/>
         Кол-во комнат<select ng-model="item.room" ng-show="item.type == 'Квартира' || item.type == 'Дом'">
-            <option selected="selected">Кол-во комнат</option>
+            <option>Выберите кол-во комнат</option>
             <option>1</option>
             <option>2</option>
             <option>3</option>
@@ -63,13 +63,13 @@
             <option>Элитные</option>
         </select><br/>
         Цена <input ng-model="item.price" placeholder="Цена" type="number"><br/>
-        Метоположение<select  ng-show="item.type == 'Квартира' || item.type == 'Дом'" ng-model="item.city">
-            <option selected="selected">Местоположение</option>
+        Метоположение<select ng-model="item.city">
+            <option>Выберите местоположение</option>
             <option>Харьков</option>
             <option>Пригород</option>
         </select><br/>
-            Район<select ng-show="item.district && item.city !== 'Пригород'" ng-model="item.district">
-            <option selected="selected">Район</option>
+            Район<select ng-show="item.city !== 'Пригород'" ng-model="item.district">
+            <option>Выберите район</option>
             <option>Алеексеевка</option>
             <option>Аэропорт</option>
             <option>Восточный</option>
@@ -112,14 +112,19 @@
             <div ng-show="messageAddData">Ошибка{{messageAddData}}</div>
     </div>
 </div>
+    <div ng-show="authLogin()">
+        Поиск<br>
+        Поиск по имени объекта или номеру<input type="text" ng-model="searchOr"><br>
+        <div>{{messageForSearch}}</div>
+    </div>
     <ul ng-show="authLogin()">
     <p>Catalog</p>
-    <li style="margin-top: 50px" ng-repeat="(key, item) in data | userAccept: setAgent : adminComplete"><a class="item_a" href="#/catalog_admin/{{item.number_obj}}">
+    <li style="margin-top: 50px" ng-repeat="(key, item) in data | filter: search | userAccept: setAgent : adminComplete"><a class="item_a" href="#/catalog_admin/{{item.number_obj}}">
         <div class="item">
             <p>Индекс {{$index+1}}</p>
             <p>Фото будут тут<img ng-src="{{data.photo[0]}}" name="img"></p>
             <!--<img ng-repeat="photo in data.photo" ng-src="{{photo}}" name="img">-->
-            <p>Имя {{item.type}}</p>
+            <p>Тип {{item.type}}</p>
             <p ng-show="item.name_obj">Имя {{item.name_obj}}</p>
             <p>Номер объекта {{item.number_obj}}</p>
             <p ng-show="item.isolation_house">Изолир Дома {{item.isolation_house}}</p>

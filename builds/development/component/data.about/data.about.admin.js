@@ -141,21 +141,36 @@
         };
 
     }
-    function aboutAdminCtrl ($scope, $rootScope, $localStorage, $log, $state, Auth, Data) {
+    function aboutAdminCtrl ($scope, $rootScope, $timeout, $localStorage, $log, $state, Auth, Data) {
         $log.debug("List_a controller star");
         var id = $state.params.id;
 
+        // Стандартные показатили выбора
+        /*function resetFormAddObjOther(){
+            $scope.item = {
+                type : 'Выберите тип объекта',
+                isolation_house : 'Выберите свойства объекта',
+                isolation_flat : 'Выберите свойства объекта',
+                room : 'Выберите кол-во комнат',
+                city: 'Выберите местоположение',
+                district : 'Выберите район'
+
+            };
+        }
+        resetFormAddObjOther();*/
         // Удаление файлов фотографий основной информации
         $scope.deletePhoto = function(idFile){
             //delete $rootScope.arrImageName[idFile];
             $rootScope.arrImageName.splice(idFile, 1);
             Data.deleteImageItem($rootScope.arrImageName, id);
         };
+        // Удаление объекта
         $scope.deleteObj = function(id){
             Data.deleteObjItem(id);
             $log.log("Объект " + id +" Удалён");
             $state.go('admin');
         };
+        // Получение объекта с данными на эту страницу
         Data.getDataItem(id, function(data) {
             if($localStorage.setAgent == data.uid || $localStorage.adminComplete) {
                 $scope.messageClosePageAbout = null;
@@ -171,10 +186,10 @@
               $scope.closeDataAbout = true;
             }
         });
-
+        // Обновление данных
         $scope.updateData = function(){
             if($scope.item.type !== 'Выберите тип объекта') {
-                $log.log($scope.item.phone_agent)
+                $log.log($scope.item.phone_agent);
                 if(Data.validArr($scope.item.phone_agent)) {
                     $scope.messageAddData = null;
                     Data.updateData($scope.item);

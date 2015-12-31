@@ -184,11 +184,11 @@
             // Валидация данных на пустные поле и на отсуутсвия полей которые не нужны для данного типа объекта
             validData: function(obj) {
                 for (var key in obj) {
-                    if(obj[key] == 'Свойства объекта' || obj[key] == 'Кол-во комнат' || obj[key] == 'Местоположение' || obj[key] == 'Район') {
+                    if(obj[key] == 'Выберите свойства объекта' || obj[key] == 'Выберите кол-во комнат' || obj[key] == 'Выберите местоположение' || obj[key] == 'Выберите район') {
                         delete obj[key]
                     }
                 }
-                if(obj.city) {
+                if(obj.city == 'Пригород') {
                     delete obj.district;
                 }
                 if(obj.type == 'Дом') {
@@ -200,6 +200,7 @@
                     delete obj.isolation_house;
                     delete obj.room;
                 }
+                $log.log('valid', obj);
                 return obj;
             },
             // Проверка что бы в массиве не было одинаковых значений
@@ -283,17 +284,13 @@
                     }
                   }
                 $log.log(cloneObj);
-                objRef.child(obj.number_obj).update(cloneObj);
+                objRef.child(obj.number_obj).set(cloneObj);
             }
     };
 
         return publickDataObj;
     }
 })();
-
-                // Можно думать о загрузке картинок на сервер
-                // Работать над фильтрами
-                // Форма заявки
 ;(function() {
     "use strict";
 
@@ -326,7 +323,7 @@
 			return function(inputData, params, admin) {
 					var result = [];
 					if (params && !admin) {
-						angular.forEach(inputData, function(value, key) {
+						angular.forEach(inputData, function(value) {
 							if(value.uid == params) {
 								result.push(value);
 							}
@@ -340,7 +337,7 @@
 		})
 		.controller('adminCtrl', adminCtrl);
 
-    function adminCtrl ($timeout, $state, $scope, $log, $rootScope, $localStorage, Auth, Data) {
+    function adminCtrl ($state, $scope, $log, $rootScope, $localStorage, Auth, Data) {
     	$log.log("Admin controller star");
 		resetFormAddObjOther();
 		$scope.setAgent = false;
@@ -360,11 +357,11 @@
 		function resetFormAddObjOther(){
 			$scope.item = {
 				type : 'Выберите тип объекта',
-				isolation_house : 'Свойства объекта',
-				isolation_flat : 'Свойства объекта',
-				room : 'Кол-во комнат',
-				city: 'Местоположение',
-				district : 'Район'
+				isolation_house : 'Выберите свойства объекта',
+				isolation_flat : 'Выберите свойства объекта',
+				room : 'Выберите кол-во комнат',
+				city: 'Выберите местоположение',
+				district : 'Выберите район'
 
 			};
 		}
@@ -397,15 +394,15 @@
 							case 'email':
 								$scope.emptyDataEmail = true;
 								params += "Email; ";
-								break
+								break;
 							case 'password':
 								$scope.emptyDataPassword = true;
 								params += "Пароль; ";
-								break
+								break;
 							case 'firstname':
 								$scope.emptyDataFirstName = true;
 								params += "Имя; ";
-								break
+								break;
 							case 'lastname':
 								$scope.emptyDataLastName = true;
 								params += "Фамилию; ";
@@ -426,7 +423,7 @@
 							case 'email':
 								$scope.emptyDataEmailUser = true;
 								params += "Email; ";
-								break
+								break;
 							case 'password':
 								$scope.emptyDataPasswordUser = true;
 								params += "Пароль; ";
@@ -492,7 +489,13 @@
 					clearAuthObj();
 					$state.reload();
 				}).catch(function(error) {
-					$scope.messageLogin =  "Произошла ошибка сообщите администратору " + error;
+					if(String(error).indexOf("email") !== -1) {
+						$scope.messageLogin =  "Вы ввели неправильный адресс электронной почты";
+					} else if (String(error).indexOf("password") !== -1) {
+						$scope.messageLogin =  "Вы ввели неправильный пароль";
+					} else {
+						$scope.messageLogin =  "Произошла незвестная ошибка сообщите администратору " + error;
+					}
 				});
 			} else {
 				$scope.messageLogin = "Заполните" + emptyParamsLogin($scope.userLogin);
@@ -537,10 +540,11 @@
 			rand = Math.floor(rand);
 			return rand;
 		}
+		// Добавление нового объекта
     	$scope.addNewObject = function(obj) {
 			if(obj.type !== 'Выберите тип объекта') {
 				var objForArr = [];
-				angular.forEach($scope.item.phone_agent, function(value, key) {
+				angular.forEach($scope.item.phone_agent, function(value) {
 					this.push(value);
 				}, objForArr);
 				if(Data.validArr(objForArr)) {
@@ -560,6 +564,30 @@
 				$scope.messageAddData = 'Укажите тип объекта';
 			}
     	};
+		// Реальзован поиск одной строкой.
+		$scope.$watch('searchOr', function(newValue) {
+			if(!/[^[0-9]/.test(newValue)){
+				$scope.search = {
+					'number_obj' : newValue,
+					'name_obj' : ''
+				};
+				$scope.messageForSearch = 'Поиск по номеру объекта';
+			} else if(/[^[0-9]/.test(newValue) && newValue !== undefined){
+				$scope.search = {
+					'number_obj' : '',
+					'name_obj' : newValue
+				};
+				$scope.messageForSearch = 'Поиск имени';
+			}
+
+			if(newValue == '' || newValue == undefined){
+				$scope.search = {
+					'number_obj' : '',
+					'name_obj' : ''
+				};
+				$scope.messageForSearch = 'Начните вводить Имя объекта или его номер';
+			}
+		});
 		$scope.deleteObj = function(id){
 			Data.deleteObjItem(id);
 			$log.log("Объект " + id +" Удалён");
@@ -588,6 +616,43 @@
             Data.getData(function(data){
                 $scope.data = data;
             });
+        // Реальзован поиск одной строкой.
+        $scope.$watch('searchOr', function(newValue) {
+                if(!/[^[0-9]/.test(newValue)){
+                    $scope.search = {
+                        'number_obj' : newValue,
+                        'name_obj' : ''
+                    };
+                    $scope.messageForSearch = 'Поиск по номеру объекта';
+                } else if(/[^[0-9]/.test(newValue) && newValue !== undefined){
+                    $scope.search = {
+                        'number_obj' : '',
+                        'name_obj' : newValue
+                    };
+                    $scope.messageForSearch = 'Поиск имени';
+                }
+
+                if(newValue == '' || newValue == undefined){
+                    $scope.search = {
+                        'number_obj' : '',
+                        'name_obj' : ''
+                    };
+                    $scope.messageForSearch = 'Начните вводить Имя объекта или его номер';
+                }
+        });
+        resetFormAddObjOther();
+        function resetFormAddObjOther(){
+            $scope.filter = {
+                price: {
+                    from: 0,
+                    to : null
+                },
+                space: {
+                    from: 0,
+                    to : null
+                }
+            };
+        }
     	$log.debug("Catalog controller finish");
     }
 
@@ -743,21 +808,36 @@
         };
 
     }
-    function aboutAdminCtrl ($scope, $rootScope, $localStorage, $log, $state, Auth, Data) {
+    function aboutAdminCtrl ($scope, $rootScope, $timeout, $localStorage, $log, $state, Auth, Data) {
         $log.debug("List_a controller star");
         var id = $state.params.id;
 
+        // Стандартные показатили выбора
+        /*function resetFormAddObjOther(){
+            $scope.item = {
+                type : 'Выберите тип объекта',
+                isolation_house : 'Выберите свойства объекта',
+                isolation_flat : 'Выберите свойства объекта',
+                room : 'Выберите кол-во комнат',
+                city: 'Выберите местоположение',
+                district : 'Выберите район'
+
+            };
+        }
+        resetFormAddObjOther();*/
         // Удаление файлов фотографий основной информации
         $scope.deletePhoto = function(idFile){
             //delete $rootScope.arrImageName[idFile];
             $rootScope.arrImageName.splice(idFile, 1);
             Data.deleteImageItem($rootScope.arrImageName, id);
         };
+        // Удаление объекта
         $scope.deleteObj = function(id){
             Data.deleteObjItem(id);
             $log.log("Объект " + id +" Удалён");
             $state.go('admin');
         };
+        // Получение объекта с данными на эту страницу
         Data.getDataItem(id, function(data) {
             if($localStorage.setAgent == data.uid || $localStorage.adminComplete) {
                 $scope.messageClosePageAbout = null;
@@ -773,10 +853,10 @@
               $scope.closeDataAbout = true;
             }
         });
-
+        // Обновление данных
         $scope.updateData = function(){
             if($scope.item.type !== 'Выберите тип объекта') {
-                $log.log($scope.item.phone_agent)
+                $log.log($scope.item.phone_agent);
                 if(Data.validArr($scope.item.phone_agent)) {
                     $scope.messageAddData = null;
                     Data.updateData($scope.item);

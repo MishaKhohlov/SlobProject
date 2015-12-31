@@ -102,14 +102,16 @@
             return dataObj;
         }
         var publickDataObj = {
+            // Проверить не передаётся при изменение объекта никаких лишних данных, также
+            // убрать стандартные свойства и заменить их value =""
             // Валидация данных на пустные поле и на отсуутсвия полей которые не нужны для данного типа объекта
             validData: function(obj) {
                 for (var key in obj) {
-                    if(obj[key] == 'Свойства объекта' || obj[key] == 'Кол-во комнат' || obj[key] == 'Местоположение' || obj[key] == 'Район') {
+                    if(obj[key] == 'Выберите свойства объекта' || obj[key] == 'Выберите кол-во комнат' || obj[key] == 'Выберите местоположение' || obj[key] == 'Выберите район') {
                         delete obj[key]
                     }
                 }
-                if(obj.city) {
+                if(obj.city == 'Пригород') {
                     delete obj.district;
                 }
                 if(obj.type == 'Дом') {
@@ -121,6 +123,7 @@
                     delete obj.isolation_house;
                     delete obj.room;
                 }
+                $log.log('valid', obj);
                 return obj;
             },
             // Проверка что бы в массиве не было одинаковых значений
@@ -204,14 +207,10 @@
                     }
                   }
                 $log.log(cloneObj);
-                objRef.child(obj.number_obj).update(cloneObj);
+                objRef.child(obj.number_obj).set(cloneObj);
             }
     };
 
         return publickDataObj;
     }
 })();
-
-                // Можно думать о загрузке картинок на сервер
-                // Работать над фильтрами
-                // Форма заявки
