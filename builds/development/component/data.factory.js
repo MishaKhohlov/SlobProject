@@ -107,8 +107,8 @@
             // Валидация данных на пустные поле и на отсуутсвия полей которые не нужны для данного типа объекта
             validData: function(obj) {
                 for (var key in obj) {
-                    if(obj[key] == 'Выберите свойства объекта' || obj[key] == 'Выберите кол-во комнат' || obj[key] == 'Выберите местоположение' || obj[key] == 'Выберите район') {
-                        delete obj[key]
+                    if(obj[key] == "" || obj[key] == undefined || obj[key] == null || obj[key] == []) {
+                        delete obj[key];
                     }
                 }
                 if(obj.city == 'Пригород') {

@@ -23,7 +23,6 @@
 
     function adminCtrl ($state, $scope, $log, $rootScope, $localStorage, Auth, Data) {
     	$log.log("Admin controller star");
-		resetFormAddObjOther();
 		$scope.setAgent = false;
 		//$scope.setAgent = '44dfc8ac-1c15-4332-aee6-306d066f60bd';
 		// Заготовки объектов
@@ -38,22 +37,30 @@
 			lastname: null,
 			admin: false
 		};
-		function resetFormAddObjOther(){
+		// создаём свойство в объекте добавления
+		function valueEmpty(){
 			$scope.item = {
-				type : 'Выберите тип объекта',
-				isolation_house : 'Выберите свойства объекта',
-				isolation_flat : 'Выберите свойства объекта',
-				room : 'Выберите кол-во комнат',
-				city: 'Выберите местоположение',
-				district : 'Выберите район'
+				type : '',
+				name_obj: '',
+				address: '',
+				city: '',
+				isolation_house: '',
+				isolation_flat: '',
+				discriptions : '',
+				phone_agent : [],
+				photo_object : [],
+				price : null,
+				room : null,
+				space : null
 
 			};
 		}
+		valueEmpty();
+		// очистка объекта для добавления объекта
 		function resetFormAddObj(obj) {
 			for (var key in obj) {
 				obj[key] = null;
 			}
-			resetFormAddObjOther();
 		}
 		// очистка классов формы для регистрации
 		function resetForm() {
@@ -132,17 +139,6 @@
 				uid: null
 			};
 		}
-
-
-
-
-		//$scope.$storage = $localStorage;
-		//$storage.counter = 1;
-		//$log.log($storage.counter);
-
-		//$scope.counter = 42;
-		//$localStorage.counter = $scope.counter;
-		//$log.log($localStorage.counter);
 
 		// получеиие данных пользователя
 		Auth.getAuth(function(data) {
@@ -226,7 +222,9 @@
 		}
 		// Добавление нового объекта
     	$scope.addNewObject = function(obj) {
-			if(obj.type !== 'Выберите тип объекта') {
+			$log.log(obj);
+			if(obj.type !== '' && obj.name_obj !== '' &&  obj.address !== '') {
+				$scope.emptyData = false;
 				var objForArr = [];
 				angular.forEach($scope.item.phone_agent, function(value) {
 					this.push(value);
@@ -238,8 +236,6 @@
 					objVal.uid = $scope.setAgent;
 					Data.setDataObj(objVal);
 					$log.log(objVal);
-					// убрать из этой функции обнуление селекты должны
-					// сами становится в определённое положение при отсутсвие данных
 					resetFormAddObj(objVal);
 					$scope.messageAddData = null;
 					$scope.addForm = false;
@@ -247,6 +243,7 @@
 					$scope.messageAddData = 'Вы ввели одинаковые телефон';
 				}
 			} else {
+				$scope.emptyData = true;
 				$scope.messageAddData = 'Укажите тип объекта';
 			}
     	};

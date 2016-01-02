@@ -181,11 +181,13 @@
             return dataObj;
         }
         var publickDataObj = {
+            // Проверить не передаётся при изменение объекта никаких лишних данных, также
+            // убрать стандартные свойства и заменить их value =""
             // Валидация данных на пустные поле и на отсуутсвия полей которые не нужны для данного типа объекта
             validData: function(obj) {
                 for (var key in obj) {
-                    if(obj[key] == 'Выберите свойства объекта' || obj[key] == 'Выберите кол-во комнат' || obj[key] == 'Выберите местоположение' || obj[key] == 'Выберите район') {
-                        delete obj[key]
+                    if(obj[key] == "" || obj[key] == undefined || obj[key] == null || obj[key] == []) {
+                        delete obj[key];
                     }
                 }
                 if(obj.city == 'Пригород') {
@@ -339,7 +341,6 @@
 
     function adminCtrl ($state, $scope, $log, $rootScope, $localStorage, Auth, Data) {
     	$log.log("Admin controller star");
-		resetFormAddObjOther();
 		$scope.setAgent = false;
 		//$scope.setAgent = '44dfc8ac-1c15-4332-aee6-306d066f60bd';
 		// Заготовки объектов
@@ -354,22 +355,30 @@
 			lastname: null,
 			admin: false
 		};
-		function resetFormAddObjOther(){
+		// создаём свойство в объекте добавления
+		function valueEmpty(){
 			$scope.item = {
-				type : 'Выберите тип объекта',
-				isolation_house : 'Выберите свойства объекта',
-				isolation_flat : 'Выберите свойства объекта',
-				room : 'Выберите кол-во комнат',
-				city: 'Выберите местоположение',
-				district : 'Выберите район'
+				type : '',
+				name_obj: '',
+				address: '',
+				city: '',
+				isolation_house: '',
+				isolation_flat: '',
+				discriptions : '',
+				phone_agent : [],
+				photo_object : [],
+				price : null,
+				room : null,
+				space : null
 
 			};
 		}
+		valueEmpty();
+		// очистка объекта для добавления объекта
 		function resetFormAddObj(obj) {
 			for (var key in obj) {
 				obj[key] = null;
 			}
-			resetFormAddObjOther();
 		}
 		// очистка классов формы для регистрации
 		function resetForm() {
@@ -448,17 +457,6 @@
 				uid: null
 			};
 		}
-
-
-
-
-		//$scope.$storage = $localStorage;
-		//$storage.counter = 1;
-		//$log.log($storage.counter);
-
-		//$scope.counter = 42;
-		//$localStorage.counter = $scope.counter;
-		//$log.log($localStorage.counter);
 
 		// получеиие данных пользователя
 		Auth.getAuth(function(data) {
@@ -542,7 +540,9 @@
 		}
 		// Добавление нового объекта
     	$scope.addNewObject = function(obj) {
-			if(obj.type !== 'Выберите тип объекта') {
+			$log.log(obj);
+			if(obj.type !== '' && obj.name_obj !== '' &&  obj.address !== '') {
+				$scope.emptyData = false;
 				var objForArr = [];
 				angular.forEach($scope.item.phone_agent, function(value) {
 					this.push(value);
@@ -561,6 +561,7 @@
 					$scope.messageAddData = 'Вы ввели одинаковые телефон';
 				}
 			} else {
+				$scope.emptyData = true;
 				$scope.messageAddData = 'Укажите тип объекта';
 			}
     	};
@@ -811,20 +812,24 @@
     function aboutAdminCtrl ($scope, $rootScope, $timeout, $localStorage, $log, $state, Auth, Data) {
         $log.debug("List_a controller star");
         var id = $state.params.id;
-
-        // Стандартные показатили выбора
-        /*function resetFormAddObjOther(){
+        function valueEmpty(){
             $scope.item = {
-                type : 'Выберите тип объекта',
-                isolation_house : 'Выберите свойства объекта',
-                isolation_flat : 'Выберите свойства объекта',
-                room : 'Выберите кол-во комнат',
-                city: 'Выберите местоположение',
-                district : 'Выберите район'
+                type : '',
+                name_obj: '',
+                address: '',
+                city: '',
+                isolation_house: '',
+                isolation_flat: '',
+                discriptions : '',
+                phone_agent : [],
+                photo_object : [],
+                price : null,
+                room : null,
+                space : null
 
             };
         }
-        resetFormAddObjOther();*/
+        valueEmpty();
         // Удаление файлов фотографий основной информации
         $scope.deletePhoto = function(idFile){
             //delete $rootScope.arrImageName[idFile];
@@ -855,7 +860,7 @@
         });
         // Обновление данных
         $scope.updateData = function(){
-            if($scope.item.type !== 'Выберите тип объекта') {
+            if($scope.item.type !== '' && $scope.item.name_obj !== '' &&  $scope.item.address !== '') {
                 $log.log($scope.item.phone_agent);
                 if(Data.validArr($scope.item.phone_agent)) {
                     $scope.messageAddData = null;
@@ -865,7 +870,7 @@
                     $scope.messageAddData = 'Вы ввели одинаковые телефон';
                 }
             } else {
-                    $scope.messageAddData = 'Укажите тип объекта';
+                    $scope.messageAddData = 'Заполните обязательные поля';
             }
         };
         $log.debug("List_a controller finish");

@@ -34,27 +34,27 @@
 
     <div ng-show="addForm">   
         <div style="border: 1px solid palevioletred">
-       Объект <select ng-model="item.type">
-            <option>Выберите тип объекта</option>
+       Объект <select ng-model="item.type" ng-class="emptyData ? 'border-red' : ''">
+            <option value="">Выберите тип объекта</option>
             <option>Квартира</option>
             <option>Дом</option>
             <option>Участки</option>
             <option>Нежилая недвижимость</option>
         </select><br/>
-        Имя объекта<input ng-model="item.name_obj" type="text"> <br/>
+        Имя объекта<input ng-model="item.name_obj" type="text" ng-class="emptyData ? 'border-red' : ''"> <br/>
         Свойства дома<select ng-show="item.type == 'Дом'" ng-model="item.isolation_house">
-            <option>Выберите свойства объекта</option>
+            <option value="">Выберите свойства объекта</option>
             <option>Часть дома</option>
             <option>Целый дом</option>
             <option>Дача</option>
         </select><br/>
         Свойства Квартиры<select ng-show="item.type == 'Квартира'" ng-model="item.isolation_flat">
-            <option>Выберите свойства объекта</option>
+            <option value="">Выберите свойства объекта</option>
             <option>Изолированные</option>
             <option>Гостинки</option>
         </select><br/>
         Кол-во комнат<select ng-model="item.room" ng-show="item.type == 'Квартира' || item.type == 'Дом'">
-            <option>Выберите кол-во комнат</option>
+            <option value="">Выберите кол-во комнат</option>
             <option>1</option>
             <option>2</option>
             <option>3</option>
@@ -64,12 +64,12 @@
         </select><br/>
         Цена <input ng-model="item.price" placeholder="Цена" type="number"><br/>
         Метоположение<select ng-model="item.city">
-            <option>Выберите местоположение</option>
+            <option value="">Выберите местоположение</option>
             <option>Харьков</option>
             <option>Пригород</option>
         </select><br/>
-            Район<select ng-show="item.city !== 'Пригород'" ng-model="item.district">
-            <option>Выберите район</option>
+            Район<select ng-show="item.city == 'Харьков'" ng-model="item.district">
+            <option value="">Выберите район</option>
             <option>Алеексеевка</option>
             <option>Аэропорт</option>
             <option>Восточный</option>
@@ -104,7 +104,7 @@
         Телефон<input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[0]" value=""><br/>
             <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[1]" value=""><br/>
             <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[2]" value=""><br/>
-        Адресс<textarea placholder="Jg" ng-model="item.address" rows="5" cols="25">{{item.address}}</textarea><br/>
+        Адресс<textarea placholder="Jg" ng-model="item.address" rows="5" cols="25" ng-class="emptyData ? 'border-red' : ''">{{item.address}}</textarea><br/>
         Описание<textarea ng-model="item.discriptions" rows="10" cols="35" placeholder="Описание"
                           maxlength="200"
     >{{item.discriptions}}</textarea><br/>

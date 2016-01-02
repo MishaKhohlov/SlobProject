@@ -144,20 +144,24 @@
     function aboutAdminCtrl ($scope, $rootScope, $timeout, $localStorage, $log, $state, Auth, Data) {
         $log.debug("List_a controller star");
         var id = $state.params.id;
-
-        // Стандартные показатили выбора
-        /*function resetFormAddObjOther(){
+        function valueEmpty(){
             $scope.item = {
-                type : 'Выберите тип объекта',
-                isolation_house : 'Выберите свойства объекта',
-                isolation_flat : 'Выберите свойства объекта',
-                room : 'Выберите кол-во комнат',
-                city: 'Выберите местоположение',
-                district : 'Выберите район'
+                type : '',
+                name_obj: '',
+                address: '',
+                city: '',
+                isolation_house: '',
+                isolation_flat: '',
+                discriptions : '',
+                phone_agent : [],
+                photo_object : [],
+                price : null,
+                room : null,
+                space : null
 
             };
         }
-        resetFormAddObjOther();*/
+        valueEmpty();
         // Удаление файлов фотографий основной информации
         $scope.deletePhoto = function(idFile){
             //delete $rootScope.arrImageName[idFile];
@@ -188,7 +192,7 @@
         });
         // Обновление данных
         $scope.updateData = function(){
-            if($scope.item.type !== 'Выберите тип объекта') {
+            if($scope.item.type !== '' && $scope.item.name_obj !== '' &&  $scope.item.address !== '') {
                 $log.log($scope.item.phone_agent);
                 if(Data.validArr($scope.item.phone_agent)) {
                     $scope.messageAddData = null;
@@ -198,7 +202,7 @@
                     $scope.messageAddData = 'Вы ввели одинаковые телефон';
                 }
             } else {
-                    $scope.messageAddData = 'Укажите тип объекта';
+                    $scope.messageAddData = 'Заполните обязательные поля';
             }
         };
         $log.debug("List_a controller finish");

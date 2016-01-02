@@ -1,6 +1,6 @@
 <main ng-hide="closeDataAbout">
     <h1>This is Data About Administrator</h1>
-
+ <div class="object">
     <p>Индекс {{$index+1}}</p>
     <p>Фото будут тут<img ng-src="{{data.photo[0]}}" name="img"></p>
             <!--<img ng-repeat="photo in data.photo" ng-src="{{photo}}" name="img">-->
@@ -25,6 +25,7 @@
 
             </ul>
         </div>
+    </div>
         <button ng-click="addImg ? addImg = false : addImg = true">Открыть редактирование фотографий</button></br>
         <div ng-show="addImg" ng-controller="AppController" nv-file-drop="" uploader="uploader" >
             <!-- 3. nv-file-over uploader="link" over-class="className" -->
@@ -71,7 +72,6 @@
                         <div class="total-progress" ng-style="{ 'width': uploader.progress + '%' }"></div>
                     </div>
                 </div>
-                <button ng-click="addName()">Test</button>
                 <button ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">Загрузить изображения</button>
                 <button ng-click="uploader.clearQueue()" ng-click="uploader.progress = 0" ng-disabled="!uploader.queue.length">Удалить изображения</button>
             </div>
