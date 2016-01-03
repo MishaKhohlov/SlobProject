@@ -102,29 +102,29 @@
             return dataObj;
         }
         var publickDataObj = {
-            // Проверить не передаётся при изменение объекта никаких лишних данных, также
-            // убрать стандартные свойства и заменить их value =""
-            // Валидация данных на пустные поле и на отсуутсвия полей которые не нужны для данного типа объекта
+
             validData: function(obj) {
-                for (var key in obj) {
-                    if(obj[key] == "" || obj[key] == undefined || obj[key] == null || obj[key] == []) {
-                        delete obj[key];
+                if(obj) {
+                    for (var key in obj) {
+                        if(obj[key] == "" || obj[key] == undefined || obj[key] == null || obj[key] == []) {
+                            delete obj[key];
+                        }
                     }
+                    if(obj.city == 'Пригород') {
+                        delete obj.district;
+                    }
+                    if(obj.type == 'Дом') {
+                        delete obj.isolation_flat;
+                    } else if(obj.type == 'Квартира') {
+                        delete obj.isolation_house;
+                    }  else {
+                        delete obj.isolation_flat;
+                        delete obj.isolation_house;
+                        delete obj.room;
+                    }
+                    $log.log('valid', obj);
+                    return obj;
                 }
-                if(obj.city == 'Пригород') {
-                    delete obj.district;
-                }
-                if(obj.type == 'Дом') {
-                    delete obj.isolation_flat;
-                } else if(obj.type == 'Квартира') {
-                    delete obj.isolation_house;
-                }  else {
-                    delete obj.isolation_flat;
-                    delete obj.isolation_house;
-                    delete obj.room;
-                }
-                $log.log('valid', obj);
-                return obj;
             },
             // Проверка что бы в массиве не было одинаковых значений
             validArr: function(arr){
@@ -134,8 +134,8 @@
                     var perem = inter;
                       for (var i = 0; i < arr.length; i++) {
                           if(i !== index) {
-                              if(perem == arr[i]) {
-                                  result = false;
+                              if(perem == arr[i] && arr[i] !== null) {
+                                      result = false;
                               }
                           }
                       }
@@ -199,7 +199,7 @@
                 var cloneObj = {};
                 for(var key in obj) {
 
-                    if(key == 'address' || key == 'city' || key == 'discriptions' || key == 'district'
+                    if(key == 'city' || key == 'discriptions' || key == 'district'
                      || key == 'isolation_house' || key == 'isolation_flat' || key == 'name_agent' || key == 'name_obj' || key == 'number_obj' || key == 'phone_agent'
                      || key == 'price' || key == 'room' || key == 'space' || 
                      key == 'type' || key == 'uid') {

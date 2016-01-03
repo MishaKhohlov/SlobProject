@@ -181,29 +181,29 @@
             return dataObj;
         }
         var publickDataObj = {
-            // Проверить не передаётся при изменение объекта никаких лишних данных, также
-            // убрать стандартные свойства и заменить их value =""
-            // Валидация данных на пустные поле и на отсуутсвия полей которые не нужны для данного типа объекта
+
             validData: function(obj) {
-                for (var key in obj) {
-                    if(obj[key] == "" || obj[key] == undefined || obj[key] == null || obj[key] == []) {
-                        delete obj[key];
+                if(obj) {
+                    for (var key in obj) {
+                        if(obj[key] == "" || obj[key] == undefined || obj[key] == null || obj[key] == []) {
+                            delete obj[key];
+                        }
                     }
+                    if(obj.city == 'Пригород') {
+                        delete obj.district;
+                    }
+                    if(obj.type == 'Дом') {
+                        delete obj.isolation_flat;
+                    } else if(obj.type == 'Квартира') {
+                        delete obj.isolation_house;
+                    }  else {
+                        delete obj.isolation_flat;
+                        delete obj.isolation_house;
+                        delete obj.room;
+                    }
+                    $log.log('valid', obj);
+                    return obj;
                 }
-                if(obj.city == 'Пригород') {
-                    delete obj.district;
-                }
-                if(obj.type == 'Дом') {
-                    delete obj.isolation_flat;
-                } else if(obj.type == 'Квартира') {
-                    delete obj.isolation_house;
-                }  else {
-                    delete obj.isolation_flat;
-                    delete obj.isolation_house;
-                    delete obj.room;
-                }
-                $log.log('valid', obj);
-                return obj;
             },
             // Проверка что бы в массиве не было одинаковых значений
             validArr: function(arr){
@@ -213,8 +213,8 @@
                     var perem = inter;
                       for (var i = 0; i < arr.length; i++) {
                           if(i !== index) {
-                              if(perem == arr[i]) {
-                                  result = false;
+                              if(perem == arr[i] && arr[i] !== null) {
+                                      result = false;
                               }
                           }
                       }
@@ -278,7 +278,7 @@
                 var cloneObj = {};
                 for(var key in obj) {
 
-                    if(key == 'address' || key == 'city' || key == 'discriptions' || key == 'district'
+                    if(key == 'city' || key == 'discriptions' || key == 'district'
                      || key == 'isolation_house' || key == 'isolation_flat' || key == 'name_agent' || key == 'name_obj' || key == 'number_obj' || key == 'phone_agent'
                      || key == 'price' || key == 'room' || key == 'space' || 
                      key == 'type' || key == 'uid') {
@@ -341,6 +341,7 @@
 
     function adminCtrl ($state, $scope, $log, $rootScope, $localStorage, Auth, Data) {
     	$log.log("Admin controller star");
+		valueEmpty();
 		$scope.setAgent = false;
 		//$scope.setAgent = '44dfc8ac-1c15-4332-aee6-306d066f60bd';
 		// Заготовки объектов
@@ -360,7 +361,6 @@
 			$scope.item = {
 				type : '',
 				name_obj: '',
-				address: '',
 				city: '',
 				isolation_house: '',
 				isolation_flat: '',
@@ -373,7 +373,6 @@
 
 			};
 		}
-		valueEmpty();
 		// очистка объекта для добавления объекта
 		function resetFormAddObj(obj) {
 			for (var key in obj) {
@@ -541,7 +540,7 @@
 		// Добавление нового объекта
     	$scope.addNewObject = function(obj) {
 			$log.log(obj);
-			if(obj.type !== '' && obj.name_obj !== '' &&  obj.address !== '') {
+			if(obj.type !== '' && obj.price !== '' && obj.city !== '' && obj.district !== '') {
 				$scope.emptyData = false;
 				var objForArr = [];
 				angular.forEach($scope.item.phone_agent, function(value) {
@@ -552,7 +551,7 @@
 					objVal.number_obj = randomInteger(0, 500);
 					objVal.name_agent = $scope.userData.lastname + " " + $scope.userData.firstname;
 					objVal.uid = $scope.setAgent;
-					Data.setDataObj(objVal);
+					// Data.setDataObj(objVal);
 					$log.log(objVal);
 					resetFormAddObj(objVal);
 					$scope.messageAddData = null;
@@ -562,7 +561,7 @@
 				}
 			} else {
 				$scope.emptyData = true;
-				$scope.messageAddData = 'Укажите тип объекта';
+				$scope.messageAddData = 'Заполните обязательные поля';
 			}
     	};
 		// Реальзован поиск одной строкой.
@@ -610,8 +609,46 @@
 
 	angular.module('ngCatalog', ['ngAnimate', 'ngCookies'])
         .config(catalogConf)
+        .filter('sortCatalog', sortCatalog)
 		.controller('catalogCtrl', catalogCtrl);
 
+    function sortCatalog($log, Data){
+        return function (input, paramObj){
+            $log.log('filter');
+            $log.log(paramObj);
+            if(input && paramObj) {
+                var paramObjValid = Data.validData(paramObj);
+                $log.log(paramObjValid);
+                var collRef = 0;
+                var collFirst = Object.getOwnPropertyNames(paramObjValid).length;
+                var outArr = [];
+                var i, coll;
+                if(collFirst !== 0) {
+                    for(i = 0; i < input.length; i++) {
+                        coll = collFirst;
+                        angular.forEach(paramObj, function(value, key) {
+                            // $log.log(input[i][key] == value);
+                            if(input[i][key] == value) {
+                                collRef++;
+                            }
+                        });
+                        $log.log(collRef, coll);
+                        if(collRef == coll){
+                            outArr.push(input[i]);
+                        }
+                        collRef = 0;
+                    }
+                    return outArr;
+                } else {
+                    $log.log('return input 2');
+                    return input;
+                }
+            } else {
+                $log.log('return input');
+                return input;
+            }
+        }
+    }
     function catalogCtrl ($scope, $log, Data, $rootScope) {
     	$log.debug("Catalog controller star");
             Data.getData(function(data){
@@ -643,16 +680,16 @@
         });
         resetFormAddObjOther();
         function resetFormAddObjOther(){
-            $scope.filter = {
-                price: {
-                    from: 0,
-                    to : null
-                },
-                space: {
-                    from: 0,
-                    to : null
-                }
-            };
+            //$scope.filter = {
+            //    price: {
+            //        from: null,
+            //        to : null
+            //    },
+            //    space: {
+            //        from: null,
+            //        to : null
+            //    }
+            //};
         }
     	$log.debug("Catalog controller finish");
     }
@@ -816,7 +853,6 @@
             $scope.item = {
                 type : '',
                 name_obj: '',
-                address: '',
                 city: '',
                 isolation_house: '',
                 isolation_flat: '',
@@ -860,9 +896,15 @@
         });
         // Обновление данных
         $scope.updateData = function(){
-            if($scope.item.type !== '' && $scope.item.name_obj !== '' &&  $scope.item.address !== '') {
-                $log.log($scope.item.phone_agent);
-                if(Data.validArr($scope.item.phone_agent)) {
+            $log.log($scope.item.price);
+            if($scope.item.type !== '' && $scope.item.price) {
+                $scope.emptyData = false;
+                var objForArr = [];
+                angular.forEach($scope.item.phone_agent, function(value) {
+                    this.push(value);
+                }, objForArr);
+                $log.log(objForArr);
+                if(Data.validArr(objForArr)) {
                     $scope.messageAddData = null;
                     Data.updateData($scope.item);
                     $scope.messageAddData = 'Данные успешно перезаписанны';
@@ -870,6 +912,7 @@
                     $scope.messageAddData = 'Вы ввели одинаковые телефон';
                 }
             } else {
+                    $scope.emptyData = true;
                     $scope.messageAddData = 'Заполните обязательные поля';
             }
         };

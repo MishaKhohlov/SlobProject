@@ -23,6 +23,7 @@
 
     function adminCtrl ($state, $scope, $log, $rootScope, $localStorage, Auth, Data) {
     	$log.log("Admin controller star");
+		valueEmpty();
 		$scope.setAgent = false;
 		//$scope.setAgent = '44dfc8ac-1c15-4332-aee6-306d066f60bd';
 		// Заготовки объектов
@@ -42,7 +43,6 @@
 			$scope.item = {
 				type : '',
 				name_obj: '',
-				address: '',
 				city: '',
 				isolation_house: '',
 				isolation_flat: '',
@@ -55,7 +55,6 @@
 
 			};
 		}
-		valueEmpty();
 		// очистка объекта для добавления объекта
 		function resetFormAddObj(obj) {
 			for (var key in obj) {
@@ -223,7 +222,7 @@
 		// Добавление нового объекта
     	$scope.addNewObject = function(obj) {
 			$log.log(obj);
-			if(obj.type !== '' && obj.name_obj !== '' &&  obj.address !== '') {
+			if(obj.type !== '' && obj.price !== '' && obj.city !== '' && obj.district !== '') {
 				$scope.emptyData = false;
 				var objForArr = [];
 				angular.forEach($scope.item.phone_agent, function(value) {
@@ -234,7 +233,7 @@
 					objVal.number_obj = randomInteger(0, 500);
 					objVal.name_agent = $scope.userData.lastname + " " + $scope.userData.firstname;
 					objVal.uid = $scope.setAgent;
-					Data.setDataObj(objVal);
+					// Data.setDataObj(objVal);
 					$log.log(objVal);
 					resetFormAddObj(objVal);
 					$scope.messageAddData = null;
@@ -244,7 +243,7 @@
 				}
 			} else {
 				$scope.emptyData = true;
-				$scope.messageAddData = 'Укажите тип объекта';
+				$scope.messageAddData = 'Заполните обязательные поля';
 			}
     	};
 		// Реальзован поиск одной строкой.

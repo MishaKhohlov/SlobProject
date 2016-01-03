@@ -148,7 +148,6 @@
             $scope.item = {
                 type : '',
                 name_obj: '',
-                address: '',
                 city: '',
                 isolation_house: '',
                 isolation_flat: '',
@@ -192,9 +191,15 @@
         });
         // Обновление данных
         $scope.updateData = function(){
-            if($scope.item.type !== '' && $scope.item.name_obj !== '' &&  $scope.item.address !== '') {
-                $log.log($scope.item.phone_agent);
-                if(Data.validArr($scope.item.phone_agent)) {
+            $log.log($scope.item.price);
+            if($scope.item.type !== '' && $scope.item.price) {
+                $scope.emptyData = false;
+                var objForArr = [];
+                angular.forEach($scope.item.phone_agent, function(value) {
+                    this.push(value);
+                }, objForArr);
+                $log.log(objForArr);
+                if(Data.validArr(objForArr)) {
                     $scope.messageAddData = null;
                     Data.updateData($scope.item);
                     $scope.messageAddData = 'Данные успешно перезаписанны';
@@ -202,6 +207,7 @@
                     $scope.messageAddData = 'Вы ввели одинаковые телефон';
                 }
             } else {
+                    $scope.emptyData = true;
                     $scope.messageAddData = 'Заполните обязательные поля';
             }
         };

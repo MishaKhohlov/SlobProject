@@ -41,7 +41,7 @@
             <option>Участки</option>
             <option>Нежилая недвижимость</option>
         </select><br/>
-        Имя объекта<input ng-model="item.name_obj" type="text" ng-class="emptyData ? 'border-red' : ''"> <br/>
+        Имя объекта<input ng-model="item.name_obj" type="text"> <br/>
         Свойства дома<select ng-show="item.type == 'Дом'" ng-model="item.isolation_house">
             <option value="">Выберите свойства объекта</option>
             <option>Часть дома</option>
@@ -62,13 +62,13 @@
             <option>Многокомнатные</option>
             <option>Элитные</option>
         </select><br/>
-        Цена <input ng-model="item.price" placeholder="Цена" type="number"><br/>
-        Метоположение<select ng-model="item.city">
+        Цена <input ng-model="item.price" placeholder="Цена" ng-class="emptyData ? 'border-red' : ''" type="number"><br/>
+        Метоположение<select ng-model="item.city" ng-class="emptyData ? 'border-red' : ''">
             <option value="">Выберите местоположение</option>
             <option>Харьков</option>
             <option>Пригород</option>
         </select><br/>
-            Район<select ng-show="item.city == 'Харьков'" ng-model="item.district">
+            Район<select ng-show="item.city == 'Харьков'" ng-model="item.district" ng-class="emptyData ? 'border-red' : ''">
             <option value="">Выберите район</option>
             <option>Алеексеевка</option>
             <option>Аэропорт</option>
@@ -104,7 +104,6 @@
         Телефон<input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[0]" value=""><br/>
             <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[1]" value=""><br/>
             <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[2]" value=""><br/>
-        Адресс<textarea placholder="Jg" ng-model="item.address" rows="5" cols="25" ng-class="emptyData ? 'border-red' : ''">{{item.address}}</textarea><br/>
         Описание<textarea ng-model="item.discriptions" rows="10" cols="35" placeholder="Описание"
                           maxlength="200"
     >{{item.discriptions}}</textarea><br/>
@@ -132,7 +131,6 @@
             <p ng-show="item.room">Кол-во комнат {{item.room}}</p>
             <p ng-show="item.district">Район {{item.district}}</p>
             <p ng-show="item.space">Площадь {{item.space}}</p>
-            <p ng-show="item.address">Адресс {{item.address}}</p>
             <p>Имя Агента {{item.name_agent}}</p>
             <p ng-show="item.phone_agent" ng-repeat="phone in item.phone_agent">Телефон {{phone}}</p>
             <p ng-show="item.discriptions">Описание {{item.discriptions}}</p>
