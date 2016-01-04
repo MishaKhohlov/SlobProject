@@ -4,12 +4,56 @@
 	angular.module('ngCatalog', ['ngAnimate', 'ngCookies'])
         .config(catalogConf)
         .filter('sortCatalog', sortCatalog)
+        .filter('range', slaidFilter)
 		.controller('catalogCtrl', catalogCtrl);
-
+    function slaidFilter($log, Data){
+        return function (input, paramObj){
+            $log.log(paramObj);
+            if(paramObj) {
+                // paramObj.price.from && paramObj.price.to !== null
+                
+                // second range
+                // paramObj.space.from && paramObj.space.from !==null
+                $log.log(paramObj);
+                var i;
+                var outArr = [];
+                var accessIteration;
+                for(i = 0; i < input.length; i++){
+                    accessIteration = true;
+                    if(paramObj.price.from) {
+                        $log.log(input[i].price, paramObj.price.from, input[i].price <= paramObj.price.from)
+                        accessIteration = false;
+                        if(input[i].price >= paramObj.price.from) {
+                            $log.log('price.to true');
+                            accessIteration = true;
+                        }
+                    }
+                    if(paramObj.price.to && accessIteration) {
+                        $log.log(input[i].price, paramObj.price.to, input[i].price <= paramObj.price.to)
+                        accessIteration = false;
+                        if(input[i].price <= paramObj.price.to) {
+                            $log.log('price.from true');
+                            accessIteration = true;
+                        }
+                    }
+                    if(accessIteration) {
+                        outArr.push(input[i])
+                    }
+                }
+                Data.setlenghtCatalog(outArr.length);
+                return outArr;
+            } else {
+                $log.log(input);
+                if(input)
+                Data.setlenghtCatalog(input.length);
+                return input;
+            }
+        }
+    }
     function sortCatalog($log, Data){
         return function (input, paramObj){
-            $log.log('filter');
-            $log.log(paramObj);
+            // $log.log('filter');
+            // $log.log(paramObj);
             if(input && paramObj) {
                 var paramObjValid = Data.validData(paramObj);
                 $log.log(paramObjValid);
@@ -26,7 +70,7 @@
                                 collRef++;
                             }
                         });
-                        $log.log(collRef, coll);
+                        // $log.log(collRef, coll);
                         if(collRef == coll){
                             outArr.push(input[i]);
                         }
@@ -34,20 +78,22 @@
                     }
                     return outArr;
                 } else {
-                    $log.log('return input 2');
+                    // $log.log('return input 2');
                     return input;
                 }
             } else {
-                $log.log('return input');
+                // $log.log('return input');
                 return input;
             }
         }
     }
-    function catalogCtrl ($scope, $log, Data, $rootScope) {
+    function catalogCtrl ($scope, $log, Data, $rootScope, $timeout) {
     	$log.debug("Catalog controller star");
+
             Data.getData(function(data){
                 $scope.data = data;
             });
+
         // Реальзован поиск одной строкой.
         $scope.$watch('searchOr', function(newValue) {
                 if(!/[^[0-9]/.test(newValue)){

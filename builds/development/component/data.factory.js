@@ -213,6 +213,13 @@
                 $log.log(access);
                 return access;
             },
+            setlenghtCatalog: function(lenght){
+                    if(lenght) {
+                        $rootScope.dataLength = lenght;
+                    } else {
+                        $rootScope.dataLength = 0;
+                    }
+            },
             // Изменение объекта недвижимости
             updateData: function(obj){
                 var obj = publickDataObj.validData(obj);

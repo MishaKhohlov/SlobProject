@@ -43,8 +43,8 @@
     </select><br/>
 
         <p> Цена </p>
-       <input ng-model="filterPrice.price.from" placeholder="От" type="number"><br/>
-       <input ng-model="filterPrice.price.to" placeholder="До" type="number"><br/>
+       <input ng-model="filterRange.price.from" placeholder="От" type="number"><br/>
+       <input ng-model="filterRange.price.to" placeholder="До" type="number"><br/>
 
         <p>Местоположение</p>
     <select ng-model="filter.city">
@@ -88,12 +88,12 @@
     </select><br/>
 
         <p>Площадь</p>
-        <input type="number"  ng-model="filterSpace.space.from" placeholder="От"><br/>
-        <input type="number"  ng-model="filterSpace.space.to" placeholder="До"><br/>
+        <input type="number"  ng-model="filterRange.space.from" placeholder="От"><br/>
+        <input type="number"  ng-model="filterRange.space.to" placeholder="До"><br/>
 
     </div>
-    <p>Catalog ----------------------------------------------------------------------------------------------------------------</p>
-    <li ng-repeat="(key, item) in data | filter : search | sortCatalog : filter" ng-animate=" 'animate' "><a class="item_a" href="#/catalog/{{item.number_obj}}">
+    <p>Catalog/ Найденно объектов {{dataLength}}</p>
+    <li ng-repeat="(key, item) in data | filter : search | sortCatalog : filter | range : filterRange" ng-animate=" 'animate' "><a class="item_a" href="#/catalog/{{item.number_obj}}">
         <div class="item">
             <p>Индекс {{$index+1}}</p>
             <div> <p>Photo</p>

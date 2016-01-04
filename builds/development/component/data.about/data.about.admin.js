@@ -191,7 +191,6 @@
         });
         // Обновление данных
         $scope.updateData = function(){
-            // $scope.item.type !== '' && $scope.item.price &&  $scope.item.city !== '' &&  $scope.item.district !== ''
             if(Data.validDataAddObj($scope.item)) {
                 $scope.emptyData = false;
                 var objForArr = [];
