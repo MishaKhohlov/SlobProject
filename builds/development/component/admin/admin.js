@@ -19,13 +19,121 @@
 
 			};
 		})
+		.controller('AppControllerAdmin', appControllerAdmin )
 		.controller('adminCtrl', adminCtrl);
+
+	function appControllerAdmin($scope, $log, FileUploader, Data, $state, $rootScope, $timeout){
+		// Изменить глобальную переменную
+		// Поправить
+		// настроить вывод в другом контролере
+		var id = $state.params.id;
+		var uploader = $scope.uploader = new FileUploader({
+			url: 'upload.php'
+		});
+
+		// FILTERS
+
+		uploader.filters.push({
+			name: 'customFilter',
+			fn: function(item /*{File|FileLikeObject}*/, options) {
+				return this.queue.length < 10;
+			}
+		});
+		uploader.filters.push({
+			name: 'imageFilter',
+			fn: function(item /*{File|FileLikeObject}*/, options) {
+				var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+				return '|jpg|JPG|jpeg|'.indexOf(type) !== -1;
+			}
+		});
+
+		$scope.messageImg = [];
+		var indexMessage = 1;
+		// пока пустой массив в который потом добавятся имена файлов
+		// Глоюальная переменная сделанна что бы можно было сразу удалить после добавления. Тоесть это
+		// комуникация между контролеррами
+		$rootScope.arrImageName = [];
+		// test
+		//$timeout(function(){
+		//    $log.log($rootScope.arrImageName);
+		//}, 4000);
+
+		// добавление имёна файлов в массив
+		function addNamePhoto () {
+			if($rootScope.arrImageName[0]) {
+				Data.addImageItem($rootScope.arrImageName, id);
+			} else {
+				$log.log("arrImageName empty")
+			}
+		}
+		// CALLBACKS
+		function messageForClient(message){
+			$scope.messageImg.push(indexMessage + ' - ' + message);
+			indexMessage++;
+		}
+		uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+			console.info('onWhenAddingFileFailed', item, filter, options);
+			messageForClient('Произошла ошибка');
+		};
+		uploader.onAfterAddingFile = function(fileItem) {
+			console.info('onAfterAddingFile', fileItem);
+			messageForClient('Файл добавлен');
+		};
+		uploader.onBeforeUploadItem = function(item) {
+			console.info('onBeforeUploadItem', item);
+			messageForClient('Загрузка Началась');
+		};
+		uploader.onSuccessItem = function(fileItem, response, status, headers) {
+			console.info('onSuccessItem', fileItem, response, status, headers);
+			messageForClient('Загрузка файла началась');
+		};
+		uploader.onErrorItem = function(fileItem, response, status, headers) {
+			console.info('onErrorItem', fileItem, response, status, headers);
+			messageForClient('Произошла ошибка загрузки одного файла обратитесь к Администратору');
+		};
+		uploader.onCompleteItem = function(fileItem, response, status, headers) {
+			console.info('onCompleteItem', fileItem, response, status, headers);
+			$log.log(fileItem.file.name);
+			$rootScope.arrImageName.push(fileItem.file.name);
+			$log.log($rootScope.arrImageName);
+			messageForClient('Файл загружен');
+		};
+		uploader.onCompleteAll = function() {
+			console.info('onCompleteAll');
+			messageForClient('Все файлы загружены');
+			addNamePhoto ();
+			$state.reload();
+		};
+		$log.log($rootScope.arrImageName);
+		console.info('Общая информация', uploader);
+
+
+		// -------------------------------
+
+
+		var controller = $scope.controller = {
+			isImage: function(item) {
+				var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+				return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+			}
+		};
+
+	}
+
 
     function adminCtrl ($state, $scope, $log, $rootScope, $localStorage, Auth, Data) {
     	$log.log("Admin controller star");
 		valueEmpty();
 		$scope.setAgent = false;
 		//$scope.setAgent = '44dfc8ac-1c15-4332-aee6-306d066f60bd';
+
+		// Поменять и тут изменить глобальну переменную
+		// Удаление файлов фотографий основной информации
+		$scope.deletePhoto = function(idFile){
+			//delete $rootScope.arrImageName[idFile];
+			$rootScope.arrImageName.splice(idFile, 1);
+			Data.deleteImageItem($rootScope.arrImageName, id);
+		};
 		// Заготовки объектов
 		$scope.userLogin = {
 			email: null,

@@ -75,6 +75,8 @@
         $scope.messageImg = [];
         var indexMessage = 1;
         // пока пустой массив в который потом добавятся имена файлов
+        // Глоюальная переменная сделанна что бы можно было сразу удалить после добавления. Тоесть это
+        // комуникация между контролеррами
         $rootScope.arrImageName = [];
         // test
         //$timeout(function(){
@@ -118,6 +120,7 @@
             console.info('onCompleteItem', fileItem, response, status, headers);
             $log.log(fileItem.file.name);
             $rootScope.arrImageName.push(fileItem.file.name);
+            $log.log($rootScope.arrImageName);
             messageForClient('Файл загружен');
         };
         uploader.onCompleteAll = function() {
@@ -126,7 +129,7 @@
             addNamePhoto ();
             $state.reload();
         };
-
+        $log.log($rootScope.arrImageName);
         console.info('Общая информация', uploader);
 
 
@@ -142,6 +145,7 @@
 
     }
     function aboutAdminCtrl ($scope, $rootScope, $timeout, $localStorage, $log, $state, Auth, Data) {
+        $log.log($rootScope.arrImageName);
         $log.debug("List_a controller star");
         var id = $state.params.id;
         function valueEmpty(){

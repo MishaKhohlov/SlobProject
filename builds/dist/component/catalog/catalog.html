@@ -90,7 +90,7 @@
         <p>Площадь</p>
         <input type="number"  ng-model="filterRange.space.from" placeholder="От"><br/>
         <input type="number"  ng-model="filterRange.space.to" placeholder="До"><br/>
-
+        <input type="button" value="Сбросить фильтры" ng-click="resetFilter()">
     </div>
     <p>Catalog/ Найденно объектов {{dataLength}}</p>
     <li ng-repeat="(key, item) in data | filter : search | sortCatalog : filter | range : filterRange" ng-animate=" 'animate' "><a class="item_a" href="#/catalog/{{item.number_obj}}">

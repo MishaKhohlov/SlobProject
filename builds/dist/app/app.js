@@ -365,8 +365,108 @@
 
 			};
 		})
+		.controller('AppControllerAdmin', appControllerAdmin )
 		.controller('adminCtrl', adminCtrl);
 
+	function appControllerAdmin($scope, $log, FileUploader, Data, $state, $rootScope, $timeout){
+		// Изменить глобальную переменную
+		// Поправить
+		// настроить вывод в другом контролере
+		var id = $state.params.id;
+		var uploader = $scope.uploader = new FileUploader({
+			url: 'upload.php'
+		});
+
+		// FILTERS
+
+		uploader.filters.push({
+			name: 'customFilter',
+			fn: function(item /*{File|FileLikeObject}*/, options) {
+				return this.queue.length < 10;
+			}
+		});
+		uploader.filters.push({
+			name: 'imageFilter',
+			fn: function(item /*{File|FileLikeObject}*/, options) {
+				var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+				return '|jpg|JPG|jpeg|'.indexOf(type) !== -1;
+			}
+		});
+
+		$scope.messageImg = [];
+		var indexMessage = 1;
+		// пока пустой массив в который потом добавятся имена файлов
+		// Глоюальная переменная сделанна что бы можно было сразу удалить после добавления. Тоесть это
+		// комуникация между контролеррами
+		$rootScope.arrImageName = [];
+		// test
+		//$timeout(function(){
+		//    $log.log($rootScope.arrImageName);
+		//}, 4000);
+
+		// добавление имёна файлов в массив
+		function addNamePhoto () {
+			if($rootScope.arrImageName[0]) {
+				Data.addImageItem($rootScope.arrImageName, id);
+			} else {
+				$log.log("arrImageName empty")
+			}
+		}
+		// CALLBACKS
+		function messageForClient(message){
+			$scope.messageImg.push(indexMessage + ' - ' + message);
+			indexMessage++;
+		}
+		uploader.onWhenAddingFileFailed = function(item /*{File|FileLikeObject}*/, filter, options) {
+			console.info('onWhenAddingFileFailed', item, filter, options);
+			messageForClient('Произошла ошибка');
+		};
+		uploader.onAfterAddingFile = function(fileItem) {
+			console.info('onAfterAddingFile', fileItem);
+			messageForClient('Файл добавлен');
+		};
+		uploader.onBeforeUploadItem = function(item) {
+			console.info('onBeforeUploadItem', item);
+			messageForClient('Загрузка Началась');
+		};
+		uploader.onSuccessItem = function(fileItem, response, status, headers) {
+			console.info('onSuccessItem', fileItem, response, status, headers);
+			messageForClient('Загрузка файла началась');
+		};
+		uploader.onErrorItem = function(fileItem, response, status, headers) {
+			console.info('onErrorItem', fileItem, response, status, headers);
+			messageForClient('Произошла ошибка загрузки одного файла обратитесь к Администратору');
+		};
+		uploader.onCompleteItem = function(fileItem, response, status, headers) {
+			console.info('onCompleteItem', fileItem, response, status, headers);
+			$log.log(fileItem.file.name);
+			$rootScope.arrImageName.push(fileItem.file.name);
+			$log.log($rootScope.arrImageName);
+			messageForClient('Файл загружен');
+		};
+		uploader.onCompleteAll = function() {
+			console.info('onCompleteAll');
+			messageForClient('Все файлы загружены');
+			addNamePhoto ();
+			$state.reload();
+		};
+		$log.log($rootScope.arrImageName);
+		console.info('Общая информация', uploader);
+
+
+		// -------------------------------
+
+
+		var controller = $scope.controller = {
+			isImage: function(item) {
+				var type = '|' + item.type.slice(item.type.lastIndexOf('/') + 1) + '|';
+				return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
+			}
+		};
+
+	}
+
+	
     function adminCtrl ($state, $scope, $log, $rootScope, $localStorage, Auth, Data) {
     	$log.log("Admin controller star");
 		valueEmpty();
@@ -645,41 +745,58 @@
     function slaidFilter($log, Data){
         return function (input, paramObj){
             $log.log(paramObj);
-            if(paramObj) {
-                // paramObj.price.from && paramObj.price.to !== null
-                
-                // second range
-                // paramObj.space.from && paramObj.space.from !==null
-                $log.log(paramObj);
+            if(paramObj.price.from !== null || paramObj.price.to !== null || paramObj.space.from !== null || paramObj.space.to !== null && input) {
+                $log.log('no return', paramObj);
                 var i;
                 var outArr = [];
                 var accessIteration;
-                for(i = 0; i < input.length; i++){
+                for(i = 0; i < input.length; i++) {
                     accessIteration = true;
-                    if(paramObj.price.from) {
-                        $log.log(input[i].price, paramObj.price.from, input[i].price <= paramObj.price.from)
-                        accessIteration = false;
-                        if(input[i].price >= paramObj.price.from) {
-                            $log.log('price.to true');
-                            accessIteration = true;
+                    if (paramObj.price.from !== null || paramObj.price.to !== null) {
+                        if (paramObj.price.from) {
+                            $log.log(input[i].price, paramObj.price.from, input[i].price <= paramObj.price.from)
+                            accessIteration = false;
+                            if (input[i].price >= paramObj.price.from) {
+                                $log.log('price.to true');
+                                accessIteration = true;
+                            }
+                        }
+                        if (paramObj.price.to && accessIteration) {
+                            $log.log(input[i].price, paramObj.price.to, input[i].price <= paramObj.price.to)
+                            accessIteration = false;
+                            if (input[i].price <= paramObj.price.to) {
+                                $log.log('price.from true');
+                                accessIteration = true;
+                            }
                         }
                     }
-                    if(paramObj.price.to && accessIteration) {
-                        $log.log(input[i].price, paramObj.price.to, input[i].price <= paramObj.price.to)
-                        accessIteration = false;
-                        if(input[i].price <= paramObj.price.to) {
-                            $log.log('price.from true');
-                            accessIteration = true;
+                    if (paramObj.space.from !== null && paramObj.space.to !== null) {
+                        if (paramObj.space.from && accessIteration) {
+                            $log.log(input[i].space, paramObj.space.from, input[i].price <= paramObj.space.from)
+                            accessIteration = false;
+                            if (input[i].space >= paramObj.space.from) {
+                                $log.log('space.from true');
+                                accessIteration = true;
+                            }
+                        }
+                        if (paramObj.space.to && accessIteration) {
+                            $log.log(input[i].space, paramObj.space.to, input[i].price <= paramObj.space.to)
+                            accessIteration = false;
+                            if (input[i].space <= paramObj.space.to) {
+                                $log.log('space.to true');
+                                accessIteration = true;
+                            }
                         }
                     }
                     if(accessIteration) {
                         outArr.push(input[i])
                     }
                 }
+                if(input)
                 Data.setlenghtCatalog(outArr.length);
                 return outArr;
             } else {
-                $log.log(input);
+                $log.log('return input');
                 if(input)
                 Data.setlenghtCatalog(input.length);
                 return input;
@@ -688,8 +805,6 @@
     }
     function sortCatalog($log, Data){
         return function (input, paramObj){
-            // $log.log('filter');
-            // $log.log(paramObj);
             if(input && paramObj) {
                 var paramObjValid = Data.validData(paramObj);
                 $log.log(paramObjValid);
@@ -725,27 +840,41 @@
     }
     function catalogCtrl ($scope, $log, Data, $rootScope, $timeout) {
     	$log.debug("Catalog controller star");
-
-            Data.getData(function(data){
-                $scope.data = data;
-            });
+        resetFormAddObjOther();
+        function resetFormAddObjOther(){
+            $scope.filterRange = {
+                price: {
+                    from: null,
+                    to : null
+                },
+                space: {
+                    from: null,
+                    to : null
+                }
+            };
+        }
+        Data.getData(function(data){
+            $scope.data = data;
+        });
 
         // Реальзован поиск одной строкой.
         $scope.$watch('searchOr', function(newValue) {
-                if(!/[^[0-9]/.test(newValue)){
+                if(!/[0-9]{4}/.test(newValue) && /[0-9]/.test(newValue)){
                     $scope.search = {
                         'number_obj' : newValue,
                         'name_obj' : ''
                     };
                     $scope.messageForSearch = 'Поиск по номеру объекта';
-                } else if(/[^[0-9]/.test(newValue) && newValue !== undefined){
+                } else if(/[а-яА-я]/.test(newValue) && newValue !== undefined){
                     $scope.search = {
                         'number_obj' : '',
                         'name_obj' : newValue
                     };
                     $scope.messageForSearch = 'Поиск имени';
+                } else if(/[0-9]{7}/.test(newValue)) {
+                    $scope.search = newValue;
+                    $scope.messageForSearch = 'Поиск номеру телефона';
                 }
-
                 if(newValue == '' || newValue == undefined){
                     $scope.search = {
                         'number_obj' : '',
@@ -754,19 +883,10 @@
                     $scope.messageForSearch = 'Начните вводить Имя объекта или его номер';
                 }
         });
-        resetFormAddObjOther();
-        function resetFormAddObjOther(){
-            //$scope.filter = {
-            //    price: {
-            //        from: null,
-            //        to : null
-            //    },
-            //    space: {
-            //        from: null,
-            //        to : null
-            //    }
-            //};
-        }
+        $scope.resetFilter  =function() {
+            resetFormAddObjOther();
+            $scope.filter = null;
+        };
     	$log.debug("Catalog controller finish");
     }
 
@@ -856,6 +976,8 @@
         $scope.messageImg = [];
         var indexMessage = 1;
         // пока пустой массив в который потом добавятся имена файлов
+        // Глоюальная переменная сделанна что бы можно было сразу удалить после добавления. Тоесть это
+        // комуникация между контролеррами
         $rootScope.arrImageName = [];
         // test
         //$timeout(function(){
@@ -899,6 +1021,7 @@
             console.info('onCompleteItem', fileItem, response, status, headers);
             $log.log(fileItem.file.name);
             $rootScope.arrImageName.push(fileItem.file.name);
+            $log.log($rootScope.arrImageName);
             messageForClient('Файл загружен');
         };
         uploader.onCompleteAll = function() {
@@ -907,7 +1030,7 @@
             addNamePhoto ();
             $state.reload();
         };
-
+        $log.log($rootScope.arrImageName);
         console.info('Общая информация', uploader);
 
 
@@ -923,6 +1046,7 @@
 
     }
     function aboutAdminCtrl ($scope, $rootScope, $timeout, $localStorage, $log, $state, Auth, Data) {
+        $log.log($rootScope.arrImageName);
         $log.debug("List_a controller star");
         var id = $state.params.id;
         function valueEmpty(){
