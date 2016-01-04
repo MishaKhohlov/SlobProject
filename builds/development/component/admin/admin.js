@@ -47,6 +47,7 @@
 				isolation_house: '',
 				isolation_flat: '',
 				discriptions : '',
+				district: '',
 				phone_agent : [],
 				photo_object : [],
 				price : null,
@@ -57,9 +58,10 @@
 		}
 		// очистка объекта для добавления объекта
 		function resetFormAddObj(obj) {
-			for (var key in obj) {
-				obj[key] = null;
-			}
+			//for (var key in obj) {
+			//	obj[key] = null;
+			//}
+			valueEmpty();
 		}
 		// очистка классов формы для регистрации
 		function resetForm() {
@@ -222,7 +224,7 @@
 		// Добавление нового объекта
     	$scope.addNewObject = function(obj) {
 			$log.log(obj);
-			if(obj.type !== '' && obj.price !== '' && obj.city !== '' && obj.district !== '') {
+			if(Data.validDataAddObj(obj)) {
 				$scope.emptyData = false;
 				var objForArr = [];
 				angular.forEach($scope.item.phone_agent, function(value) {
@@ -233,8 +235,8 @@
 					objVal.number_obj = randomInteger(0, 500);
 					objVal.name_agent = $scope.userData.lastname + " " + $scope.userData.firstname;
 					objVal.uid = $scope.setAgent;
-					// Data.setDataObj(objVal);
-					$log.log(objVal);
+					Data.setDataObj(objVal);
+					$log.log('setted',objVal);
 					resetFormAddObj(objVal);
 					$scope.messageAddData = null;
 					$scope.addForm = false;

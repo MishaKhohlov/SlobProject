@@ -5,9 +5,9 @@
     <p ng-hide="item.type == 'Выберите тип объекта'">Тип {{item.type}}</p>
     <p ng-show="item.name_obj">Имя объекта {{item.name_obj}}</p>
     <p ng-show="item.number_obj">Номер{{item.number_obj}}</p>
-    <p ng-show="item.isolation_house" ng-hide="item.type == 'Квартира' || item.type == 'Участки' || item.type == 'Нежилая недвижимость' || item.type == 'Выберите тип объекта'">Изолир Дома {{item.isolation_house}}</p>
-    <p ng-show="item.isolation_flat" ng-hide="item.type == 'Дом' || item.type == 'Участки' || item.type == 'Нежилая недвижимость' || item.type == 'Выберите тип объекта'">Изолир Кварт {{item.isolation_flat}}</p>
-    <p ng-show="item.room" ng-hide="item.type == 'Участки' || item.type == 'Нежилая недвижимость' || item.type == 'Выберите тип объекта'">Кол-во комнат {{item.room}}</p>
+    <p ng-show="item.isolation_house && item.type == 'Дом'">Изолир Дома {{item.isolation_house}}</p>
+    <p ng-show="item.isolation_flat && item.type == 'Квартира'">Изолир Кварт {{item.isolation_flat}}</p>
+    <p ng-show="item.room && item.type == 'Дом' || item.type == 'Квартира'" >Кол-во комнат {{item.room}}</p>
     <p ng-show="item.district">Район {{item.district}}</p>
     <p ng-show="item.space">Площадь {{item.space}}</p>
     <p>Имя Агента {{item.name_agent}}</p>
@@ -82,19 +82,19 @@
             <option>Участки</option>
             <option>Нежилая недвижимость</option>
         </select><br/>
-            Имя объекта<input ng-model="item.name_obj" ng-class="emptyData ? 'border-red' : ''" type="text"> <br/>
-            Свойства дома<select ng-show="item.type == 'Дом'" ng-model="item.isolation_house">
+            Имя объекта<input ng-model="item.name_obj"> <br/>
+            Свойства дома<select ng-show="item.type == 'Дом'" ng-model="item.isolation_house" ng-class="emptyData ? 'border-red' : ''">
             <option value="">Выберите свойства объекта</option>
             <option>Часть дома</option>
             <option>Целый дом</option>
             <option>Дача</option>
         </select><br/>
-            Свойства Квартиры<select ng-show="item.type == 'Квартира'"  ng-model="item.isolation_flat">
+            Свойства Квартиры<select ng-show="item.type == 'Квартира'"  ng-model="item.isolation_flat" ng-class="emptyData ? 'border-red' : ''">
             <option value="">Выберите свойства объекта</option>
             <option>Изолированные</option>
             <option>Гостинки</option>
         </select><br/>
-            Кол-во комнат<select ng-model="item.room" ng-show="item.type == 'Квартира' || item.type == 'Дом'">
+            Кол-во комнат<select ng-model="item.room" ng-show="item.type == 'Квартира' || item.type == 'Дом'" ng-class="emptyData ? 'border-red' : ''">
             <option value="">Выберите кол-во комнат</option>
             <option>1</option>
             <option>2</option>
@@ -103,13 +103,13 @@
             <option>Многокомнатные</option>
             <option>Элитные</option>
         </select><br/>
-            Цена <input ng-model="item.price" placeholder="Цена" ng-class="emptyData ? 'border-red' : ''" type="number"><br/>
-            Метоположение<select  ng-hide="item.type == 'Выберите тип объекта'" ng-model="item.city">
+            Цена <input ng-model="item.price" placeholder="Цена" ng-class="emptyData ? 'border-red' : ''" type="number" ng-class="emptyData ? 'border-red' : ''"><br/>
+            Метоположение<select ng-model="item.city" ng-class="emptyData ? 'border-red' : ''" type="text" ng-class="emptyData ? 'border-red' : ''">
             <option value="">Выберите Местоположение</option>
             <option>Харьков</option>
             <option>Пригород</option>
         </select><br/>
-            Район<select ng-show="item.city == 'Харьков'" ng-model="item.district">
+            Район<select ng-show="item.city == 'Харьков'" ng-model="item.district" ng-class="emptyData ? 'border-red' : ''">
             <option value="">Выберите район</option>
             <option>Алеексеевка</option>
             <option>Аэропорт</option>
@@ -141,7 +141,7 @@
             <option>Шишковка</option>
             <option>Центр</option>
         </select><br/>
-            Площадь<input type="number"  ng-model="item.space" placeholder="Площадь"><br/>
+            Площадь<input type="number"  ng-model="item.space" placeholder="Площадь" ng-class="emptyData ? 'border-red' : ''"><br/>
             Телефон<input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[0]" value=""><br/>
             <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[1]" value=""><br/>
             <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[2]" value=""><br/>

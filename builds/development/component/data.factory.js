@@ -192,6 +192,27 @@
             setDataObj : function(obj){
                 objRef.child(obj.number_obj).set(obj);
             },
+            validDataAddObj: function(obj) {
+                var access = true;
+                if(obj.type == 'Квартира' && obj.isolation_flat == '') {
+                    access = false;
+                }
+                if(obj.type == 'Дом' && obj.isolation_house == '') {
+                    access = false;
+                }
+                if(obj.type == 'Квартира' || obj.type == 'Дом') {
+                    if(obj.room == '')
+                        access = false;
+                }
+                if(obj.city == 'Харьков' && obj.district == '' ) {
+                    access = false;
+                }
+                if(obj.type == '' || obj.price == null || obj.city == '' || obj.space == null) {
+                    access = false;
+                }
+                $log.log(access);
+                return access;
+            },
             // Изменение объекта недвижимости
             updateData: function(obj){
                 var obj = publickDataObj.validData(obj);

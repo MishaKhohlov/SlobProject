@@ -191,8 +191,8 @@
         });
         // Обновление данных
         $scope.updateData = function(){
-            $log.log($scope.item.price);
-            if($scope.item.type !== '' && $scope.item.price) {
+            // $scope.item.type !== '' && $scope.item.price &&  $scope.item.city !== '' &&  $scope.item.district !== ''
+            if(Data.validDataAddObj($scope.item)) {
                 $scope.emptyData = false;
                 var objForArr = [];
                 angular.forEach($scope.item.phone_agent, function(value) {
