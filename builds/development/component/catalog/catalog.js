@@ -126,12 +126,12 @@
                 if(!/[0-9]{4}/.test(newValue) && /[0-9]/.test(newValue)){
                     $scope.search = {
                         'number_obj' : newValue,
-                        'name_obj' : ''
+                        'name_obj' : undefined
                     };
                     $scope.messageForSearch = 'Поиск по номеру объекта';
                 } else if(/[а-яА-я]/.test(newValue) && newValue !== undefined){
                     $scope.search = {
-                        'number_obj' : '',
+                        'number_obj' : undefined,
                         'name_obj' : newValue
                     };
                     $scope.messageForSearch = 'Поиск имени';
@@ -141,8 +141,8 @@
                 }
                 if(newValue == '' || newValue == undefined){
                     $scope.search = {
-                        'number_obj' : '',
-                        'name_obj' : ''
+                        'number_obj' : undefined,
+                        'name_obj' : undefined
                     };
                     $scope.messageForSearch = 'Начните вводить Имя объекта или его номер';
                 }

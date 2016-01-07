@@ -369,10 +369,11 @@
 		.controller('adminCtrl', adminCtrl);
 
 	function appControllerAdmin($scope, $log, FileUploader, Data, $state, $rootScope, $timeout){
-		// Изменить глобальную переменную
-		// Поправить
-		// настроить вывод в другом контролере
-		var id = $state.params.id;
+		$log.log("Image controller star");
+		var id;
+		$rootScope.$watch('newId', function(newValue) {
+			id = newValue;
+		});
 		var uploader = $scope.uploader = new FileUploader({
 			url: 'upload.php'
 		});
@@ -394,24 +395,10 @@
 		});
 
 		$scope.messageImg = [];
+		$scope.arrImageName = [];
+		$rootScope.tryButton  = false;
 		var indexMessage = 1;
-		// пока пустой массив в который потом добавятся имена файлов
-		// Глоюальная переменная сделанна что бы можно было сразу удалить после добавления. Тоесть это
-		// комуникация между контролеррами
-		$rootScope.arrImageName = [];
-		// test
-		//$timeout(function(){
-		//    $log.log($rootScope.arrImageName);
-		//}, 4000);
 
-		// добавление имёна файлов в массив
-		function addNamePhoto () {
-			if($rootScope.arrImageName[0]) {
-				Data.addImageItem($rootScope.arrImageName, id);
-			} else {
-				$log.log("arrImageName empty")
-			}
-		}
 		// CALLBACKS
 		function messageForClient(message){
 			$scope.messageImg.push(indexMessage + ' - ' + message);
@@ -440,17 +427,15 @@
 		uploader.onCompleteItem = function(fileItem, response, status, headers) {
 			console.info('onCompleteItem', fileItem, response, status, headers);
 			$log.log(fileItem.file.name);
-			$rootScope.arrImageName.push(fileItem.file.name);
-			$log.log($rootScope.arrImageName);
+			$scope.arrImageName.push(fileItem.file.name);
 			messageForClient('Файл загружен');
 		};
 		uploader.onCompleteAll = function() {
 			console.info('onCompleteAll');
 			messageForClient('Все файлы загружены');
-			addNamePhoto ();
-			$state.reload();
+			$rootScope.imageArray = $scope.arrImageName;
+			$rootScope.tryButton = true;
 		};
-		$log.log($rootScope.arrImageName);
 		console.info('Общая информация', uploader);
 
 
@@ -463,15 +448,15 @@
 				return '|jpg|png|jpeg|bmp|gif|'.indexOf(type) !== -1;
 			}
 		};
-
+		$log.log("Image controller star");
 	}
 
-	
+
     function adminCtrl ($state, $scope, $log, $rootScope, $localStorage, Auth, Data) {
     	$log.log("Admin controller star");
 		valueEmpty();
 		$scope.setAgent = false;
-		//$scope.setAgent = '44dfc8ac-1c15-4332-aee6-306d066f60bd';
+
 		// Заготовки объектов
 		$scope.userLogin = {
 			email: null,
@@ -502,13 +487,10 @@
 
 			};
 		}
-		// очистка объекта для добавления объекта
-		function resetFormAddObj(obj) {
-			//for (var key in obj) {
-			//	obj[key] = null;
-			//}
-			valueEmpty();
-		}
+		$scope.itemReset = function(){
+			$log.log('reset');
+			valueEmpty()
+		};
 		// очистка классов формы для регистрации
 		function resetForm() {
 			$scope.emptyDataEmail = false;
@@ -593,7 +575,6 @@
 				$scope.authLogin = function(){
 					return data;
 				};
-					// повторить с sessionStorage.
 					$scope.setAgent = data.uid;
 					$localStorage.setAgent = data.uid;
 
@@ -627,7 +608,7 @@
 			} else {
 				$scope.messageLogin = "Заполните" + emptyParamsLogin($scope.userLogin);
 			}
-		};	
+		};
 
 		// Регистрация
 		$scope.register = function(){
@@ -659,6 +640,9 @@
 		};
 		// получение данных
 		Data.getData(function(data){
+			$log.log(data);
+			$log.log(data[0]);
+			$scope.test = data[0];
 			$scope.data = data;
 		});
 		// рандомные числа
@@ -667,6 +651,10 @@
 			rand = Math.floor(rand);
 			return rand;
 		}
+		$scope.openFormObj = function(){
+			$rootScope.newId = randomInteger(0, 500);
+			$log.log($rootScope.newId);
+		};
 		// Добавление нового объекта
     	$scope.addNewObject = function(obj) {
 			$log.log(obj);
@@ -677,15 +665,25 @@
 					this.push(value);
 				}, objForArr);
 				if(Data.validArr(objForArr)) {
-					var objVal = Data.validData(obj);
-					objVal.number_obj = randomInteger(0, 500);
-					objVal.name_agent = $scope.userData.lastname + " " + $scope.userData.firstname;
-					objVal.uid = $scope.setAgent;
-					Data.setDataObj(objVal);
-					$log.log('setted',objVal);
-					resetFormAddObj(objVal);
-					$scope.messageAddData = null;
-					$scope.addForm = false;
+					if($rootScope.imageArray !== null && $rootScope.tryButton){
+						var objVal = Data.validData(obj);
+						if(!objVal.name_obj) {
+							objVal.name_obj = '';
+						}
+						objVal.number_obj = $rootScope.newId;
+						objVal.name_agent = $scope.userData.lastname + " " + $scope.userData.firstname;
+						objVal.uid = $scope.setAgent;
+						objVal.photo_object = $rootScope.imageArray;
+						Data.setDataObj(objVal);
+						$log.log('setted',objVal);
+						valueEmpty();
+						$scope.messageAddData = null;
+						$scope.addForm = false;
+						$rootScope.imageArray = null;
+						$rootScope.tryButton = false;
+					} else {
+						$scope.messageAddData = "Вы добавили изображения но не загрузили их, пожалуйста нажмите кнопку 'Загрузить'";
+					}
 				} else {
 					$scope.messageAddData = 'Вы ввели одинаковые телефон';
 				}
@@ -694,17 +692,17 @@
 				$scope.messageAddData = 'Заполните обязательные поля';
 			}
     	};
-		// Реальзован поиск одной строкой.
+		// Добавить поиск из каталога
 		$scope.$watch('searchOr', function(newValue) {
 			if(!/[^[0-9]/.test(newValue)){
 				$scope.search = {
 					'number_obj' : newValue,
-					'name_obj' : ''
+					'name_obj' : undefined
 				};
 				$scope.messageForSearch = 'Поиск по номеру объекта';
 			} else if(/[^[0-9]/.test(newValue) && newValue !== undefined){
 				$scope.search = {
-					'number_obj' : '',
+					'number_obj' : undefined,
 					'name_obj' : newValue
 				};
 				$scope.messageForSearch = 'Поиск имени';
@@ -712,8 +710,8 @@
 
 			if(newValue == '' || newValue == undefined){
 				$scope.search = {
-					'number_obj' : '',
-					'name_obj' : ''
+					'number_obj' : undefined,
+					'name_obj' : undefined
 				};
 				$scope.messageForSearch = 'Начните вводить Имя объекта или его номер';
 			}
@@ -862,12 +860,12 @@
                 if(!/[0-9]{4}/.test(newValue) && /[0-9]/.test(newValue)){
                     $scope.search = {
                         'number_obj' : newValue,
-                        'name_obj' : ''
+                        'name_obj' : undefined
                     };
                     $scope.messageForSearch = 'Поиск по номеру объекта';
                 } else if(/[а-яА-я]/.test(newValue) && newValue !== undefined){
                     $scope.search = {
-                        'number_obj' : '',
+                        'number_obj' : undefined,
                         'name_obj' : newValue
                     };
                     $scope.messageForSearch = 'Поиск имени';
@@ -877,8 +875,8 @@
                 }
                 if(newValue == '' || newValue == undefined){
                     $scope.search = {
-                        'number_obj' : '',
-                        'name_obj' : ''
+                        'number_obj' : undefined,
+                        'name_obj' : undefined
                     };
                     $scope.messageForSearch = 'Начните вводить Имя объекта или его номер';
                 }

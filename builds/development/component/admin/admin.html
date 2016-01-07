@@ -30,7 +30,8 @@
 </div>
 <div ng-show="authLogin()">
     <p>Добавление нового объекта</p>
-    <input type="button" value="Добавить новый объект." ng-click="addForm ? addForm = false : addForm = true">
+    <input type="button" value="Добавить новый объект." ng-click="addForm ? addForm = false : addForm = true; openFormObj()">
+    <input type="button" value="Close" ng-click="addForm = false">
 
     <div ng-show="addForm">
         <div> <p>Photo</p>
@@ -42,8 +43,7 @@
             </ul>
         </div>
         <button ng-click="addImg ? addImg = false : addImg = true">Открыть редактирование фотографий</button></br>
-        <div ng-show="addImg" ng-controller="AppController" nv-file-drop="" uploader="uploader" >
-            <!-- 3. nv-file-over uploader="link" over-class="className" -->
+        <div ng-show="addImg" ng-controller="AppControllerAdmin" nv-file-drop="" uploader="uploader" >
             <div ng-show="uploader.isHTML5">
                 <div class="drobzone over-zoney zone" nv-file-over="" uploader="uploader">
                     Перетащите файл сюда
@@ -166,6 +166,7 @@
                           maxlength="200"
     >{{item.discriptions}}</textarea><br/>
          <input type="button" value="Добавить" ng-click="addNewObject(item)">
+            <input type="button" value="Cancel" ng-click="addForm = false; itemReset()">
             <div ng-show="messageAddData">Ошибка{{messageAddData}}</div>
     </div>
 </div>
