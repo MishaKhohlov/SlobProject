@@ -1,7 +1,7 @@
 ;(function() {
 	"use strict";
 
-	angular.module('ngCatalog', ['ngAnimate', 'ngCookies'])
+	angular.module('ngCatalog', ['ngAnimate', 'ngCookies', 'infinite-scroll'])
         .config(catalogConf)
         .filter('sortCatalog', sortCatalog)
         .filter('range', slaidFilter)
@@ -118,7 +118,7 @@
             };
         }
         Data.getData(function(data){
-            $scope.data = data;
+            $scope.dataInfinite = data;
         });
 
         // Реальзован поиск одной строкой.
@@ -147,10 +147,30 @@
                     $scope.messageForSearch = 'Начните вводить Имя объекта или его номер';
                 }
         });
+        // дописать что бы при люыбх фильтрах работало и при сбросе возвращалась в бесконечную прокрутку.
+        $scope.$watch('filter', function(newValue) {
+            if(newValue) {
+                $scope.data = $scope.dataInfinite;
+            }
+        });
         $scope.resetFilter  =function() {
             resetFormAddObjOther();
             $scope.filter = null;
         };
+        var z = 0;
+        $scope.data = [];
+        $scope.infiniteScroll = function(){
+            if($scope.dataInfinite && !$scope.filter) {
+                for(var i = 0; i < 2; i++) {
+                    if($scope.dataInfinite[z]) {
+                        $scope.data.push($scope.dataInfinite[z]);
+                        $log.log('scroll');
+                    }
+                    z++;
+                }
+            }
+        };
+
     	$log.debug("Catalog controller finish");
     }
 

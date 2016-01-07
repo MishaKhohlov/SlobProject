@@ -34,20 +34,20 @@ gulp.task('html', function() {
        .pipe(gulp.dest('builds/dist/css/'));
  });
 
-// gulp.task('css-ui', function () {
-//   gulp.src(bc+'jquery-ui/themes/flick/jquery-ui.min.css')
-//       .pipe(gulp.dest('builds/dist/css/'));
-// });
+/* gulp.task('css-ui', function () {
+   gulp.src(bc+'jquery-ui/themes/flick/jquery-ui.min.css')
+       .pipe(gulp.dest('builds/dist/css/'));
+ });
 
-// gulp.task('css-ui-themse', function () {
-//   gulp.src(bc+'jquery-ui/themes/flick/theme.css')
-//       .pipe(gulp.dest('builds/dist/css/'));
-// });
+ gulp.task('css-ui-themse', function () {
+   gulp.src(bc+'jquery-ui/themes/flick/theme.css')
+       .pipe(gulp.dest('builds/dist/css/'));
+ });
 
-// gulp.task('normalize', function () {
-//   gulp.src(bc+'normalize-css/normalize.css')
-//       .pipe(gulp.dest('builds/dist/css/'));
-// });
+ gulp.task('normalize', function () {
+   gulp.src(bc+'normalize-css/normalize.css')
+       .pipe(gulp.dest('builds/dist/css/'));
+ });*/
 
 gulp.task('watch', function() {
   gulp.watch('builds/development/component/**/*.js', ['js']);
@@ -57,16 +57,18 @@ gulp.task('watch', function() {
 });
 
 gulp.task('libs', function() {
-   gulp.src(bc+'jquery/dist/jquery.min.js')
-       .pipe(gulp.dest('./builds/dist/libs/jquery/'));
+   //gulp.src(bc+'jquery/dist/jquery.min.js')
+   //    .pipe(gulp.dest('./builds/dist/libs/jquery/'));
+   //
+   //gulp.src(bc+'jquery-ui/jquery-ui.min.js')
+   //    .pipe(gulp.dest('./builds/dist/libs/jquery/'));
+   //
+   //gulp.src(bc+'ngInfiniteScroll/build/ng-infinite-scroll.min.js')
+   //    .pipe(gulp.dest('./builds/dist/libs/ngInfiniteScroll/'));
 
-   gulp.src(bc+'jquery-ui/jquery-ui.min.js')
-       .pipe(gulp.dest('./builds/dist/libs/jquery/'));
-
-   gulp.src(bc+'ngInfiniteScroll/build/ng-infinite-scroll.min.js')
-       .pipe(gulp.dest('./builds/dist/libs/ngInfiniteScroll/'));
-
-   gulp.src([bc+'angular/angular.js',
+   gulp.src([
+             bc+'jquery/dist/jquery.min.js',
+             bc+'angular/angular.js',
              bc+'angular-animate/angular-animate.js',
              bc+'angular-cookies/angular-cookies.js',
              bc+'ngstorage/ngStorage.js',
@@ -78,6 +80,7 @@ gulp.task('libs', function() {
              bc+'angular-ui-router/release/angular-ui-router.js',
              bc+'angular-sanitize/angular-sanitize.js',
              bc+'angular-touch/angular-touch.js',
+             bc+'ngInfiniteScroll/build/ng-infinite-scroll.min.js',
              bc+'firebase/firebase.js',
              bc+'angularfire/dist/angularfire.js'
            ])

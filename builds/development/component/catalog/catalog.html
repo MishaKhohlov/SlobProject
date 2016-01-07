@@ -92,7 +92,9 @@
         <input type="number"  ng-model="filterRange.space.to" placeholder="До"><br/>
         <input type="button" value="Сбросить фильтры" ng-click="resetFilter()">
     </div>
+
     <p>Catalog/ Найденно объектов {{dataLength}}</p>
+    <div infinite-scroll='infiniteScroll()' infinite-scroll-distance="0">
     <li ng-repeat="(key, item) in data | filter : search | sortCatalog : filter | range : filterRange" ng-animate=" 'animate' "><a class="item_a" href="#/catalog/{{item.number_obj}}">
         <div class="item">
             <p>Индекс {{$index+1}}</p>
@@ -117,4 +119,5 @@
             <p ng-show="item.price">Стоимость {{item.price}}</p>
         </div>
     </a></li>
+        </div>
 </main>

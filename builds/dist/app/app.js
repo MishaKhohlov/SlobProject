@@ -2,7 +2,7 @@
 	"use strict";
 
 	angular.module('ngApp', ['ui.router', 'ngAnimate', 'ngCookies', 'ngStorage', 'ngCatalog',
-        'ngService', 'ngAbout', 'ngData', 'ngAuth', 'ngDataAbout', 'ngAdmin', 'ngDataAboutAdmin'])
+        'ngService', 'ngAbout', 'ngData', 'infinite-scroll', 'ngAuth', 'ngDataAbout', 'ngAdmin', 'ngDataAboutAdmin'])
         .config(slobConfig)
         .constant('firebase_url', 'https://ngslob.firebaseio.com/');
         //.run(function(test, tw){});
@@ -85,81 +85,6 @@
         .factory('Data', dataFact);
 
     function dataFact($firebaseAuth, $firebaseObject, $firebaseArray, $q, $log, $rootScope, firebase_url, Auth){
-        var dataArr =  [
-            {
-                'type' : 'Квартира', // дом, участки, нежилая недвижимость
-                'number_obj' : 123,
-                'name_obj' : 'Квартира 2км',
-                'photo' : ['','','','',''],
-                'isolation_house' : 'Дача', // часть дома, целый дом
-                'isolation_flat' : "Изолированные",
-                'room' : 'Элитные', // 1,2,3,4 many, laxury
-                'price': 2100,
-                'city' : 'Харьков', // kharkiv prigorod
-                'district' : 'Алеексеевка',
-                'space' : 43,
-                'phone_agent' : [675729181,2121232,37465349],
-                'name_agent' : 'Karl',
-                'address' : 'street artilliryiska house 2/a',
-                'discriptions' : 'This is descriptions',
-                'uid' : '24b2b4eb-9486-4d60-b1d7-157c031fdcf1'
-            },
-            {
-                'type' : 'квартира', // дом, участки, нежилая недвижимость
-                'number_obj' : 223,
-                'name_obj' : 'Квартира 2км',
-                'photo' : ['','','','',''],
-                'isolation_house' : 'дача', // часть дома, целый дом
-                'isolation_flat' : true,
-                'room' : 'Элитные', // 1,2,3,4 many, laxury
-                'price': 2100,
-                'city' : 'Пригород', // kharkiv prigorod
-                'district' : 'Алеексеевка',
-                'space' : 43,
-                'phone_agent' : [675729181,2121232,37465349],
-                'name_agent' : 'Karl',
-                'address' : 'street artilliryiska house 2/a',
-                'discriptions' : 'This is descriptions',
-                'uid' : '24b2b4eb-9486-4d60-b1d7-157c031fdcf1'
-            },
-            {
-                'type' : 'квартира', // дом, участки, нежилая недвижимость
-                'number_obj' : 332,
-                'name_obj' : 'Квартира 2км',
-                'photo' : ['','','','',''],
-                'isolation_house' : 'дача', // часть дома, целый дом
-                'isolation_flat' : true,
-                'room' : 'Элитные', // 1,2,3,4 many, laxury
-                'price': 2100,
-                'city' : 'Пригород', // kharkiv prigorod
-                'district' : 'Алеексеевка',
-                'space' : 43,
-                'phone_agent' : [675729181,2121232,37465349],
-                'name_agent' : 'Misha',
-                'address' : 'street artilliryiska house 2/a',
-                'discriptions' : 'This is descriptions',
-                'uid' : '24b2b4eb-9486-4d60-b1d7-157c031fdcf1'
-            },
-            {
-                'type' : 'квартира', // дом, участки, нежилая недвижимость
-                'number_obj' : 432,
-                'name_obj' : 'Квартира 2км',
-                'photo' : ['','','','',''],
-                'isolation_house' : 'дача', // часть дома, целый дом
-                'isolation_flat' : true,
-                'room' : 'Элитные', // 1,2,3,4 many, laxury
-                'price': 2100,
-                'city' : 'Харьков', // kharkiv prigorod
-                'district' : 'Алеексеевка',
-                'space' : 43,
-                'phone_agent' : [675729181,2121232,37465349],
-                'name_agent' : 'Misha',
-                'address' : 'street artilliryiska house 2/a',
-                'discriptions' : 'This is descriptions',
-                'uid' : '44dfc8ac-1c15-4332-aee6-306d066f60bd'
-            }
-        ];
-
         var ref = new Firebase(firebase_url);
         var usersRef = ref.child('user');
         var objRef = ref.child('object');
@@ -172,11 +97,6 @@
                 var userObj = $firebaseObject(usersRef);
             return userObj;
         }
-        // Дописать цикл перебора срванения
-        //function arrValid(){
-        //    var arr = [123, 321, 456, 786, 321];
-        //    for (){}
-        //}
         function loadedObj(child){
             var dataRef = ref.child('object').child(child);
             var dataObj = $firebaseObject(dataRef);
@@ -334,6 +254,29 @@
     };
 
         return publickDataObj;
+    }
+})();
+;(function() {
+    "use strict";
+
+    angular.module('ngAbout', ['ngAnimate', 'ngCookies'])
+        .config(aboutConf)
+        .controller('aboutCtrl', aboutCtrl);
+
+    function aboutCtrl ($scope, $log) {
+        $log.debug("About controller star");
+
+
+        $log.debug("About controller finish");
+    }
+
+    function aboutConf($stateProvider){
+        $stateProvider
+            .state('about', {
+                url: '/about',
+                templateUrl: 'component/about/about.html',
+                controller: 'aboutCtrl'
+            })
     }
 })();
 ;(function() {
@@ -737,32 +680,9 @@
     }
 })();
 ;(function() {
-    "use strict";
-
-    angular.module('ngAbout', ['ngAnimate', 'ngCookies'])
-        .config(aboutConf)
-        .controller('aboutCtrl', aboutCtrl);
-
-    function aboutCtrl ($scope, $log) {
-        $log.debug("About controller star");
-
-
-        $log.debug("About controller finish");
-    }
-
-    function aboutConf($stateProvider){
-        $stateProvider
-            .state('about', {
-                url: '/about',
-                templateUrl: 'component/about/about.html',
-                controller: 'aboutCtrl'
-            })
-    }
-})();
-;(function() {
 	"use strict";
 
-	angular.module('ngCatalog', ['ngAnimate', 'ngCookies'])
+	angular.module('ngCatalog', ['ngAnimate', 'ngCookies', 'infinite-scroll'])
         .config(catalogConf)
         .filter('sortCatalog', sortCatalog)
         .filter('range', slaidFilter)
@@ -879,7 +799,7 @@
             };
         }
         Data.getData(function(data){
-            $scope.data = data;
+            $scope.dataInfinite = data;
         });
 
         // Реальзован поиск одной строкой.
@@ -908,10 +828,30 @@
                     $scope.messageForSearch = 'Начните вводить Имя объекта или его номер';
                 }
         });
+        // дописать что бы при люыбх фильтрах работало и при сбросе возвращалась в бесконечную прокрутку.
+        $scope.$watch('filter', function(newValue) {
+            if(newValue) {
+                $scope.data = $scope.dataInfinite;
+            }
+        });
         $scope.resetFilter  =function() {
             resetFormAddObjOther();
             $scope.filter = null;
         };
+        var z = 0;
+        $scope.data = [];
+        $scope.infiniteScroll = function(){
+            if($scope.dataInfinite && !$scope.filter) {
+                for(var i = 0; i < 2; i++) {
+                    if($scope.dataInfinite[z]) {
+                        $scope.data.push($scope.dataInfinite[z]);
+                        $log.log('scroll');
+                    }
+                    z++;
+                }
+            }
+        };
+
     	$log.debug("Catalog controller finish");
     }
 
