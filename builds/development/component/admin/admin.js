@@ -346,22 +346,34 @@
 				$scope.messageAddData = 'Заполните обязательные поля';
 			}
     	};
-		// Добавить поиск из каталога
+		Data.getDataForm(function(data){
+			if(data[0]) {
+				$log.log(data);
+				$scope.request = data;
+			} else {
+				$log.log('Данных о заявках нет')
+			}
+		});
+		$scope.deleteForm = function(){
+			Data.deleteForm();
+		};
 		$scope.$watch('searchOr', function(newValue) {
-			if(!/[^[0-9]/.test(newValue)){
+			if(!/[0-9]{4}/.test(newValue) && /[0-9]/.test(newValue)){
 				$scope.search = {
 					'number_obj' : newValue,
 					'name_obj' : undefined
 				};
 				$scope.messageForSearch = 'Поиск по номеру объекта';
-			} else if(/[^[0-9]/.test(newValue) && newValue !== undefined){
+			} else if(/[а-яА-я]/.test(newValue) && newValue !== undefined){
 				$scope.search = {
 					'number_obj' : undefined,
 					'name_obj' : newValue
 				};
 				$scope.messageForSearch = 'Поиск имени';
+			} else if(/[0-9]{7}/.test(newValue)) {
+				$scope.search = newValue;
+				$scope.messageForSearch = 'Поиск номеру телефона';
 			}
-
 			if(newValue == '' || newValue == undefined){
 				$scope.search = {
 					'number_obj' : undefined,

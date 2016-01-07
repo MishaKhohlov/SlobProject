@@ -1,1 +1,6 @@
-<h1>Main</h1>
+<div ng-controller="mainCtrl">
+    <h1>Main</h1>
+    <input type="button" value="Оставить заявку" ng-click="buyForm ? buyForm = false : buyForm = true">
+    <div ng-show="buyForm" ng-include="'component/main/request.html'"></div>
+    <div ng-show="messageForForm">{{messageForForm}}</div>
+</div>

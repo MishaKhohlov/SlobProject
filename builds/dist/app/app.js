@@ -163,7 +163,9 @@
         var ref = new Firebase(firebase_url);
         var usersRef = ref.child('user');
         var objRef = ref.child('object');
+        var requestRef = ref.child('request');
         var dataObj = $firebaseArray(objRef);
+        var dataForm = $firebaseArray(requestRef);
 
         function loaded(child){
                 var usersRef = ref.child('user').child(child);
@@ -240,6 +242,15 @@
                     console.log("Error dowload data obj(1)", error);
                 });
             },
+            // Загрузка заявок
+            getDataForm: function(callback) {
+                dataForm.$loaded().then(callback, function(error) {
+                    console.log("Error dowload dataForm", error);
+                });
+            },
+            deleteForm : function() {
+                requestRef.set(null);
+            },
             // добавление имени файла картинки в базу объекта
             addImageItem: function(arrImage, id) {
                 objRef.child(id).update({"photo_object" : arrImage}, function(error) {
@@ -270,6 +281,10 @@
             // Добавление объекта недвижимости
             setDataObj : function(obj){
                 objRef.child(obj.number_obj).set(obj);
+            },
+            setRequestObj: function(obj) {
+                $log.log(obj);
+                requestRef.push().set(obj);
             },
             validDataAddObj: function(obj) {
                 var access = true;
@@ -319,29 +334,6 @@
     };
 
         return publickDataObj;
-    }
-})();
-;(function() {
-    "use strict";
-
-    angular.module('ngAbout', ['ngAnimate', 'ngCookies'])
-        .config(aboutConf)
-        .controller('aboutCtrl', aboutCtrl);
-
-    function aboutCtrl ($scope, $log) {
-        $log.debug("About controller star");
-
-
-        $log.debug("About controller finish");
-    }
-
-    function aboutConf($stateProvider){
-        $stateProvider
-            .state('about', {
-                url: '/about',
-                templateUrl: 'component/about/about.html',
-                controller: 'aboutCtrl'
-            })
     }
 })();
 ;(function() {
@@ -692,22 +684,34 @@
 				$scope.messageAddData = 'Заполните обязательные поля';
 			}
     	};
-		// Добавить поиск из каталога
+		Data.getDataForm(function(data){
+			if(data[0]) {
+				$log.log(data);
+				$scope.request = data;
+			} else {
+				$log.log('Данных о заявках нет')
+			}
+		});
+		$scope.deleteForm = function(){
+			Data.deleteForm();
+		};
 		$scope.$watch('searchOr', function(newValue) {
-			if(!/[^[0-9]/.test(newValue)){
+			if(!/[0-9]{4}/.test(newValue) && /[0-9]/.test(newValue)){
 				$scope.search = {
 					'number_obj' : newValue,
 					'name_obj' : undefined
 				};
 				$scope.messageForSearch = 'Поиск по номеру объекта';
-			} else if(/[^[0-9]/.test(newValue) && newValue !== undefined){
+			} else if(/[а-яА-я]/.test(newValue) && newValue !== undefined){
 				$scope.search = {
 					'number_obj' : undefined,
 					'name_obj' : newValue
 				};
 				$scope.messageForSearch = 'Поиск имени';
+			} else if(/[0-9]{7}/.test(newValue)) {
+				$scope.search = newValue;
+				$scope.messageForSearch = 'Поиск номеру телефона';
 			}
-
 			if(newValue == '' || newValue == undefined){
 				$scope.search = {
 					'number_obj' : undefined,
@@ -730,6 +734,29 @@
 					 templateUrl: 'component/admin/admin.html',
 					 controller: 'adminCtrl'
 				 })
+    }
+})();
+;(function() {
+    "use strict";
+
+    angular.module('ngAbout', ['ngAnimate', 'ngCookies'])
+        .config(aboutConf)
+        .controller('aboutCtrl', aboutCtrl);
+
+    function aboutCtrl ($scope, $log) {
+        $log.debug("About controller star");
+
+
+        $log.debug("About controller finish");
+    }
+
+    function aboutConf($stateProvider){
+        $stateProvider
+            .state('about', {
+                url: '/about',
+                templateUrl: 'component/about/about.html',
+                controller: 'aboutCtrl'
+            })
     }
 })();
 ;(function() {
@@ -1155,6 +1182,28 @@
                 templateUrl: 'component/data.about/data.about.html',
                 controller: 'listCtrl'
             })
+    }
+})();
+;(function() {
+    "use strict";
+
+    angular.module('ngAbout', ['ngAnimate', 'ngCookies'])
+        .controller('mainCtrl', mainCtrl);
+
+    function mainCtrl ($scope, $log, Data, $timeout) {
+        $log.debug("Main controller star");
+        $scope.closeAddForm = function(){
+            $scope.buyForm = false;
+        };
+        $scope.sendForm = function(obj) {
+            Data.setRequestObj(obj);
+            $scope.closeAddForm();
+            $scope.messageForForm = 'Данные отправленны, Ожидайте ответа, Спасибо';
+            $timeout(function(){
+                $scope.messageForForm = '';
+            }, 3000)
+        };
+        $log.debug("Main controller finish");
     }
 })();
 ;(function() {

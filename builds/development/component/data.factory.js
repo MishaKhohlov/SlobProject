@@ -84,7 +84,9 @@
         var ref = new Firebase(firebase_url);
         var usersRef = ref.child('user');
         var objRef = ref.child('object');
+        var requestRef = ref.child('request');
         var dataObj = $firebaseArray(objRef);
+        var dataForm = $firebaseArray(requestRef);
 
         function loaded(child){
                 var usersRef = ref.child('user').child(child);
@@ -161,6 +163,15 @@
                     console.log("Error dowload data obj(1)", error);
                 });
             },
+            // Загрузка заявок
+            getDataForm: function(callback) {
+                dataForm.$loaded().then(callback, function(error) {
+                    console.log("Error dowload dataForm", error);
+                });
+            },
+            deleteForm : function() {
+                requestRef.set(null);
+            },
             // добавление имени файла картинки в базу объекта
             addImageItem: function(arrImage, id) {
                 objRef.child(id).update({"photo_object" : arrImage}, function(error) {
@@ -191,6 +202,10 @@
             // Добавление объекта недвижимости
             setDataObj : function(obj){
                 objRef.child(obj.number_obj).set(obj);
+            },
+            setRequestObj: function(obj) {
+                $log.log(obj);
+                requestRef.push().set(obj);
             },
             validDataAddObj: function(obj) {
                 var access = true;

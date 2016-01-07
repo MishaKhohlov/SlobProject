@@ -8,7 +8,6 @@
         <div>{{messageLogin}}</div>
     </div>
 </div>
-
 <div ng-show="authLogin()">
     <div ng-show="admin">{{admin}}</div>
     <div>{{userData.$id}}</div>
@@ -16,6 +15,21 @@
     <div>{{userData.lastname}}</div>
     <div>{{userData.email}}</div>
     <input type="button" ng-click="logout()" value="Logout">
+</div>
+<div style="float: right" ng-show="adminComplete">
+    <p>Заявки</p>
+    <div ng-show="request[0].phone">
+        <ul>
+            <li ng-repeat="(key, itemForm) in request">
+                <p>From {{itemForm.middleName}} {{itemForm.name}}</p>
+                <p>Choose {{itemForm.selectForm}}</p>
+                <p>Description {{itemForm.discriptions}}</p>
+                <p>Phone {{itemForm.phone}}</p>
+            </li>
+        </ul>
+        <input type="button" value="Delete" ng-click="deleteForm()">
+    </div>
+    <div ng-hide="request[0].phone">Заявок нету</div>
 </div>
 <div ng-show="adminComplete">
     <p>Регистрация нового пользователя</p>
@@ -177,6 +191,7 @@
     </div>
     <ul ng-show="authLogin()">
     <p>Catalog</p>
+
     <li style="margin-top: 50px" ng-repeat="(key, item) in data | filter: search | userAccept: setAgent : adminComplete"><a class="item_a" href="#/catalog_admin/{{item.number_obj}}">
         <div class="item">
             <p>Индекс {{$index+1}}</p>
