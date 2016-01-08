@@ -1,15 +1,26 @@
 <main>
     <h1>This is Data About</h1>
 
-    <p ng-show="item.number_obj">Номер{{item.number_obj}}</p>
-    <p ng-show="item.isolation_house">Изолир Дома {{item.isolation_house}}</p>
-    <p ng-show="item.isolation_flat">Изолир Кварт {{item.isolation_flat}}</p>
-    <p ng-show="item.room">Кол-во комнат {{item.room}}</p>
-    <p ng-show="item.district">Район {{item.district}}</p>
-    <p ng-show="item.space">Площадь {{item.space}}</p>
-    <p ng-show="item.address">Адресс {{item.address}}</p>
-    <p>Имя Агента {{item.name_agent}}</p>
-    <p ng-repeat="phone in item.phone_agent">Телефон {{phone}}</p>
-    <p ng-show="item.discriptions">Описание {{item.discriptions}}</p>
-    <p>Стоимость {{item.price}}</p>
+    <div class="object">
+        <p>Индекс {{$index+1}}</p>
+        <p ng-hide="item.type == 'Выберите тип объекта'">Тип {{item.type}}</p>
+        <p ng-show="item.name_obj">Имя объекта {{item.name_obj}}</p>
+        <p ng-show="item.number_obj">Номер{{item.number_obj}}</p>
+        <p ng-show="item.isolation_house && item.type == 'Дом'">Изолир Дома {{item.isolation_house}}</p>
+        <p ng-show="item.isolation_flat && item.type == 'Квартира'">Изолир Кварт {{item.isolation_flat}}</p>
+        <p ng-show="item.room && item.type == 'Дом' || item.type == 'Квартира'" >Кол-во комнат {{item.room}}</p>
+        <p ng-show="item.district">Район {{item.district}}</p>
+        <p ng-show="item.space">Площадь {{item.space}}</p>
+        <p>Имя Агента {{item.name_agent}}</p>
+        <p ng-repeat="phone in item.phone_agent">Телефон {{phone}}</p>
+        <p ng-show="item.discriptions">Описание {{item.discriptions}}</p>
+        <p>Стоимость {{item.price}}</p>
+        <div> <p>Photo</p>
+            <ul>
+                <li style="width: 150px" class="li_image_photo" ng-repeat="(key, item) in item.photo_object"><img class="image_photo" ng-src="./uploads/{{item}}"></br>
+                </li>
+
+            </ul>
+        </div>
+    </div>
 </main>

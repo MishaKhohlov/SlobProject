@@ -257,29 +257,6 @@
     }
 })();
 ;(function() {
-    "use strict";
-
-    angular.module('ngAbout', ['ngAnimate', 'ngCookies'])
-        .config(aboutConf)
-        .controller('aboutCtrl', aboutCtrl);
-
-    function aboutCtrl ($scope, $log) {
-        $log.debug("About controller star");
-
-
-        $log.debug("About controller finish");
-    }
-
-    function aboutConf($stateProvider){
-        $stateProvider
-            .state('about', {
-                url: '/about',
-                templateUrl: 'component/about/about.html',
-                controller: 'aboutCtrl'
-            })
-    }
-})();
-;(function() {
 	"use strict";
 
 	angular.module('ngAdmin', ['ngAnimate', 'ngCookies'])
@@ -680,6 +657,29 @@
     }
 })();
 ;(function() {
+    "use strict";
+
+    angular.module('ngAbout', ['ngAnimate', 'ngCookies'])
+        .config(aboutConf)
+        .controller('aboutCtrl', aboutCtrl);
+
+    function aboutCtrl ($scope, $log) {
+        $log.debug("About controller star");
+
+
+        $log.debug("About controller finish");
+    }
+
+    function aboutConf($stateProvider){
+        $stateProvider
+            .state('about', {
+                url: '/about',
+                templateUrl: 'component/about/about.html',
+                controller: 'aboutCtrl'
+            })
+    }
+})();
+;(function() {
 	"use strict";
 
 	angular.module('ngCatalog', ['ngAnimate', 'ngCookies', 'infinite-scroll'])
@@ -687,10 +687,11 @@
         .filter('sortCatalog', sortCatalog)
         .filter('range', slaidFilter)
 		.controller('catalogCtrl', catalogCtrl);
-    function slaidFilter($log, Data){
+    function slaidFilter($log, Data, $rootScope){
         return function (input, paramObj){
-            $log.log(paramObj);
             if(paramObj.price.from !== null || paramObj.price.to !== null || paramObj.space.from !== null || paramObj.space.to !== null && input) {
+                // Запрет скрола
+                $rootScope.offScroll = true;
                 $log.log('no return', paramObj);
                 var i;
                 var outArr = [];
@@ -741,16 +742,18 @@
                 Data.setlenghtCatalog(outArr.length);
                 return outArr;
             } else {
-                $log.log('return input');
+                //$log.log('return input');
                 if(input)
                 Data.setlenghtCatalog(input.length);
                 return input;
             }
         }
     }
-    function sortCatalog($log, Data){
+    function sortCatalog($log, Data, $rootScope){
         return function (input, paramObj){
             if(input && paramObj) {
+                // Запрет скрола
+                $rootScope.offScroll = true;
                 var paramObjValid = Data.validData(paramObj);
                 $log.log(paramObjValid);
                 var collRef = 0;
@@ -778,7 +781,7 @@
                     return input;
                 }
             } else {
-                // $log.log('return input');
+                 //$log.log('return input');
                 return input;
             }
         }
@@ -798,10 +801,36 @@
                 }
             };
         }
+        // индекс последнего добавленного элемента
+        var z = 2;
+        $scope.data = [];
+        // Изначально есть доступ к прокрутке
+        var acceptsScroll = true;
         Data.getData(function(data){
+            $log.log(data);
             $scope.dataInfinite = data;
+            $scope.data.push(data[0]);
+            $scope.data.push(data[1]);
         });
-
+        $scope.infiniteScroll = function(){
+            if($scope.dataInfinite && !$rootScope.offScroll) {
+                for(var i = 0; i < 2; i++) {
+                    if($scope.dataInfinite[z]) {
+                        $scope.data.push($scope.dataInfinite[z]);
+                        $log.log('scroll');
+                    }
+                    z++;
+                }
+            }
+        };
+        // прослушка перменной в которую запишется значение с фильтра если там что небудь изменится
+        $rootScope.$watch('offScroll', function(newValue) {
+            if(newValue) {
+                $scope.test = true;
+                $scope.data = $scope.dataInfinite;
+                $scope.clickReset = false;
+            }
+        });
         // Реальзован поиск одной строкой.
         $scope.$watch('searchOr', function(newValue) {
                 if(!/[0-9]{4}/.test(newValue) && /[0-9]/.test(newValue)){
@@ -828,29 +857,19 @@
                     $scope.messageForSearch = 'Начните вводить Имя объекта или его номер';
                 }
         });
-        // дописать что бы при люыбх фильтрах работало и при сбросе возвращалась в бесконечную прокрутку.
-        $scope.$watch('filter', function(newValue) {
-            if(newValue) {
-                $scope.data = $scope.dataInfinite;
-            }
-        });
+        $scope.clickReset = true;
         $scope.resetFilter  =function() {
+            // сброс данных фильтра
             resetFormAddObjOther();
+            // сброс данных фильтра
             $scope.filter = null;
+            // возвращение переменной в нормальное положение
+            $rootScope.offScroll = false;
+            z = 2;
+            $scope.data = [];
+            $scope.infiniteScroll();
         };
-        var z = 0;
-        $scope.data = [];
-        $scope.infiniteScroll = function(){
-            if($scope.dataInfinite && !$scope.filter) {
-                for(var i = 0; i < 2; i++) {
-                    if($scope.dataInfinite[z]) {
-                        $scope.data.push($scope.dataInfinite[z]);
-                        $log.log('scroll');
-                    }
-                    z++;
-                }
-            }
-        };
+
 
     	$log.debug("Catalog controller finish");
     }

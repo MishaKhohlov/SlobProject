@@ -90,11 +90,12 @@
         <p>Площадь</p>
         <input type="number"  ng-model="filterRange.space.from" placeholder="От"><br/>
         <input type="number"  ng-model="filterRange.space.to" placeholder="До"><br/>
-        <input type="button" value="Сбросить фильтры" ng-click="resetFilter()">
+        <input type="button" value="Сбросить фильтры" ng-click="resetFilter()" ng-disabled="clickReset">
     </div>
 
-    <p>Catalog/ Найденно объектов {{dataLength}}</p>
-    <div infinite-scroll='infiniteScroll()' infinite-scroll-distance="0">
+
+    <div infinite-scroll='infiniteScroll()' ng-show="data[0]">
+        <p>Catalog/ Найденно объектов {{dataLength}}</p>
     <li ng-repeat="(key, item) in data | filter : search | sortCatalog : filter | range : filterRange" ng-animate=" 'animate' "><a class="item_a" href="#/catalog/{{item.number_obj}}">
         <div class="item">
             <p>Индекс {{$index+1}}</p>
@@ -120,4 +121,5 @@
         </div>
     </a></li>
         </div>
+    <div ng-hide="data[0]">Загрузка данных</div>
 </main>
