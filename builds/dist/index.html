@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html ng-app="ngApp">
     <head lang="ru-RU">
-    <!--<base href="/">-->
+<!--    <base href="/">-->
       <title>Слобожанская недвижимость</title>
 	        <meta charset="utf-8">
 	        <meta http-equiv="content-language" content="ru">
@@ -10,9 +10,8 @@
 	        <meta name="description" content="">
 	        <meta name="keywords" content="">
 	        <meta name="author" content="">
-
-
             <link rel="stylesheet" href="css/style.min.css">
+<!--            <link rel="stylesheet" href="css/header.css" media="(min-width: 2960px)">-->
             <script src="libs/support_html5.js"></script>
     </head>
     	<body>
@@ -21,9 +20,10 @@
     		<![endif]-->
 
 		<header ng-include="'component/header/header.html'"></header>
-		<main ui-view></main>
+		<main class="page" ui-view></main>
 		<footer ng-include="'component/footer/footer.html'"></footer>
     	</body>
     <script src="libs/angular/angular.concat.js"></script>
 	<script src="app/app.js"></script>
+	<script src="scroll.js"></script>
 </html>
