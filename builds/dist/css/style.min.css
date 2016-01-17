@@ -188,12 +188,16 @@ td,
 th {
   padding: 0;
 }
-
+*{
+	padding: 0px;
+	margin: 0px;
+}
 /*----------------------------Begin-------------------------------*/
 
 body {
-	max-width: 1500px;
+	max-width: 1464px;
 	margin: 0 auto;
+	position: relative;
 }
 /*.ng-enter { z-index: 8888;}
 .ng-leave { z-index: 9999;}*/
