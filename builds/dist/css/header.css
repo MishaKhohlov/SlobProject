@@ -191,10 +191,19 @@ width: 14px;
 }
 .head {
 	font-family: 'latolight';
-	background-image: url(../images/title-first.jpg);
 	color: white;
 	padding-top: 50px;
 	overflow: hidden;
+	max-width: 1464px;
+	margin: 0 auto;
+}
+.slider {
+	max-width: 1985px;
+	background: url(../images/title-second.jpg) no-repeat 1986px 0px,  		url(../images/title-first.jpg) no-repeat 0px 0px;
+	transition: 4s cubic-bezier(.61, .23, .77, .39) background ;
+}
+.slide2 {
+	background: url(../images/title-second.jpg) no-repeat 0px 0px,  			url(../images/title-first.jpg) no-repeat -1986px 0px;
 }
 a {
 	text-decoration: none;
@@ -203,6 +212,7 @@ a {
 	position: fixed;
 	width: 80%;
 	max-width: 1176px;
+	min-width: 830px;
 	top: 50px;
 	display: flex;
 	flex-direction: row;
@@ -231,7 +241,7 @@ a {
 }
 .header_logoMin img {
 	margin-left: 20px;
-	width: 50px;
+	width: 40px;
 }
 .header_logoMin {
 	flex-basis: 130px;
@@ -269,15 +279,15 @@ a {
 	padding-bottom: 0px;
 }
 .headerMin .header_link div > a{
+	padding-bottom: 4px;
 	transition: none;
-	padding-bottom: 12px;
 }
 .header_link a:hover,  .header_link_request a:hover{
-	transition: 0.3s linear;
+	transition: 0.2s linear;
 	opacity: 1;
 }
 .header_link a:active, .header_link_request a:active {
-	transition: 0.3s linear;
+	transition: 0.2s linear;
 	color: #ff911c;
 }
 .header_link_inform, .header_link_request {
@@ -291,7 +301,7 @@ a {
 	justify-content: flex-end;
 }
 .header_link_request {
-	flex-basis: 130px;
+	flex-basis: 140px;
 	margin-right: 20px;
 }
 .header_link_request a{ 
@@ -336,7 +346,7 @@ a {
 	display: block;
 	opacity: 0;
 }
-.header_link_home_menu {
+.linkMenu {
 	position: absolute;
 	display: none;
 	flex-direction: column;
@@ -346,17 +356,24 @@ a {
 	font-size: 11px;
 	z-index: 98;
 }
-.header_link_home_menu a {
+.linkMenuMin {
+	padding: 10px;
+	padding-bottom: 11px;
+	margin-top: 7px;
+	background:  rgba(0, 0, 0, 0.83);
+}
+.linkMenu a {
 	margin-bottom: 5px;
 	opacity: 0.9;
 }
-.header_link_menu a:hover {
+.linkMenu a:hover {
 	transition: 0.2s linear all;
 	color:  #ff911c;
+	
 }
 .mainContent {
-	margin-top: 160px;
 	text-align: center;
+	margin-top: 160px;
 }
 .mainContent_company {
 	 font-size: 24px;
@@ -409,8 +426,16 @@ a {
 .header_link a {
 	color: white;
 }
-.header_link_home:hover .header_link_home_menu {
+.header_link > div:hover  a.active-link + .linkMenu {
 	display: flex;
+}
+@media only screen and (min-device-width: 830px) and (max-device-width: 1300px), (min-width: 830px) and (max-width: 1300px) {
+	.header_link > div > a {
+		padding: 0px 5px 0px 5px;
+	}
+	.header {
+		width: 100%;
+	}
 }
 
 /*

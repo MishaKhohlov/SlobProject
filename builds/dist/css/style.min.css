@@ -203,6 +203,7 @@ th {
          url('fonts/lato-italic-webfont.svg#latoitalic') format('svg');
     font-weight: normal;
     font-style: normal;
+	font-display: block;
 
 }
 
@@ -216,7 +217,7 @@ th {
          url('fonts/lato-light-webfont.svg#latolight') format('svg');
     font-weight: normal;
     font-style: normal;
-
+	font-display: block;
 }
 @font-face {
     font-family: 'latothin';
@@ -228,18 +229,28 @@ th {
          url('fonts/lato-thin-webfont.svg#latothin') format('svg');
     font-weight: normal;
     font-style: normal;
+	font-display: block;
 }
 /*----------------------------Begin-------------------------------*/
 
 body {
+	max-width: 1986px;
+	position: relative;
+	margin: 0 auto;
+	background: grey;
+}
+.page {
 	max-width: 1464px;
 	margin: 0 auto;
-	position: relative;
+	margin-top: -20px;
 }
 /*.ng-enter { z-index: 8888;}
 .ng-leave { z-index: 9999;}*/
 .hide {
 	display: none;
+}
+.showFlex {
+	display: flex;
 }
 a {
 	-moz-user-selec: -moz-non;
