@@ -3,10 +3,4 @@
     <input type="button" value="Оставить заявку" ng-click="buyForm ? buyForm = false : buyForm = true">
     <div ng-show="buyForm" ng-include="'component/main/request.html'"></div>
     <div ng-show="messageForForm">{{messageForForm}}</div>
-
-    <div ng-if="bool" class="fade">
-        Fade me in out
-    </div>
-    <button ng-click="bool=true">Fade In!</button>
-    <button ng-click="bool=false">Fade Out!</button>
 </div>

@@ -3,10 +3,10 @@
 @import "main.css";
 @import "catalog.css";
 @import "service.css";
-/*@import "about.css";*/
-/*@import "jobs.css";*/
-/*@import "laws.css";*/
-/*@import "admin.css";*/
+@import "about.css";
+@import "jobs.css";
+@import "laws.css";
+@import "admin.css";
 html {
   font-family: sans-serif; /* 1 */
   -ms-text-size-adjust: 100%; /* 2 */

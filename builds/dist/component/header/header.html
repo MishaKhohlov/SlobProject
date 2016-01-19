@@ -1,4 +1,4 @@
- <div class="slider">
+ <div class="slider" ng-controller="headerCtrl">
  <header class="head">
   <div class="header">
 	<div class="header_logo"><img src="images/logo.png" alt="Logo"></div>
@@ -38,7 +38,7 @@
 		</div>
 	</nav>
 	<div class="header_link_request hide">
-		<a href="#">Оставить заявку</a>
+		<a   class="header_link_request_a" ng-click="buyForm ? buyForm = false : buyForm = true">Оставить заявку</a>
 		</div>	
 	<address class="header_link_inform">
 		<div class="header_link_inform_phoneImg sprite sprite-phone"></div>
@@ -53,11 +53,30 @@
 	 <h2 class="mainContent_company latoThin">Агенство недвижимости</h2>
 	 <h1 class="mainContent_companyName">Company name</h1>
 	 <h3 class="mainContent_slog">Любая недвижимость из надежных рук</h3>
-	 <a class="mainContent_request" href="#">Оставить заявку</a>
+	 <a class="mainContent_request" ng-click="buyForm ? buyForm = false : buyForm = true">Оставить заявку</a>
 	<div class="header_scroll">  
 	<div class="mouse"><div class="wheel"></div></div>
 	<div><span class="unu"></span> <span class="doi"></span> <span class="trei"></span></div>
 	</div>
 </div>
+<div class="request"  ng-if="buyForm">
+	<div class="requestForm latoItal" >
+	<a class="requestForm_close" ng-click="closeAddForm()">&#9747;</a>
+		<h1 class="requestForm_form">Заявка на покупку или продажу недвижимости</h1>
+		<p class="requestForm_descriptions">Опишите свои пожелания и мы с вами обязательно свяжемся</p>
+		<textarea class="requestForm_writeUser" rows="10" cols="35" placeholder="Описание" maxlength="300" ng-model="item.discriptions"></textarea>
+		<div class="requestForm_input">
+		<label class="requestForm_input_center_labelFirst"><input ng-model="item.selectForm" type="radio" name="obj" value="buy">Купить</label>
+		<label><input ng-model="item.selectForm" type="radio" name="obj" value="sell">Продать</label>
+		</div>
+		<div class="requestForm_center">
+		<input class="requestForm_center_nameInputFirst" type="text" placeholder="Имя" ng-model="item.name">
+		<input type="text" placeholder="Отчество" ng-model="item.middleName">
+		</div>
+		<input class="requestForm_phoneInput" type="number" placeholder="Телефон" ng-model="item.phone">
+		<a class="requestForm_send" ng-click="sendForm(item); item = null">Отправить</a>
+	</div>
+</div>
+<div class="requestForm_message" ng-show="messageForForm">{{messageForForm}}</div>
 </header>
 </div>

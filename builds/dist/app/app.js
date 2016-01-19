@@ -2,7 +2,7 @@
 	"use strict";
 
 	angular.module('ngApp', ['ui.router', 'ngAnimate', 'ngCookies', 'ngStorage', 'ngCatalog',
-        'ngService', 'ngAbout', 'ngData', 'infinite-scroll', 'ngAuth', 'ngDataAbout', 'ngAdmin', 'ngDataAboutAdmin'])
+        'ngService', 'ngAbout',  'ngHeader', 'ngData', 'infinite-scroll', 'ngAuth', 'ngDataAbout', 'ngAdmin', 'ngDataAboutAdmin'])
         .config(slobConfig)
         .constant('firebase_url', 'https://ngslob.firebaseio.com/');
         //.run(function(test, tw){});
@@ -1141,6 +1141,28 @@
                 templateUrl: 'component/data.about/data.about.html',
                 controller: 'listCtrl'
             })
+    }
+})();
+;(function() {
+    "use strict";
+
+    angular.module('ngHeader', ['ngAnimate'])
+        .controller('headerCtrl', headerCtrl);
+
+    function headerCtrl ($scope, $log, Data, $timeout) {
+        $log.debug("Headeer controller star");
+        $scope.closeAddForm = function(){
+            $scope.buyForm = false;
+        };
+        $scope.sendForm = function(obj) {
+            Data.setRequestObj(obj);
+            $scope.closeAddForm();
+            $scope.messageForForm = 'Данные отправленны, Ожидайте ответа, Спасибо';
+            $timeout(function(){
+                $scope.messageForForm = '';
+            }, 3000)
+        };
+        $log.debug("Header controller finish");
     }
 })();
 ;(function() {

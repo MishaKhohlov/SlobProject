@@ -37,16 +37,31 @@ function begin() {
 	var scrollPage = true;
 	var scrollEnabled = false;
 	var accessSlider = true;
+	
 	setInterval(slider, 30000);
 	function slider() {
 		if(accessSlider) {
 			if($('.slider').hasClass('slide2')) {
-			$('.slider').removeClass('slide2')	;
+				$('.mainContent_slog').fadeOut(2000, function(){
+					$('.mainContent_slog').text('Любая недвижимость из надежных рук');
+				})
+				$('.mainContent_slog').fadeIn(1000);
+				$('.slider').removeClass('slide2')	;
 			} else {
+				$('.mainContent_slog').fadeOut(2000, function(){
+					$('.mainContent_slog').text('Репутация, проверенная временем');
+				})
+				$('.mainContent_slog').fadeIn(1000);
 				$('.slider').addClass('slide2')	;
 			}
 		}	
 	};
+	setTimeout(event, 20);
+	function event() {
+		$('.header_link_request_a').click(function(){
+		$('body, html').stop().animate({scrollTop : 0}, 400,  'linear');
+	});	
+	}
 	$(window).scroll(function(eventObject){
 		var scroll = Math.round($(window).scrollTop());
 		if (!window.matchMedia('(max-width: 1285px)').matches) {
