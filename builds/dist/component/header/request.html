@@ -1,0 +1,16 @@
+<div>
+    <input type="button" value="Закрыть" ng-click="closeAddForm()">
+    <h1>Заявка на покупку или продажу недвижимости</h1>
+    <p>Опишите свои пожелания и мы с вами обязательно свяжемся</p>
+    <textarea rows="10" cols="35" placeholder="Описание" maxlength="300" ng-model="item.discriptions"></textarea>
+    <p>Выбирете</p>
+    <input ng-model="item.selectForm" type="radio" name="obj" value="buy"> Buy<Br>
+    <input ng-model="item.selectForm" type="radio" name="obj" value="sell"> Sell<Br>
+    <p>Name</p>
+    <input type="text" placeholder="Имя" ng-model="item.name">
+    <p>Отчество</p>
+    <input type="text" placeholder="Отчество" ng-model="item.middleName">
+    <p>Телефон</p>
+    <input type="number" placeholder="Телефон" ng-model="item.phone">
+    <input type="button" value="Отправить" ng-click="sendForm(item); item = null">
+</div>

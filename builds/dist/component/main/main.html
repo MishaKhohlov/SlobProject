@@ -1,3 +1,4 @@
+<div ng-controller="mainCtrl"> 
 <div class="Objects">
 	<div class="object">
       <div class="object_image imgObj1"></div>
@@ -26,66 +27,55 @@
 	<div class="inform_line sprite sprite-line"></div>
 	<div class="inform_menu">
 	<div class="inform_menu_room">	
-		<input class="inform_menu_room_input" id="menuFirst1" value="1r" type="radio" name="menuFirst">
+		<input class="inform_menu_room_input" ng-model="select.menuRoom" id="menuFirst1" value="1" type="radio" name="menuFirst">
 		<label class="inform_menu_room_label" for="menuFirst1">1 км</label>
-		<input class="inform_menu_room_input"  id="menuFirst2" value="2r" type="radio" name="menuFirst">
+		<input class="inform_menu_room_input" ng-model="select.menuRoom" id="menuFirst2" value="2" type="radio" name="menuFirst">
 		<label class="inform_menu_room_label" for="menuFirst2">2 км</label>	
-		<input class="inform_menu_room_input"  id="menuFirst3" value="3r" type="radio" name="menuFirst">
+		<input class="inform_menu_room_input" ng-model="select.menuRoom" id="menuFirst3" value="3" type="radio" name="menuFirst">
 		<label class="inform_menu_room_label" for="menuFirst3">3 км</label>	
-		<input class="inform_menu_room_input"  id="menuFirst4" value="4r" type="radio" name="menuFirst">
+		<input class="inform_menu_room_input" ng-model="select.menuRoom" id="menuFirst4" value="4" type="radio" name="menuFirst">
 		<label class="inform_menu_room_label" for="menuFirst4">4 км</label>
+		<a class="inform_menu_reset" ng-click="resetForm(1)">&#9747;</a>
 	</div>
-	<div class="inform_menu_floor">
-		<input class="inform_menu_floor_input"  id="menuSecond1" value="5fl" type="radio" name="menuSecond">
+	<div class="inform_menu_floor" ng-if="select.menuRoom">
+		<input class="inform_menu_floor_input" ng-model="select.menuFloor" id="menuSecond1" value="5" type="radio" name="menuSecond">
 		<label class="inform_menu_floor_label" for="menuSecond1">5 эт</label>	
-		<input class="inform_menu_floor_input"  id="menuSecond2" value="9fl" type="radio" name="menuSecond">
+		<input class="inform_menu_floor_input" ng-model="select.menuFloor" id="menuSecond2" value="9" type="radio" name="menuSecond">
 		<label class="inform_menu_floor_label" for="menuSecond2">9 эт</label>	
-		<input class="inform_menu_floor_input"  id="menuSecond3" value="12fl" type="radio" name="menuSecond">
+		<input class="inform_menu_floor_input" ng-model="select.menuFloor" id="menuSecond3" value="12" type="radio" name="menuSecond">
 		<label class="inform_menu_floor_label" for="menuSecond3">12 эт</label>	
-		<input class="inform_menu_floor_input"  id="menuSecond4" value="16fl" type="radio" name="menuSecond">
+		<input class="inform_menu_floor_input" ng-model="select.menuFloor" id="menuSecond4" value="16" type="radio" name="menuSecond">
 		<label class="inform_menu_floor_label" for="menuSecond4">16 эт</label>
+		<a class="inform_menu_reset" ng-click="resetForm(2)">&#9747;</a>
 	</div>
-	<div class="inform_menu_plan5floor">
-		<input class="inform_menu_plan5floor_input"  id="menuThird1" value="hr" type="radio" name="menuThird">
+	<div class="inform_menu_plan5floor" ng-if="select.menuFloor == 5">
+		<input class="inform_menu_plan5floor_input" ng-model="select.plan5floor" id="menuThird1" value="hr" type="radio" name="menuThird">
 		<label class="inform_menu_plan5floor_label" for="menuThird1">Хрушёвки</label>
-		<input class="inform_menu_plan5floor_input"  id="menuThird2" value="st" type="radio" name="menuThird">
+		<input class="inform_menu_plan5floor_input" ng-model="select.plan5floor" id="menuThird2" value="st" type="radio" name="menuThird">
 		<label class="inform_menu_plan5floor_label" for="menuThird2">Сталинки</label>
+		<a class="inform_menu_reset" ng-click="resetForm(3)">&#9747;</a>
 	</div>
-	<div class="inform_menu_planAllfloor">	
-		<input class="inform_planAllfloor_input"  id="menuFour1" value="pl" type="radio" name="menuFour">
+	<div class="inform_menu_planAllfloor" ng-if="select.menuFloor > 5">	
+		<input class="inform_planAllfloor_input" ng-model="select.planAllfloor" id="menuFour1" value="pl" type="radio" name="menuFour">
 		<label class="inform_planAllfloor_label" for="menuFour1">Польки</label>	
-		<input class="inform_planAllfloor_input"  id="menuFour2" value="ch" type="radio" name="menuFour">
+		<input class="inform_planAllfloor_input" ng-model="select.planAllfloor" id="menuFour2" value="ch" type="radio" name="menuFour">
 		<label class="inform_planAllfloor_label" for="menuFour2">Чешки</label>	
-		<input class="inform_planAllfloor_input"  id="menuFour3" value="ul" type="radio" name="menuFour">
+		<input class="inform_planAllfloor_input" ng-model="select.planAllfloor" id="menuFour3" value="ul" type="radio" name="menuFour">
 		<label class="inform_planAllfloor_label" for="menuFour3">Улучшенки</label>
+		<a class="inform_menu_reset" ng-click="resetForm(3)">&#9747;</a>
 	</div>
 	</div>
 	<div class="inform_content">
-    	<div class="inform_content_obj">
-    		 <img class="inform_content_obj_img" src="images/plan/1r_5fl_hr.jpg">
-			 <p class="inform_content_obj_name latoItal">1км 5эт Хрущёвка</p>
-		</div>
-		<div class="inform_content_obj">
-    		 <img class="inform_content_obj_img" src="images/plan/1r_5fl_hr.jpg">
-			 <p class="inform_content_obj_name latoItal">1км 5эт Хрущёвка</p>
-		</div>
-		<div class="inform_content_obj">
-    		 <img class="inform_content_obj_img" src="images/plan/1r_5fl_hr.jpg">
-			 <p class="inform_content_obj_name latoItal">1км 5эт Хрущёвка</p>
-		</div>
-		<div class="inform_content_obj">
-    		 <img class="inform_content_obj_img" src="images/plan/1r_5fl_hr.jpg">
-			 <p class="inform_content_obj_name latoItal">1км 5эт Хрущёвка</p>
-		</div>
-		<div class="inform_content_obj">
-    		 <img class="inform_content_obj_img" src="images/plan/1r_5fl_hr.jpg">
-			 <p class="inform_content_obj_name latoItal">1км 5эт Хрущёвка</p>
+    	<div class="inform_content_obj" ng-repeat="obj in arrPlan">
+    		 <img class="inform_content_obj_img" ng-src="images/plan/{{obj.name}}.jpg">
+			 <p class="inform_content_obj_name latoItal">{{obj.inf}}</p>
 		</div>
 	</div>
 </div>
-<div ng-controller="mainCtrl">
+<div>
     <h1>Main</h1>
     <input type="button" value="Оставить заявку" ng-click="buyForm ? buyForm = false : buyForm = true">
     <div ng-show="buyForm" ng-include="'component/main/request.html'"></div>
     <div ng-show="messageForForm">{{messageForForm}}</div>
+</div>
 </div>
