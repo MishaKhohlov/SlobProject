@@ -56,7 +56,7 @@ function begin() {
 			}
 		}	
 	};
-	setTimeout(event, 20);
+	setTimeout(event, 1000);
 	function event() {
 		$('.header_link_request_a').click(function(){
 		$('body, html').stop().animate({scrollTop : 0}, 400,  'linear');

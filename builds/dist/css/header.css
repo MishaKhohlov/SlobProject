@@ -52,12 +52,13 @@
 
 .mouse
 {
+display: block;
 height: 26px;
 width: 14px;
   border-radius: 10px;
   transform: none;
   border: 2px solid white;
-  top: 170px;
+	margin: 0 auto;
 }
 
 .wheel
@@ -124,54 +125,6 @@ width: 14px;
   50%  { opacity: .5; }
   100% { opacity: 1; }
 }
-/*-----------------------Sprite---------------------------------------*/
-.sprite {
-    background-image: url(../images/spritesheet.png);
-    background-repeat: no-repeat;
-    display: block;
-}
-
-.sprite-dot {
-    width: 20px;
-    height: 27px;
-    background-position: -10px -10px;
-}
-
-.sprite-eyes {
-    width: 60px;
-    height: 36px;
-    background-position: -50px -10px;
-}
-
-.sprite-floors {
-    width: 25px;
-    height: 24px;
-    background-position: -10px -66px;
-}
-
-.sprite-phone {
-    width: 14px;
-    height: 30px;
-    background-position: -55px -66px;
-}
-
-.sprite-phone_black {
-    width: 14px;
-    height: 30px;
-    background-position: -89px -66px;
-}
-
-.sprite-room {
-    width: 24px;
-    height: 24px;
-    background-position: -130px -10px;
-}
-
-.sprite-scroll-up {
-    width: 28px;
-    height: 35px;
-    background-position: -130px -54px;
-}
 /*-----------------------Begin---------------------------------------*/
 .head {
 	font-family: 'latolight';
@@ -219,16 +172,29 @@ a {
 	display: block;
 }
 .header_logo {
+	position: relative;
 	text-align: left;
 	flex-basis: 160px;
 	flex-wrap: nowrap;
 }
-.header_logoMin img {
-	margin-left: 20px;
-	width: 40px;
+.header_logo_img {
+	position: absolute;
+	height: 100px;
+	width: 100px;
+	transition: 0.5s ease-out all;
+	background: url(../images/logo.png) no-repeat ;
+	background-size: contain;
 }
-.header_logoMin {
+.header_logoMin .header_logo_img {
+	margin-top: -3px;
+	height: 29px;
+	width: 29px;
+}
+.header_logoMin{
 	flex-basis: 130px;
+	margin-left: 20px;
+	height: 29px;
+	width: 29px;
 }
 .header_link {
 	display: flex;
@@ -319,8 +285,6 @@ a {
 	height: 30px;
 	left: 12px;
 	top: 3px;
-	background-image: url(../images/phone_hover.png);
-	background-repeat: no-repeat;
 }
 .header_link_inform:hover .header_link_inform_phoneImg__hover{
 	display: block;

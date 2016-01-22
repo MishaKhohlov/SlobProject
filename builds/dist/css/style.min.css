@@ -253,6 +253,72 @@ th {
 .red {
 	color: #ff501c;
 }
+/*-----------------------Sprite---------------------------------------*/
+.sprite {
+    background-image: url(../images/spritesheet.png);
+    background-repeat: no-repeat;
+    display: block;
+}
+
+.sprite-dot {
+    width: 20px;
+    height: 27px;
+    background-position: -10px -10px;
+}
+
+.sprite-eyes {
+    width: 60px;
+    height: 36px;
+    background-position: -50px -10px;
+}
+
+.sprite-floors {
+    width: 25px;
+    height: 24px;
+    background-position: -130px -10px;
+}
+
+.sprite-go-inform {
+    width: 21px;
+    height: 24px;
+    background-position: -175px -10px;
+}
+
+.sprite-line {
+    width: 971px;
+    height: 2px;
+    background-position: -10px -66px;
+}
+
+.sprite-phone {
+    width: 14px;
+    height: 30px;
+    background-position: -216px -10px;
+}
+
+.sprite-phone_black {
+    width: 14px;
+    height: 30px;
+    background-position: -250px -10px;
+}
+
+.sprite-phone_hover {
+    width: 23px;
+    height: 29px;
+    background-position: -284px -10px;
+}
+
+.sprite-room {
+    width: 24px;
+    height: 24px;
+    background-position: -327px -10px;
+}
+
+.sprite-scroll-up {
+    width: 28px;
+    height: 35px;
+    background-position: -371px -10px;
+}
 /*----------------------------Begin-------------------------------*/
 body {
 	max-width: 1986px;
@@ -263,7 +329,6 @@ body {
 .page {
 	max-width: 1464px;
 	margin: 0 auto;
-	margin-top: -20px;
 }
 /*.ng-enter { z-index: 8888;}
 .ng-leave { z-index: 9999;}*/
