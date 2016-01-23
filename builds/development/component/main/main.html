@@ -4,10 +4,10 @@
       <div class="object_image imgObj1"></div>
           <div class="object_mask latoThin"><h2>Квартиры</h2></div>
     </div>
-    <div class="object">
+    <!--<div class="object">
       <div class="object_image imgObj2"></div>
           <div class="object_mask latoThin"><h2>Новострой</h2></div>
-    </div>
+    </div>-->
     <div class="object">
       <div class="object_image imgObj3"></div>
           <div class="object_mask latoThin"><h2>Дома</h2></div>
@@ -68,14 +68,12 @@
 	<div class="inform_content">
     	<div class="inform_content_obj" ng-repeat="obj in arrPlan">
     		 <img class="inform_content_obj_img" ng-src="images/plan/{{obj.name}}.jpg">
-			 <p class="inform_content_obj_name latoItal">{{obj.inf}}</p>
+			 <p class="inform_content_obj_name latoItal">{{obj.inform}}</p>
 		</div>
 	</div>
 </div>
 <div>
-    <h1>Main</h1>
-    <input type="button" value="Оставить заявку" ng-click="buyForm ? buyForm = false : buyForm = true">
-    <div ng-show="buyForm" ng-include="'component/main/request.html'"></div>
+    <div ng-include="'component/main/request.html'"></div>
     <div ng-show="messageForForm">{{messageForForm}}</div>
 </div>
 </div>
