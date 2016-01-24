@@ -1189,7 +1189,13 @@
             }, 3000)
 
         };
-
+		
+		$scope.data = [];
+        Data.getData(function(data){
+           for(var i = 0; i < 6; i++ ) {
+			    $scope.data.push(data[i]);
+		   }
+        });
         // Array with name's photo's plans
         var arrPlan  = ['1r_5fl_hr', '2r_5fl_st', '3r_9fl_pl', '4r_12fl_ch', '4r_16fl_ul'];
         var resultArrPlan = [];

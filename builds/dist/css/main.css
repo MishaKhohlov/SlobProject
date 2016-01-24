@@ -167,6 +167,87 @@
 .inform_menu_reset:active {
 	color: #ff501c;
 }
+.inform_content::-webkit-scrollbar{
+    width: 17px;
+	background-color: #d0d0d0;
+	border-radius: 25px;
+	// border: solid 1px #f00;
+}
+.inform_content::-webkit-scrollbar:horizontal{
+    height: 0px;
+}
+ 
+.inform_content::-webkit-scrollbar-thumb{
+    background-color: white;
+	border-radius: 25px;
+	border: 3px solid #d0d0d0;
+} 
+.inform_content::-webkit-scrollbar-thumb:hover{
+    background-color: rgba(255, 145, 28, 0.71);
+}
+
+.lastOffersTitle {
+	overflow: hidden;
+	position: relative;
+	border: 0px solid white;
+}
+.lastOffersTitle_line {
+	margin: 0 auto;
+	margin-top: 130px;
+	margin-bottom: 130px;
+}
+.lastOffersTitle_title {
+	text-align: center;
+	width: 300px;
+	position: absolute;
+	background: white;color: black;
+	display: block;
+	font-size: 24px;
+	margin: 0 auto;
+	top: 114px;
+	left: 0;
+	right: 0;
+	float: left;
+}
+
+.lastOffers {
+	display: flex;
+    flex-wrap: nowrap;
+	overflow: scroll;
+}
+.lastOffers::-webkit-scrollbar{
+    height: 17px;
+	background-color: #d0d0d0;
+	border-radius: 25px;
+}
+.lastOffers::-webkit-scrollbar:vertical{
+    width: 0px;
+}
+.lastOffers::-webkit-scrollbar-thumb{
+    background-color: white;
+	border-radius: 25px;
+	border: 3px solid #d0d0d0;
+} 
+.lastOffers::-webkit-scrollbar-thumb:hover{
+    background-color: rgba(255, 145, 28, 0.71);
+} 
+.lastOffers_obj {
+	background: #363636;
+}
+.lastOffers_obj_img {
+	overflow: hidden;
+	width: 293px;
+	height: 293px;
+}
+.lastOffers_obj_img img{
+	display: block;
+	margin: 0 auto;
+	overflow: hidden;
+	height: 293px;
+}
+.lastOffers_obj_inf {
+	
+}
 @media only screen and (min-device-width: 830px) and (max-device-width: 1165px), (min-width: 830px) and (max-width: 1165px) {
 	.inform_content_obj {
 		flex-basis: 350px;

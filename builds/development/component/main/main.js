@@ -6,7 +6,15 @@
 
     function mainCtrl ($scope, $log, Data, $timeout) {
         $log.debug("Main controller star");
-
+		
+		
+		$scope.data = [];
+        Data.getData(function(data){
+           for(var i = 0; i < 20; i++ ) {
+			    $scope.data.push(data[i]);
+		   }
+        });
+		
         $scope.sendForm = function(obj) {
             Data.setRequestObj(obj);
             $scope.item = {

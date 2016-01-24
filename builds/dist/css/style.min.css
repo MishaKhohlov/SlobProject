@@ -263,73 +263,100 @@ th {
 .sprite-dot {
     width: 20px;
     height: 27px;
-    background-position: -10px -10px;
+    background-position: -5px -5px;
 }
 
 .sprite-eyes {
     width: 60px;
     height: 36px;
-    background-position: -50px -10px;
+    background-position: -35px -5px;
 }
 
 .sprite-floors {
     width: 25px;
     height: 24px;
-    background-position: -130px -10px;
+    background-position: -105px -5px;
 }
 
 .sprite-go-inform {
     width: 21px;
     height: 24px;
-    background-position: -175px -10px;
+    background-position: -140px -5px;
 }
 
 .sprite-line {
     width: 971px;
     height: 2px;
-    background-position: -10px -66px;
+    background-position: -5px -51px;
 }
 
 .sprite-phone {
     width: 14px;
     height: 30px;
-    background-position: -216px -10px;
+    background-position: -171px -5px;
 }
 
 .sprite-phone_black {
     width: 14px;
     height: 30px;
-    background-position: -250px -10px;
+    background-position: -195px -5px;
 }
 
 .sprite-phone_hover {
     width: 23px;
     height: 29px;
-    background-position: -284px -10px;
+    background-position: -219px -5px;
 }
 
 .sprite-room {
     width: 24px;
     height: 24px;
-    background-position: -327px -10px;
+    background-position: -252px -5px;
 }
 
 .sprite-scroll-up {
     width: 28px;
     height: 35px;
-    background-position: -371px -10px;
+    background-position: -286px -5px;
 }
+
+.sprite-space {
+    width: 24px;
+    height: 24px;
+    background-position: -324px -5px;
+}
+
 /*----------------------------Begin-------------------------------*/
 body {
 	max-width: 1986px;
 	position: relative;
 	margin: 0 auto;
-	background: grey;
+	// background: #d0d0d0;
 }
 .page {
 	max-width: 1464px;
 	margin: 0 auto;
 }
+body::-webkit-scrollbar{
+    width: 19px;
+	border-radius: 25px;
+	background-color: #d0d0d0;
+	
+}
+ 
+body::-webkit-scrollbar-thumb{
+    background-color: white;
+	border-radius: 25px;
+	border: 3px solid #d0d0d0;
+} 
+body::-webkit-scrollbar-thumb:hover{
+    background-color: rgba(255, 145, 28, 0.71);
+}
+body::-webkit-scrollbar-button{
+    display: none;
+	
+}
+
 /*.ng-enter { z-index: 8888;}
 .ng-leave { z-index: 9999;}*/
 .hide {

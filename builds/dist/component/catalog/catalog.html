@@ -96,7 +96,7 @@
 
     <div infinite-scroll='infiniteScroll()' ng-show="data[0]">
         <p>Catalog/ Найденно объектов {{dataLength}}</p>
-    <li ng-repeat="(key, item) in data | filter : search | sortCatalog : filter | range : filterRange" ng-animate=" 'animate' "><a class="item_a" href="#/catalog/{{item.number_obj}}">
+    <li ng-repeat="(key, item) in data | filter : search | sortCatalog : filter | range : filterRange"><a class="item_a" href="#/catalog/{{item.number_obj}}">
         <div class="item">
             <p>Индекс {{$index+1}}</p>
             <div> <p>Photo</p>
