@@ -251,6 +251,9 @@ a {
 	flex-shrink: 0;
 	justify-content: flex-end;
 }
+.header_link_inform {
+	padding-right: 5px;
+}
 .header_link_request {
 	flex-basis: 140px;
 	margin-right: 20px;

@@ -1,5 +1,5 @@
 <div ng-controller="mainCtrl"> 
-<div class="Objects">
+<section class="Objects">
 	<div class="object">
       <div class="object_image imgObj1"></div>
           <div class="object_mask latoThin"><h2>Квартиры</h2></div>
@@ -20,8 +20,8 @@
       <div class="object_image imgObj5"></div>
           <div class="object_mask latoThin"><h2>Участки</h2></div>
     </div>
-</div>
-<div class="inform">
+</section>
+<section class="inform">
 	<h1 class="inform_title latoLight">Полезная информация</h1>
 	<h4 class="inform_minTitle latoThin">Планировки</h4>
 	<div class="inform_line sprite sprite-line"></div>
@@ -71,26 +71,55 @@
 			 <p class="inform_content_obj_name latoItal">{{obj.inform}}</p>
 		</div>
 	</div>
-</div>
+</section>
 <div class="lastOffersTitle">
 	<div class="lastOffersTitle_line sprite sprite-line"></div>
 	<h3 class="lastOffersTitle_title latoLight">Последние предложения</h3>
 </div>
-<div class="lastOffers">
+<section class="lastOffers">
 	<div ng-repeat="item in data" class="lastOffers_obj">
 		<div class="lastOffers_obj_img" >
 			<img ng-src="./uploads/{{item.photo_object[0]}}">
 		</div>
-		<div class="lastOffers_obj_inf">
-			<div class="lastOffers_obj_objInform"><div class="sprite sprite-dot"></div></div>
-			<div class="lastOffers_obj_objInform"><div class="sprite sprite-room"></div></div>
-			<div class="lastOffers_obj_objInform"><div class="sprite sprite-space"></div></div>
-			<div class="lastOffers_obj_objInform"><div class="sprite sprite-floors"></div></div>
+		<div class="lastOffers_obj_type">
+			<div class="lastOffers_obj_type_title">{{item.type}}</div>
+			<div class="lastOffers_obj_type_img sprite sprite-eyes"></div>
+			
+		</div>
+		<div class="lastOffers_obj_inf latoItal">
+			<div class="lastOffers_obj_objInform"><div class="sprite sprite-dot"></div><p class="lastOffers_obj_objInform_p">{{item.district}}</p></div>
+			<div class="lastOffers_obj_objInform"><div class="sprite sprite-room"></div>{{item.room}}</div>
+			<div class="lastOffers_obj_objInform"><div class="sprite sprite-space"></div>{{item.space}}</div>
+			<div ng-show="item.isolation_flat" class="lastOffers_obj_objInform"><div class="sprite sprite-floors"></div>{{item.isolation_flat}}</div>
+			<div ng-show="item.isolation_house" class="lastOffers_obj_objInform"><div class="sprite sprite-floors"></div>{{item.isolation_house}}</div>
 		</div>
 	</div>
-</div>
-<div>
-    <div ng-include="'component/main/request.html'"></div>
-    <div ng-show="messageForForm">{{messageForForm}}</div>
-</div>
+</section>
+<article class="article">
+	<h3 class="article_title latoLight">Подробнее</h3>
+	<div class="article_content_wrapper">
+	<div class="article_content latoItal">Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Вдали от всех живут они в буквенных домах на берегу Семантика большого языкового океана. Маленький ручеек Даль журчит по всей стране и обес- печивает ее всеми необходимыми правилами. Эта парадигматическая страна, в которой жа- ренные члены предложения залетают прямо в рот.  Даже всемогущая пунктуация не имеет власти над рыбными текстами, ведущими безорфогра- фичный образ жизни. Однажды одна маленькая строчка рыбного текста по имени Lorem ipsum решила выйти в большой мир грамматики. Великий Оксмокс предупреждал ее о злых запятых, диких знаках вопроса и коварных точках с запятой... пустился в дорогу. Взобравшись на первую вершину курсивных гор, бросил он последний взгляд назад, на силуэт своего родного города </div>
+	<a class="article_readMore latoThin">Подробнее<div class="sprite sprite-go-inform"></div></a>
+	</div>
+</article>
+<section class="requestMain">
+	<h1 class="requestMain_title latoLight">оставить заявку</h1>
+	<div class="sprite sprite-line"></div>
+	<div class="requestMain_wrapper">
+	<div class="requestMain_form">
+		<div class="requestMain_form_wrapper">
+			<input class="requestMain_form_name" type="text" placeholder="Ваше имя*" ng-model="item.name">
+			<input class="requestMain_form_middleName" type="text" placeholder="Отчество*" ng-model="item.middleName">
+			<input class="requestMain_form_phone"type="number" placeholder="Ваш телефон*" ng-model="item.phone">
+		</div>
+		<div class="requestMain_input_wrapper">
+		<label class="requestMain_form_label"><input ng-model="item.selectForm" type="radio" name="obj" value="buy">Купить</label>
+		<label class="requestMain_form_label"><input ng-model="item.selectForm" type="radio" name="obj" value="sell">Продать</label>
+		</div>
+		<textarea class="requestMain_form_discriptions" rows="10" cols="35" placeholder="Введите текст сообщения*" maxlength="300" ng-model="item.discriptions"></textarea>
+  		 <input class="requestMain_send latoLight"type="button" value="Отправить" ng-click="sendForm(item); item = null">
+    </div>
+    </div>
+    <div class="requestMain_message" ng-show="messageForForm">{{messageForForm}}</div>
+</section>
 </div>
