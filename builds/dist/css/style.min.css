@@ -289,7 +289,12 @@ th {
     height: 2px;
     background-position: -5px -51px;
 }
-
+.line_cut {
+	background: url(../images/line_cut.png) no-repeat;
+	height: 2px;
+	width: 833px;
+	margin: 0 auto;
+}
 .sprite-phone {
     width: 14px;
     height: 30px;
