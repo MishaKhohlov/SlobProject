@@ -71,9 +71,9 @@
 			 <p class="inform_content_obj_name latoItal">{{obj.inform}}</p>
 		</div>
 	</div>
-	<div ng-if="zoomPlanClose">
-		<a style="border: 1px solid red;" ng-click="closeZoom()">X</a>
-		<img class="inform_content_obj_img" ng-src="images/plan/{{objZoom}}.jpg">
+	<div class="inform_content_zoom" ng-if="zoomPlanClose">
+		<a class="inform_content_zoom_close latoItal" ng-click="closeZoom()">X</a>
+		<img class="inform_content_zoom_img" ng-src="images/plan/{{objZoom}}.jpg">
 	</div>
 </section>
 <div class="lastOffersTitle">

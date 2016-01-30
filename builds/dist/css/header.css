@@ -163,7 +163,8 @@ a {
 	top: 0;
 	width: 100%;
 	max-width: 1464px;
-	background: rgba(0, 0, 0, 0.83);
+	background: rgba(0, 0, 0, 0.8);
+	padding-bottom: 0px;
 }
 .headerMin .header_link_inform {
 	display: none;
@@ -220,13 +221,18 @@ a {
 	border-color: rgba(255, 255, 255, 0);
 }
 .header_link div a.active-link {
-	border-bottom: 3px solid #ff911c;
-	transition: 0.5s linear;
+	border-bottom: 3px solid #ff911c;	
 	opacity: 1;
 }
 .headerMin div {
 	padding-top: 5px;
 	padding-bottom: 0px;
+	height: 34px;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+.headerMin div a.active-link {
+	border-bottom: 7px solid #ff911c;
 }
 .headerMin .header_link div > a{
 	padding-bottom: 4px;
@@ -251,8 +257,9 @@ a {
 	flex-shrink: 0;
 	justify-content: flex-end;
 }
+/*padding phone*/
 .header_link_inform {
-	padding-right: 5px;
+	padding-right: 10px;
 }
 .header_link_request {
 	flex-basis: 140px;
@@ -380,6 +387,7 @@ a {
 }
 .header_link > div:hover  a.active-link + .linkMenu {
 	display: flex;
+	height: auto;
 }
 @media only screen and (min-device-width: 830px) and (max-device-width: 1300px), (min-width: 830px) and (max-width: 1300px) {
 	.header_link > div > a {

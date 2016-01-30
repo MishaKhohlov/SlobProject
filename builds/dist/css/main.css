@@ -56,9 +56,40 @@
    transform: translateX(0px);
 }
 .inform {
+	position: relative;
 	padding-top: 20px;
 	padding-bottom: 50px;
 	background: #f4f2f2;
+}
+.inform_content_zoom {
+	position: absolute;
+	top: 250px;
+	left: 0;
+	right: 0;
+	margin: 0 auto;
+	overflow: hidden;
+	max-width: 1200px;
+	height: 790px;
+	background: rgba(132, 132, 132, 0.8);
+}
+.inform_content_zoom_close {
+	font-size: 22px;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	color: white;
+	cursor: pointer;
+}
+.inform_content_zoom_img {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	display: block;
+	transform: scale(1.5);
+	
+	margin: auto;
 }
 .inform_menu {
 	margin-bottom: 70px;
