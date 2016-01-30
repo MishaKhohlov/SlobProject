@@ -1,8 +1,8 @@
 ;(function() {
 	"use strict";
 
-	angular.module('ngApp', ['ui.router', 'ngAnimate', 'ngCookies', 'ngStorage', 'ngCatalog',
-        'ngService', 'ngAbout',  'ngHeader', 'ngData', 'infinite-scroll', 'ngAuth', 'ngDataAbout', 'ngAdmin', 'ngDataAboutAdmin'])
+	angular.module('ngApp', ['ui.router', 'ngAnimate', 'ngStorage', 'ngMain', 'ngCatalog',
+        'ngAbout', 'ngHeader',  'ngService', 'ngJobs', 'ngLaws', 'ngData', 'infinite-scroll', 'ngAuth', 'ngDataAbout', 'ngAdmin', 'ngDataAboutAdmin'])
         .config(slobConfig)
         .constant('firebase_url', 'https://ngslob.firebaseio.com/');
         //.run(function(test, tw){});
@@ -259,7 +259,7 @@
 ;(function() {
     "use strict";
 
-    angular.module('ngAbout', ['ngAnimate', 'ngCookies'])
+    angular.module('ngAbout', [])
         .config(aboutConf)
         .controller('aboutCtrl', aboutCtrl);
 
@@ -282,7 +282,7 @@
 ;(function() {
 	"use strict";
 
-	angular.module('ngAdmin', ['ngAnimate', 'ngCookies'])
+	angular.module('ngAdmin', ['ngAnimate'])
 		.config(adminConfig)
 		.filter('userAccept', function() {
 			return function(inputData, params, admin) {
@@ -682,7 +682,7 @@
 ;(function() {
 	"use strict";
 
-	angular.module('ngCatalog', ['ngAnimate', 'ngCookies', 'infinite-scroll'])
+	angular.module('ngCatalog', ['infinite-scroll', 'ngStorage'])
         .config(catalogConf)
         .filter('sortCatalog', sortCatalog)
         .filter('range', slaidFilter)
@@ -786,8 +786,9 @@
             }
         }
     }
-    function catalogCtrl ($scope, $log, Data, $rootScope, $timeout) {
+    function catalogCtrl ($scope, $log, Data, $rootScope, $timeout, $sessionStorage) {
     	$log.debug("Catalog controller star");
+
         resetFormAddObjOther();
         function resetFormAddObjOther(){
             $scope.filterRange = {
@@ -811,6 +812,15 @@
             $scope.dataInfinite = data;
             $scope.data.push(data[0]);
             $scope.data.push(data[1]);
+            if($sessionStorage.goPage) {
+                $scope.filter = {
+                    type: null
+                };
+                $rootScope.offScroll = true;
+                $log.log('ses', $sessionStorage.goPage);
+                $scope.filter.type = $sessionStorage.goPage;
+                $sessionStorage.goPage = null;
+            }
         });
         $scope.infiniteScroll = function(){
             if($scope.dataInfinite && !$rootScope.offScroll) {
@@ -886,7 +896,7 @@
 ;(function() {
     "use strict";
 
-    angular.module('ngDataAboutAdmin', ['ngAnimate', 'ngCookies', 'angularFileUpload'])
+    angular.module('ngDataAboutAdmin', ['angularFileUpload'])
         .config(aboutAdminConf)
         .directive('ngThumb', ['$window', function($window) {
             var helper = {
@@ -1119,7 +1129,7 @@
 ;(function() {
     "use strict";
 
-    angular.module('ngDataAbout', ['ngAnimate', 'ngCookies'])
+    angular.module('ngDataAbout', [])
         .config(listConf)
         .controller('listCtrl', listCtrl);
 
@@ -1149,10 +1159,18 @@
     angular.module('ngHeader', ['ngAnimate'])
         .controller('headerCtrl', headerCtrl);
 
-    function headerCtrl ($scope, $log, Data, $timeout) {
+    function headerCtrl ($scope, $log, Data, $timeout, $state) {
         $log.debug("Headeer controller star");
         $scope.closeAddForm = function(){
             $scope.buyForm = false;
+        };
+        var count = 0;
+        $scope.agpt = function(){
+            count++;
+            if(count == 3) {
+                $state.go('admin');
+                count = 0;
+            }
         };
         $scope.sendForm = function(obj) {
             Data.setRequestObj(obj);
@@ -1168,12 +1186,67 @@
 ;(function() {
     "use strict";
 
-    angular.module('ngAbout', ['ngAnimate', 'ngCookies'])
+    angular.module('ngJobs', [])
+        .config(jobsConf);
+
+    function jobsConf($stateProvider){
+        $stateProvider
+            .state('jobs', {
+                url: '/jobs',
+                templateUrl: 'component/jobs/jobs.html'
+            })
+    }
+})();
+;(function() {
+    "use strict";
+
+    angular.module('ngLaws', [])
+        .config(lawsConf);
+
+    function lawsConf($stateProvider){
+        $stateProvider
+            .state('laws', {
+                url: '/laws',
+                templateUrl: 'component/laws/laws.html'
+            })
+    }
+})();
+;(function() {
+    "use strict";
+
+    angular.module('ngMain', ['ngStorage'])
         .controller('mainCtrl', mainCtrl);
 
-    function mainCtrl ($scope, $log, Data, $timeout) {
+    function mainCtrl ($scope, $log, Data, $timeout, $state,  $sessionStorage) {
         $log.debug("Main controller star");
 
+        $scope.zoomPlanClose = false;
+        $scope.zoomPlan = function(src){
+            $scope.zoomPlanClose = true;
+            $scope.objZoom = src;
+        };
+        $scope.closeZoom = function(){
+            $scope.zoomPlanClose = false;
+        };
+		$scope.data = [];
+        var length;
+        Data.getData(function(data){
+            if(data.length > 15) {
+                length = 15;
+            } else {
+                length = data.length;
+            }
+           for(var i = 0; i < length-1; i++ ) {
+			    $scope.data.push(data[i]);
+		   }
+        });
+		$scope.goPageCatalog = function(sort) {
+            $sessionStorage.goPage = sort;
+            $state.go('catalog');
+        };
+        $scope.goPageAbout = function() {
+            $state.go('about');
+        };
         $scope.sendForm = function(obj) {
             Data.setRequestObj(obj);
             $scope.item = {
@@ -1189,15 +1262,12 @@
             }, 3000)
 
         };
-		
-		$scope.data = [];
-        Data.getData(function(data){
-           for(var i = 0; i < 6; i++ ) {
-			    $scope.data.push(data[i]);
-		   }
-        });
+
         // Array with name's photo's plans
-        var arrPlan  = ['1r_5fl_hr', '2r_5fl_st', '3r_9fl_pl', '4r_12fl_ch', '4r_16fl_ul'];
+        var arrPlan  = ['1r_5fl_hr', '1r_9fl_pl', '1r_9fl_ul', '1r_12fl_ch', '1r_16fl_ch', '1r_16fl_pl',
+        '2r_5fl_hr', '2r_9fl_pl', '2r_9fl_ul', '2r_12fl_ch', '2r_16fl_ch', '2r_5fl_st',
+        '3r_5fl_hr', '3r_9fl_pl', '3r_9fl_ul', '3r_12fl_ch', '3r_16fl_ch', '3r_5fl_st', '3r_12fl_ul', '3r_16fl_pl', '3r_16fl_ul',
+        '4r_9fl_pl', '4r_9fl_ul', '4r_12fl_ch','4r_16fl_ch', '4r_16fl_pl'];
         var resultArrPlan = [];
         parse(arrPlan);
         $scope.arrPlan = resultArrPlan;
@@ -1316,23 +1386,14 @@
 ;(function() {
     "use strict";
 
-    angular.module('ngService', ['ngAnimate', 'ngCookies'])
-        .config(serviceConf)
-        .controller('serviceCtrl', serviceCtrl);
-
-    function serviceCtrl ($scope, $log) {
-        $log.debug("Service controller star");
-
-
-        $log.debug("Service controller finish");
-    }
+    angular.module('ngService', [])
+        .config(serviceConf);
 
     function serviceConf($stateProvider){
         $stateProvider
             .state('service', {
                 url: '/service',
-                templateUrl: 'component/service/service.html',
-                controller: 'serviceCtrl'
+                templateUrl: 'component/service/service.html'
             })
     }
 })();

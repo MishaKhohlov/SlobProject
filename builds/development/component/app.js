@@ -1,8 +1,8 @@
 ;(function() {
 	"use strict";
 
-	angular.module('ngApp', ['ui.router', 'ngAnimate', 'ngCookies', 'ngStorage', 'ngCatalog',
-        'ngService', 'ngAbout',  'ngHeader', 'ngData', 'infinite-scroll', 'ngAuth', 'ngDataAbout', 'ngAdmin', 'ngDataAboutAdmin'])
+	angular.module('ngApp', ['ui.router', 'ngAnimate', 'ngStorage', 'ngMain', 'ngCatalog',
+        'ngAbout', 'ngHeader',  'ngService', 'ngJobs', 'ngLaws', 'ngData', 'infinite-scroll', 'ngAuth', 'ngDataAbout', 'ngAdmin', 'ngDataAboutAdmin'])
         .config(slobConfig)
         .constant('firebase_url', 'https://ngslob.firebaseio.com/');
         //.run(function(test, tw){});

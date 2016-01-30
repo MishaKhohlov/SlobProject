@@ -1,7 +1,7 @@
 ;(function() {
 	"use strict";
 
-	angular.module('ngAdmin', ['ngAnimate', 'ngCookies'])
+	angular.module('ngAdmin', ['ngAnimate'])
 		.config(adminConfig)
 		.filter('userAccept', function() {
 			return function(inputData, params, admin) {

@@ -1,7 +1,7 @@
 ;(function() {
     "use strict";
 
-    angular.module('ngDataAboutAdmin', ['ngAnimate', 'ngCookies', 'angularFileUpload'])
+    angular.module('ngDataAboutAdmin', ['angularFileUpload'])
         .config(aboutAdminConf)
         .directive('ngThumb', ['$window', function($window) {
             var helper = {

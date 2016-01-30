@@ -1,7 +1,7 @@
 ;(function() {
     "use strict";
 
-    angular.module('ngAbout', ['ngAnimate', 'ngCookies'])
+    angular.module('ngAbout', [])
         .config(aboutConf)
         .controller('aboutCtrl', aboutCtrl);
 

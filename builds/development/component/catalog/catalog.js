@@ -1,7 +1,7 @@
 ;(function() {
 	"use strict";
 
-	angular.module('ngCatalog', ['ngAnimate', 'ngCookies', 'infinite-scroll'])
+	angular.module('ngCatalog', ['infinite-scroll', 'ngStorage'])
         .config(catalogConf)
         .filter('sortCatalog', sortCatalog)
         .filter('range', slaidFilter)
@@ -105,8 +105,9 @@
             }
         }
     }
-    function catalogCtrl ($scope, $log, Data, $rootScope, $timeout) {
+    function catalogCtrl ($scope, $log, Data, $rootScope, $timeout, $sessionStorage) {
     	$log.debug("Catalog controller star");
+
         resetFormAddObjOther();
         function resetFormAddObjOther(){
             $scope.filterRange = {
@@ -130,6 +131,15 @@
             $scope.dataInfinite = data;
             $scope.data.push(data[0]);
             $scope.data.push(data[1]);
+            if($sessionStorage.goPage) {
+                $scope.filter = {
+                    type: null
+                };
+                $rootScope.offScroll = true;
+                $log.log('ses', $sessionStorage.goPage);
+                $scope.filter.type = $sessionStorage.goPage;
+                $sessionStorage.goPage = null;
+            }
         });
         $scope.infiniteScroll = function(){
             if($scope.dataInfinite && !$rootScope.offScroll) {

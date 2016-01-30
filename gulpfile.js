@@ -17,10 +17,10 @@ gulp.task('js', function() {
     .pipe(gulp.dest('builds/dist/app/'))
 });
 
-gulp.task('html', function() {
-  gulp.src('builds/development/**/*.html')
-    .pipe(gulp.dest('builds/dist/'))
-});
+// gulp.task('html', function() {
+//   gulp.src('builds/development/**/*.html')
+//     .pipe(gulp.dest('builds/dist/'))
+// });
 
  gulp.task('img', function() {
    gulp.src('builds/development/img/**')
@@ -51,9 +51,9 @@ gulp.task('html', function() {
 
 gulp.task('watch', function() {
   gulp.watch('builds/development/component/**/*.js', ['js']);
-  gulp.watch('builds/development/style/**/*.css', ['css']);
-  gulp.watch('builds/development/**/*.html', ['html']);
-  gulp.watch('builds/development/img/**/*', ['img']);
+  // gulp.watch('builds/development/style/**/*.css', ['css']);
+  // gulp.watch('builds/development/**/*.html', ['html']);
+  // gulp.watch('builds/development/img/**/*', ['img']);
 });
 
 gulp.task('libs', function() {
@@ -70,16 +70,16 @@ gulp.task('libs', function() {
              bc+'jquery/dist/jquery.min.js',
              bc+'angular/angular.js',
              bc+'angular-animate/angular-animate.js',
-             bc+'angular-cookies/angular-cookies.js',
+             // bc+'angular-cookies/angular-cookies.js',
              bc+'ngstorage/ngStorage.js',
              bc+'angular-file-upload/dist/angular-file-upload.js',
-             bc+'angular-i18n/angular-locale_ru-ru.js',
+             // bc+'angular-i18n/angular-locale_ru-ru.js',
              bc+'angular-loader/angular-loader.js',
              bc+'angular-resource/angular-resource.js',
              bc+'angular-animate/angular-animate.js',
              bc+'angular-ui-router/release/angular-ui-router.js',
-             bc+'angular-sanitize/angular-sanitize.js',
-             bc+'angular-touch/angular-touch.js',
+             // bc+'angular-sanitize/angular-sanitize.js',
+             // bc+'angular-touch/angular-touch.js',
              bc+'ngInfiniteScroll/build/ng-infinite-scroll.min.js',
              bc+'firebase/firebase.js',
              bc+'angularfire/dist/angularfire.js'
@@ -99,9 +99,9 @@ gulp.task('webserver', function() {
 
 gulp.task('default', [
    'libs',
-  'html',
-   'img',
-    // 'css',
+  // 'html',
+  // 'img',
+  // 'css',
   // 'css-ui',
   // 'css-ui-themse',
   'js',

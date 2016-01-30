@@ -1,20 +1,39 @@
 ;(function() {
     "use strict";
 
-    angular.module('ngAbout', ['ngAnimate', 'ngCookies'])
+    angular.module('ngMain', ['ngStorage'])
         .controller('mainCtrl', mainCtrl);
 
-    function mainCtrl ($scope, $log, Data, $timeout) {
+    function mainCtrl ($scope, $log, Data, $timeout, $state,  $sessionStorage) {
         $log.debug("Main controller star");
-		
-		
+
+        $scope.zoomPlanClose = false;
+        $scope.zoomPlan = function(src){
+            $scope.zoomPlanClose = true;
+            $scope.objZoom = src;
+        };
+        $scope.closeZoom = function(){
+            $scope.zoomPlanClose = false;
+        };
 		$scope.data = [];
+        var length;
         Data.getData(function(data){
-           for(var i = 0; i < 20; i++ ) {
+            if(data.length > 15) {
+                length = 15;
+            } else {
+                length = data.length;
+            }
+           for(var i = 0; i < length-1; i++ ) {
 			    $scope.data.push(data[i]);
 		   }
         });
-		
+		$scope.goPageCatalog = function(sort) {
+            $sessionStorage.goPage = sort;
+            $state.go('catalog');
+        };
+        $scope.goPageAbout = function() {
+            $state.go('about');
+        };
         $scope.sendForm = function(obj) {
             Data.setRequestObj(obj);
             $scope.item = {
@@ -32,7 +51,10 @@
         };
 
         // Array with name's photo's plans
-        var arrPlan  = ['1r_5fl_hr', '2r_5fl_st', '3r_9fl_pl', '4r_12fl_ch', '4r_16fl_ul'];
+        var arrPlan  = ['1r_5fl_hr', '1r_9fl_pl', '1r_9fl_ul', '1r_12fl_ch', '1r_16fl_ch', '1r_16fl_pl',
+        '2r_5fl_hr', '2r_9fl_pl', '2r_9fl_ul', '2r_12fl_ch', '2r_16fl_ch', '2r_5fl_st',
+        '3r_5fl_hr', '3r_9fl_pl', '3r_9fl_ul', '3r_12fl_ch', '3r_16fl_ch', '3r_5fl_st', '3r_12fl_ul', '3r_16fl_pl', '3r_16fl_ul',
+        '4r_9fl_pl', '4r_9fl_ul', '4r_12fl_ch','4r_16fl_ch', '4r_16fl_pl'];
         var resultArrPlan = [];
         parse(arrPlan);
         $scope.arrPlan = resultArrPlan;

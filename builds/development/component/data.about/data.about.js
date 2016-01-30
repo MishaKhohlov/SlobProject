@@ -1,7 +1,7 @@
 ;(function() {
     "use strict";
 
-    angular.module('ngDataAbout', ['ngAnimate', 'ngCookies'])
+    angular.module('ngDataAbout', [])
         .config(listConf)
         .controller('listCtrl', listCtrl);
 
