@@ -1,125 +1,149 @@
-<main>
-<h1>Catalog page</h1>
-    <div>Поиск<br>
-        Поиск по имени объекта или номеру<input type="text" ng-model="searchOr"><br>
-        <div>{{messageForSearch}}</div>
-        </div>
-    <div>
-        <h1>Sort</h1>
-
-        <p>Объект</p>
-        <select ng-model="filter.type">
-            <option value="">Выберите тип объекта</option>
-            <option>Квартира</option>
-            <option>Дом</option>
-            <option>Участки</option>
-            <option>Нежилая недвижимость</option>
-        </select><br/>
-
-        <p>Свойства дома</p>
-    <select ng-show="filter.type == 'Дом'" ng-model="filter.isolation_house">
-        <option value="">Выбирете свойства объекта</option>
-        <option>Часть дома</option>
-        <option>Целый дом</option>
-        <option>Дача</option>
-    </select><br/>
-
-        <p>Свойства Квартиры</p>
-    <select ng-show="filter.type == 'Квартира'"  ng-model="filter.isolation_flat">
-        <option value="">Выбирете  свойства объекта</option>
-        <option>Изолированные</option>
-        <option>Гостинки</option>
-    </select><br/>
-
-        <p> Кол-во комнат</p>
-    <select ng-model="filter.room" ng-show="filter.type == 'Квартира' || filter.type == 'Дом'">
-        <option value="">Выбирете кол-во комнат</option>
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-        <option>4</option>
-        <option>Многокомнатные</option>
-        <option>Элитные</option>
-    </select><br/>
-
-        <p> Цена </p>
-       <input ng-model="filterRange.price.from" placeholder="От" type="number"><br/>
-       <input ng-model="filterRange.price.to" placeholder="До" type="number"><br/>
-
-        <p>Местоположение</p>
-    <select ng-model="filter.city">
-        <option value="">Выбирете местоположение</option>
-        <option>Харьков</option>
-        <option>Пригород</option>
-    </select><br/>
-
-        <p>Район</p>
-    <select ng-show="filter.city == 'Харьков'" ng-model="filter.district">
-        <option value="">Выбирете район</option>
-        <option>Алеексеевка</option>
-        <option>Аэропорт</option>
-        <option>Восточный</option>
-        <option>пл.Восстания(Конный рынок)</option>
-        <option>Гагарина</option>
-        <option>Бавария</option>
-        <option>Жуковского</option>
-        <option>Журавлёвка</option>
-        <option>Завод им. Шевченко (ХПЗ)</option>
-        <option>Залютина</option>
-        <option>Ивановка</option>
-        <option>Лысая гора</option>
-        <option>Москалёвка</option>
-        <option>Немышля</option>
-        <option>Новые Дома</option>
-        <option>Одеская</option>
-        <option>Основа</option>
-        <option>Павлово Поле</option>
-        <option>Павловка</option>
-        <option>Песочин</option>
-        <option>Петихатки</option>
-        <option>Рогань</option>
-        <option>Салтовка</option>
-        <option>Северная Салтовка</option>
-        <option>Сортировка</option>
-        <option>Холодная гора</option>
-        <option>ХТЗ</option>
-        <option>Шишковка</option>
-        <option>Центр</option>
-    </select><br/>
-
-        <p>Площадь</p>
-        <input type="number"  ng-model="filterRange.space.from" placeholder="От"><br/>
-        <input type="number"  ng-model="filterRange.space.to" placeholder="До"><br/>
-        <input type="button" value="Сбросить фильтры" ng-click="resetFilter()" ng-disabled="clickReset">
+<section class="Objects catalog">
+    <div class="object">
+      <div ng-click="" class="object_image imgObj1"></div>
+          <div ng-click="" class="object_mask latoThin"><h2>Квартиры</h2></div>
     </div>
-
-
-    <div infinite-scroll='infiniteScroll()' ng-show="data[0]">
-        <p>Catalog/ Найденно объектов {{dataLength}}</p>
-    <li ng-repeat="(key, item) in data | filter : search | sortCatalog : filter | range : filterRange"><a class="item_a" href="#/catalog/{{item.number_obj}}">
-        <div class="item">
-            <p>Индекс {{$index+1}}</p>
-            <div> <p>Photo</p>
-                <ul>
-                    <li style="width: 150px" class="li_image_photo" ng-repeat="(key, item) in item.photo_object"><img class="image_photo" ng-src="./uploads/{{item}}"></br>
-                    </li>
-
-                </ul>
+    <!--<div class="object">
+      <div ng-click="" class="object_image imgObj2"></div>
+          <div ng-click="" class="object_mask latoThin"><h2>Новострой</h2></div>
+    </div>-->
+    <div class="object">
+      <div ng-click="" class="object_image imgObj3"></div>
+          <div ng-click="" class="object_mask latoThin"><h2>Дома</h2></div>
+    </div>
+    <div class="object">
+      <div ng-click="" class="object_image imgObj4"></div>
+          <div ng-click="" class="object_mask latoThin"><h2>Нежилая</h2></div>
+    </div>
+    <div class="object">
+      <div ng-click="" class="object_image imgObj5"></div>
+          <div ng-click="" class="object_mask latoThin"><h2>Участки</h2></div>
+    </div>
+</section>
+<section class="search">
+    <h1 class="search_title">Подбор по параметрам</h1>
+    <div class="inform_line sprite sprite-line"></div>
+    <div class="search_contrl">
+        <div class="search_contrl_left">
+            <div class="search_contrl_left_str">
+                <div class="sprite sprite-space"></div>
+                <div class="search_contrl_left_str_ye">м</div>
+                 <input type="number" ng-model="filterRange.space.from" placeholder="От">
+                 <div class="search_contrl_left_str_line">--</div> 
+                <div class="search_contrl_left_str_ye">м</div>
+                <input type="number" ng-model="filterRange.space.to" placeholder="До">
             </div>
-            <p>Тип {{item.type}}</p>
-            <p ng-show="item.name_obj">Имя {{item.name_obj}}</p>
-            <p>Номер объекта {{item.number_obj}}</p>
-            <p ng-show="item.isolation_house">Изолир Дома {{item.isolation_house}}</p>
-            <p ng-show="item.isolation_flat">Изолир Кварт {{item.isolation_flat}}</p>
-            <p ng-show="item.room">Кол-во комнат {{item.room}}</p>
-            <p ng-show="item.district">Район {{item.district}}</p>
-            <p ng-show="item.space">Площадь {{item.space}}</p>
-            <p>Имя Агента {{item.name_agent}}</p>
-            <p ng-show="item.phone_agent" ng-repeat="phone in item.phone_agent">Телефон {{phone}}</p>
-            <p ng-show="item.discriptions">Описание {{item.discriptions}}</p>
-            <p ng-show="item.price">Стоимость {{item.price}}</p>
+            <div class="search_contrl_left_str">
+                <img src="../../images/price.png">
+                <div class="search_contrl_left_str_ye">y.e.</div>
+                <input ng-model="filterRange.price.from" placeholder="От" type="number"> 
+                <div class="search_contrl_left_str_line">--</div> 
+                <div class="search_contrl_left_str_ye">y.e.</div>
+                 <input ng-model="filterRange.price.to" placeholder="До" type="number"><br/>
+            </div>
+            <div class="search_contrl_left_str">
+                <input class="search_contrl_right_str_bigInp" type="text" ng-model="searchOr" placeholder="Введите имя или номер объекта">
+            </div>
         </div>
-    </a></li>
+        <div class="search_contrl_right">
+            <div class="search_contrl_right_str">
+                <select ng-model="filter.type">
+                    <option value="">Тип объекта</option>
+                    <option>Квартира</option>
+                    <option>Дом</option>
+                    <option>Участки</option>
+                    <option>Нежилая недвижимость</option>
+                </select>
+                <select ng-show="filter.type == 'Квартира'"  ng-model="filter.isolation_flat">
+                    <option value="">Cвойства объекта</option>
+                    <option>Изолированные</option>
+                    <option>Гостинки</option>
+                </select>
+                <select ng-show="filter.type == 'Дом'" ng-model="filter.isolation_house">
+                    <option value="">Cвойства объекта</option>
+                    <option>Часть дома</option>
+                    <option>Целый дом</option>
+                    <option>Дача</option>
+                </select>
+            </div>
+            <div class="search_contrl_right_str">
+                <select ng-model="filter.room" ng-show="filter.type == 'Квартира' || filter.type == 'Дом'">
+                    <option value="">Кол-во комнат</option>
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>Многокомнатные</option>
+                    <option>Элитные</option>
+                </select>
+                <select ng-model="filter.city">
+                    <option value="">Местоположение</option>
+                    <option>Харьков</option>
+                    <option>Пригород</option>
+                </select>
+            </div>
+            <div class="search_contrl_right_str">
+                <select  class="search_contrl_right_str_bigInp" ng-show="filter.city == 'Харьков'" ng-model="filter.district">
+                    <option value="">Выбирете район</option>
+                    <option>Алеексеевка</option>
+                    <option>Аэропорт</option>
+                    <option>Восточный</option>
+                    <option>пл.Восстания(Конный рынок)</option>
+                    <option>Гагарина</option>
+                    <option>Бавария</option>
+                    <option>Жуковского</option>
+                    <option>Журавлёвка</option>
+                    <option>Завод им. Шевченко (ХПЗ)</option>
+                    <option>Залютина</option>
+                    <option>Ивановка</option>
+                    <option>Лысая гора</option>
+                    <option>Москалёвка</option>
+                    <option>Немышля</option>
+                    <option>Новые Дома</option>
+                    <option>Одеская</option>
+                    <option>Основа</option>
+                    <option>Павлово Поле</option>
+                    <option>Павловка</option>
+                    <option>Песочин</option>
+                    <option>Петихатки</option>
+                    <option>Рогань</option>
+                    <option>Салтовка</option>
+                    <option>Северная Салтовка</option>
+                    <option>Сортировка</option>
+                    <option>Холодная гора</option>
+                    <option>ХТЗ</option>
+                    <option>Шишковка</option>
+                    <option>Центр</option>
+                </select>
+            </div>            
         </div>
-    <div ng-hide="data[0]">Загрузка данных</div>
-</main>
+        <input  class="search_contrl_reset" type="button" value="Сбросить фильтры" ng-click="resetFilter()" ng-disabled="clickReset">
+    </div>
+    <div class="search_contrl_found">Найденно {{dataLength}} объекта</div>
+</section>
+<section infinite-scroll='infiniteScroll()' ng-show="data[0]">
+    <div class="itemCatl">
+            <a class="item_a" href="#/catalog/{{item.number_obj}}" ng-repeat="(key, item) in data | filter : search | sortCatalog : filter | range : filterRange">
+                <div class="item">
+                    <p>Индекс {{$index+1}}</p>
+                    <div>
+                        <div class="li_image_photo" ng-repeat="(key, item) in item.photo_object"><img class="image_photo" ng-src="./uploads/{{item}}"></br>
+                        </div>
+                    </div>
+                    <p>Тип {{item.type}}</p>
+                    <p ng-show="item.name_obj">Имя {{item.name_obj}}</p>
+                    <p>Номер объекта {{item.number_obj}}</p>
+                    <p ng-show="item.isolation_house">Изолир Дома {{item.isolation_house}}</p>
+                    <p ng-show="item.isolation_flat">Изолир Кварт {{item.isolation_flat}}</p>
+                    <p ng-show="item.room">Кол-во комнат {{item.room}}</p>
+                    <p ng-show="item.district">Район {{item.district}}</p>
+                    <p ng-show="item.space">Площадь {{item.space}}</p>
+                    <p>Имя Агента {{item.name_agent}}</p>
+                    <p ng-show="item.phone_agent" ng-repeat="phone in item.phone_agent">Телефон {{phone}}</p>
+                    <p ng-show="item.discriptions">Описание {{item.discriptions}}</p>
+                    <p ng-show="item.price">Стоимость {{item.price}}</p>
+                </div>
+            </a>
+    </div>
+</section>
+<div ng-hide="data[0]">Загрузка данных</div>

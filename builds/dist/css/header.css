@@ -276,8 +276,10 @@ a {
 	opacity: 0.8;
 }
 .header_link_inform_phone {
-	margin-right: 3px;
 	opacity: 0.8;
+	margin-right: 3px;
+	padding-left: 3px;
+	padding-right: 3px;
 }
 .header_link_inform_phone:hover {
 	transition: 0.3s linear;

@@ -1,40 +1,10 @@
 $(window).load(begin);
 function begin() {
-//	$('a[href^="#"]').click(function(){
-//	var target = $(this).attr('href');
-//	$('html, body').animate({scrollTop: $(target).offset().top}, 800);
-//	return false;
-//	});
-//	setTimeout(readyOn, 20);
-//	function readyOn() {
-//		// menu on script
-//		$('.header_link > div').mouseenter(function(event){
-//			var linkClass = '.' + event.currentTarget.className + '_menu';
-//			var link = '.' + event.currentTarget.className;
-//			
-//			var searchLink = $(linkClass);
-//			searchLink.addClass('showFlex');
-//			var dontClose = true;
-//			$(link).mouseleave(function(){
-//				setTimeout(function(){	
-//					if(dontClose) {
-//						searchLink.removeClass('showFlex');
-//					}
-//				}, 1000)
-//			})
-//		    $(searchLink).mouseenter(function(){
-//			   dontClose = false;
-//		    })
-//		    $(searchLink).mouseleave(function(){
-//			   	searchLink.removeClass('showFlex');
-//		    })
-//			
-//		})
-//	}
 	if (window.matchMedia('(max-width: 1285px)').matches) {
 		console.log('Min')
 	}
 	var scrollPage = true;
+	var scrollLink = true;
 	var scrollEnabled = false;
 	var accessSlider = true;
 	
@@ -60,11 +30,23 @@ function begin() {
 	function event() {
 		$('.header_link_request_a').click(function(){
 		$('body, html').stop().animate({scrollTop : 0}, 400,  'linear');
-	});	
+		});
+		$('.flag').bind("click", function(e){
+		scrollLink = false;
+		scrollPage = false;
+		  var anchor = $(this);
+		  $('html, body').stop().animate({
+		     scrollTop: $(anchor.attr('href')).offset().top - 60
+		  }, 1000);
+		  setTimeout(function(){
+					scrollLink = true;
+				}, 1001);
+		  e.preventDefault();
+		});	
 	}
 	$(window).scroll(function(eventObject){
 		var scroll = Math.round($(window).scrollTop());
-		if (!window.matchMedia('(max-width: 1285px)').matches) {
+		if (!window.matchMedia('(max-width: 1285px)').matches && scrollLink) {
 			if(scroll > 150 && scrollPage) {
 				disableScroll();
 				$('body, html').stop().animate({scrollTop : 688}, 800,  'linear');
@@ -80,7 +62,7 @@ function begin() {
 			}
 			if(scroll <= 150) {
 				scrollPage = true;
-			}
+			} 
 			if(scroll <= 682) {
 				accessSlider = true;
 			} else {

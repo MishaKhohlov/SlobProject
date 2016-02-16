@@ -1,24 +1,24 @@
  <div class="slider" ng-controller="headerCtrl">
- <header class="head">
+ <header class="head" id="head">
   <div class="header">
 	<div class="header_logo" ng-click="agpt()"><div class="header_logo_img"></div></div>
 	<nav class="header_link">
 		<div class="header_link_home">
 			<a ui-sref="home" ui-sref-active="active-link" >Главная</a>
 			<div class="header_link_home_menu linkMenu">
-					<a href="#">Полезная информация</a>
-					<a href="#">Заголовок</a>
-					<a href="#">Последние предложения</a>
-					<a href="#">Оставить заявку</a>	
+					<a class="flag" href="#usefulInf">Полезная информация</a>
+					<a class="flag" href="#about">О Нас</a>
+					<a class="flag" href="#lastOffers">Последние предложения</a>
+					<a class="flag" href="#requestForm">Оставить заявку</a>	
 			</div>
 		</div>
 		<div class="header_link_catalog">
 			<a ui-sref="catalog" ui-sref-active="active-link">Каталог</a>
 			<div class="header_link_catalog_menu linkMenu">
-					<a href="#">Полезная информация 2</a>
-					<a href="#">Заголовок</a>
-					<a href="#">Последние предложения</a>
-					<a href="#">Оставить заявку</a>	
+					<a class="flag" href="#">Полезная информация 2</a>
+					<a class="flag" href="#">Заголовок</a>
+					<a class="flag" href="#">Последние предложения</a>
+					<a class="flag" href="#">Оставить заявку</a>	
 			</div>
 		</div>
 		<div class="header_link_service">
@@ -27,12 +27,12 @@
 		<div class="header_link_about">
 		<a ui-sref="about" ui-sref-active="active-link">О нас</a>
 		</div>
-		<div class="header_link_jobs">
+		<!-- <div class="header_link_jobs">
 		<a ui-sref="jobs" ui-sref-active="active-link">Вакансии</a>
-		</div>
-		<div class="header_link_laws">
+		</div> -->
+		<!-- <div class="header_link_laws">
 		<a ui-sref="laws" ui-sref-active="active-link">Законы</a>
-		</div>
+		</div> -->
 		<div class="header_link_admin hide">
 		<a ui-sref="admin" ui-sref-active="active-link">Админстрирование</a>
 		</div>
