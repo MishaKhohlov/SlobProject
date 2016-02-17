@@ -123,26 +123,24 @@
 </section>
 <section infinite-scroll='infiniteScroll()' ng-show="data[0]">
     <div class="itemCatl">
-            <a class="item_a" href="#/catalog/{{item.number_obj}}" ng-repeat="(key, item) in data | filter : search | sortCatalog : filter | range : filterRange">
-                <div class="item">
-                    <p>Индекс {{$index+1}}</p>
-                    <div>
-                        <div class="li_image_photo" ng-repeat="(key, item) in item.photo_object"><img class="image_photo" ng-src="./uploads/{{item}}"></br>
-                        </div>
+            <a class="itemCatl_obj" href="#/catalog/{{item.number_obj}}" ng-repeat="(key, item) in data | filter : search | sortCatalog : filter | range : filterRange">
+                    <div class="itemCatl_obj_title">{{item.type}}</div>
+                    <div class="itemCatl_obj_location">{{item.city}}, {{item.district}}</div>
+                    <div class="itemCatl_obj_mask">
+                            <h4>{{item.name_obj}}</h4>
+                            <p>{{item.discriptions}}</p>
                     </div>
-                    <p>Тип {{item.type}}</p>
-                    <p ng-show="item.name_obj">Имя {{item.name_obj}}</p>
-                    <p>Номер объекта {{item.number_obj}}</p>
-                    <p ng-show="item.isolation_house">Изолир Дома {{item.isolation_house}}</p>
-                    <p ng-show="item.isolation_flat">Изолир Кварт {{item.isolation_flat}}</p>
-                    <p ng-show="item.room">Кол-во комнат {{item.room}}</p>
-                    <p ng-show="item.district">Район {{item.district}}</p>
-                    <p ng-show="item.space">Площадь {{item.space}}</p>
-                    <p>Имя Агента {{item.name_agent}}</p>
-                    <p ng-show="item.phone_agent" ng-repeat="phone in item.phone_agent">Телефон {{phone}}</p>
-                    <p ng-show="item.discriptions">Описание {{item.discriptions}}</p>
-                    <p ng-show="item.price">Стоимость {{item.price}}</p>
-                </div>
+                    <img class="itemCatl_obj_imgTitle" ng-src="./uploads/{{item.photo_object[0]}}">
+                    <div class="itemCatl_obj_photos">
+                        <div class="itemCatl_obj_photos_imgWrp" ng-repeat="(key, item) in item.photo_object"><img ng-src="./uploads/{{item}}"></div>
+                    </div>
+                    <div class="itemCatl_obj_inform">
+                        <div class="itemCatl_obj_inform_block" ng-show="item.space"><div class="sprite ">{{item.space}}</div></div>
+                        <div class="itemCatl_obj_inform_block" ng-show="item.isolation_flat"><div class="sprite "></div>{{item.isolation_flat}}</div>
+                        <div class="itemCatl_obj_inform_block" ng-show="item.isolation_house"><div class="sprite "></div>{{item.isolation_house}}</div>
+                        <div class="itemCatl_obj_inform_block" ng-show="item.price"><div class="sprite "></div>{{item.price}}</div>
+                        <div class="itemCatl_obj_inform_block" ng-show="item.room"><div class="sprite ">{{item.room}}</div></div>
+                    </div>
             </a>
     </div>
 </section>
