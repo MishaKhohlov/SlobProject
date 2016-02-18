@@ -122,7 +122,7 @@
             };
         }
         // индекс последнего добавленного элемента
-        var z = 2;
+        var z = 3;
         $scope.data = [];
         // Изначально есть доступ к прокрутке
         var acceptsScroll = true;
@@ -131,6 +131,7 @@
             $scope.dataInfinite = data;
             $scope.data.push(data[0]);
             $scope.data.push(data[1]);
+            $scope.data.push(data[2]);
             if($sessionStorage.goPage) {
                 $scope.filter = {
                     type: null
@@ -143,7 +144,7 @@
         });
         $scope.infiniteScroll = function(){
             if($scope.dataInfinite && !$rootScope.offScroll) {
-                for(var i = 0; i < 2; i++) {
+                for(var i = 0; i < 3; i++) {
                     if($scope.dataInfinite[z]) {
                         $scope.data.push($scope.dataInfinite[z]);
                         $log.log('scroll');
@@ -186,16 +187,20 @@
                     $scope.messageForSearch = 'Начните вводить Имя объекта или его номер';
                 }
         });
-        $scope.clickReset = true;
+        $scope.clickReset = false;
         $scope.resetFilter  =function() {
+            $scope.clickReset = false;
             // сброс данных фильтра
             resetFormAddObjOther();
             // сброс данных фильтра
             $scope.filter = null;
             // возвращение переменной в нормальное положение
             $rootScope.offScroll = false;
-            z = 2;
+            z = 3;
             $scope.data = [];
+            $scope.data.push($scope.dataInfinite[0]);
+            $scope.data.push($scope.dataInfinite[1]);
+            $scope.data.push($scope.dataInfinite[2]);
             $scope.infiniteScroll();
         };
 
@@ -209,6 +214,6 @@
                     url: '/catalog',
                     templateUrl: 'component/catalog/catalog.html',
                     controller: 'catalogCtrl'
-                })
+                });
     }
 })();

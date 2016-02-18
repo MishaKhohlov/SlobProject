@@ -263,73 +263,107 @@ th {
 .sprite-dot {
     width: 20px;
     height: 27px;
-    background-position: -5px -5px;
+    background-position: -10px -10px;
 }
 
 .sprite-eyes {
     width: 60px;
     height: 36px;
-    background-position: -35px -5px;
+    background-position: -50px -10px;
 }
 
 .sprite-floors {
     width: 25px;
     height: 24px;
-    background-position: -105px -5px;
+    background-position: -130px -10px;
 }
 
 .sprite-go-inform {
     width: 21px;
     height: 24px;
-    background-position: -140px -5px;
+    background-position: -175px -10px;
+}
+
+.sprite-inf {
+    width: 27px;
+    height: 26px;
+    background-position: -216px -10px;
 }
 
 .sprite-line {
     width: 971px;
     height: 2px;
-    background-position: -5px -51px;
+    background-position: -10px -66px;
 }
-.line_cut {
-	background: url(../images/line_cut.png) no-repeat;
-	height: 2px;
-	width: 833px;
-	margin: 0 auto;
+
+.sprite-line_cut {
+    width: 833px;
+    height: 2px;
+    background-position: -10px -88px;
 }
+
 .sprite-phone {
     width: 14px;
     height: 30px;
-    background-position: -171px -5px;
+    background-position: -260px -10px;
 }
 
 .sprite-phone_black {
     width: 14px;
     height: 30px;
-    background-position: -195px -5px;
+    background-position: -294px -10px;
 }
 
 .sprite-phone_hover {
     width: 23px;
     height: 29px;
-    background-position: -219px -5px;
+    background-position: -328px -10px;
+}
+
+.sprite-price {
+    width: 24px;
+    height: 38px;
+    background-position: -863px -88px;
+}
+.cont_sprite_price {
+ transform: scale(0.6);
+}
+.sprite-priceBlack {
+    width: 17px;
+    height: 25px;
+    background-position: -371px -10px;
 }
 
 .sprite-room {
     width: 24px;
     height: 24px;
-    background-position: -252px -5px;
+    background-position: -407px -10px;
+}
+
+.sprite-roomBlack {
+    width: 24px;
+    height: 24px;
+    background-position: -451px -10px;
 }
 
 .sprite-scroll-up {
     width: 28px;
     height: 35px;
-    background-position: -286px -5px;
+    background-position: -495px -10px;
 }
 
 .sprite-space {
     width: 24px;
     height: 24px;
-    background-position: -324px -5px;
+    background-position: -543px -10px;
 }
+
+.sprite-spaceBlack {
+    width: 24px;
+    height: 24px;
+    background-position: -587px -10px;
+}
+
 
 /*----------------------------Begin-------------------------------*/
 body {

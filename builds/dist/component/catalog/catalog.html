@@ -1,27 +1,27 @@
 <section class="Objects catalog">
     <div class="object">
-      <div ng-click="" class="object_image imgObj1"></div>
-          <div ng-click="" class="object_mask latoThin"><h2>Квартиры</h2></div>
+      <div ng-click="filter.type = 'Квартира'" class="object_image imgObj1"></div>
+          <div ng-click="filter.type = 'Квартира'" ng-class="filter.type == 'Квартира' ? 'catalog_object_mask' : ''" class="object_mask latoThin"><h2>Квартиры</h2></div>
     </div>
     <!--<div class="object">
       <div ng-click="" class="object_image imgObj2"></div>
           <div ng-click="" class="object_mask latoThin"><h2>Новострой</h2></div>
     </div>-->
     <div class="object">
-      <div ng-click="" class="object_image imgObj3"></div>
-          <div ng-click="" class="object_mask latoThin"><h2>Дома</h2></div>
+      <div ng-click="filter.type = 'Дом'" class="object_image imgObj3"></div>
+          <div ng-click="filter.type = 'Дом'" ng-class="filter.type == 'Дом' ? 'catalog_object_mask' : ''" class="object_mask latoThin"><h2>Дома</h2></div>
     </div>
     <div class="object">
-      <div ng-click="" class="object_image imgObj4"></div>
-          <div ng-click="" class="object_mask latoThin"><h2>Нежилая</h2></div>
+      <div ng-click="filter.type = 'Нежилая недвижимость'" class="object_image imgObj4"></div>
+          <div ng-click="filter.type = 'Нежилая недвижимость'" ng-class="filter.type == 'Нежилая недвижимость' ? 'catalog_object_mask' : ''" class="object_mask latoThin"><h2>Нежилая</h2></div>
     </div>
     <div class="object">
-      <div ng-click="" class="object_image imgObj5"></div>
-          <div ng-click="" class="object_mask latoThin"><h2>Участки</h2></div>
+      <div ng-click="filter.type = 'Участки'" class="object_image imgObj5"></div>
+          <div ng-click="filter.type = 'Участки'" ng-class="filter.type == 'Участки' ? 'catalog_object_mask' : ''" class="object_mask latoThin"><h2>Участки</h2></div>
     </div>
 </section>
 <section class="search">
-    <h1 class="search_title">Подбор по параметрам</h1>
+    <h1 class="search_title" id="param">Подбор по параметрам</h1>
     <div class="inform_line sprite sprite-line"></div>
     <div class="search_contrl">
         <div class="search_contrl_left">
@@ -34,7 +34,7 @@
                 <input type="number" ng-model="filterRange.space.to" placeholder="До">
             </div>
             <div class="search_contrl_left_str">
-                <img src="../../images/price.png">
+                <div class="cont_sprite_price"><div class="sprite sprite-price"></div></div>
                 <div class="search_contrl_left_str_ye">y.e.</div>
                 <input ng-model="filterRange.price.from" placeholder="От" type="number"> 
                 <div class="search_contrl_left_str_line">--</div> 
@@ -119,29 +119,38 @@
         </div>
         <input  class="search_contrl_reset" type="button" value="Сбросить фильтры" ng-click="resetFilter()" ng-disabled="clickReset">
     </div>
-    <div class="search_contrl_found">Найденно {{dataLength}} объекта</div>
+    <div class="search_contrl_found"><span ng-show="filter">Найденно {{dataLength}} объекта</span></div>
 </section>
-<section infinite-scroll='infiniteScroll()' ng-show="data[0]">
+<section infinite-scroll='infiniteScroll()' ng-show="data[0]" id="catalog">
     <div class="itemCatl">
             <a class="itemCatl_obj" href="#/catalog/{{item.number_obj}}" ng-repeat="(key, item) in data | filter : search | sortCatalog : filter | range : filterRange">
                     <div class="itemCatl_obj_title">{{item.type}}</div>
+                    <!-- <div>{{item.number_obj}}</div> -->
                     <div class="itemCatl_obj_location">{{item.city}}, {{item.district}}</div>
                     <div class="itemCatl_obj_mask">
                             <h4>{{item.name_obj}}</h4>
                             <p>{{item.discriptions}}</p>
                     </div>
-                    <img class="itemCatl_obj_imgTitle" ng-src="./uploads/{{item.photo_object[0]}}">
+                    <div class="itemCatl_obj_imgTitle"><img ng-src="./uploads/{{item.photo_object[0]}}"></div>
                     <div class="itemCatl_obj_photos">
-                        <div class="itemCatl_obj_photos_imgWrp" ng-repeat="(key, item) in item.photo_object"><img ng-src="./uploads/{{item}}"></div>
+                        <div ng-if="slidePhotosleft" class="itemCatl_obj_photos_imgWrp_spr">
+                                <div class="sprite sprite-scroll-up"></div>
+                            </div>
+                        <div class="itemCatl_obj_photos_imgWrp" bg-show="item.photo_object[0]" ng-repeat="(key, item) in item.photo_object"><img ng-src="./uploads/{{item}}">
+                        </div>
+                         <div class="itemCatl_obj_photos_imgWrp_spr">
+                                <div class="sprite sprite-scroll-up"></div>
+                            </div>
                     </div>
+
                     <div class="itemCatl_obj_inform">
-                        <div class="itemCatl_obj_inform_block" ng-show="item.space"><div class="sprite ">{{item.space}}</div></div>
-                        <div class="itemCatl_obj_inform_block" ng-show="item.isolation_flat"><div class="sprite "></div>{{item.isolation_flat}}</div>
-                        <div class="itemCatl_obj_inform_block" ng-show="item.isolation_house"><div class="sprite "></div>{{item.isolation_house}}</div>
-                        <div class="itemCatl_obj_inform_block" ng-show="item.price"><div class="sprite "></div>{{item.price}}</div>
-                        <div class="itemCatl_obj_inform_block" ng-show="item.room"><div class="sprite ">{{item.room}}</div></div>
+                        <div class="itemCatl_obj_inform_block" ng-show="item.space"><div class="sprite sprite-spaceBlack"></div>{{item.space}}</div>
+                        <div class="itemCatl_obj_inform_block" ng-show="item.isolation_flat"><div class="sprite sprite-inf"></div>{{item.isolation_flat}}</div>
+                        <div class="itemCatl_obj_inform_block" ng-show="item.isolation_house"><div class="sprite sprite-inf"></div>{{item.isolation_house}}</div>
+                        <div class="itemCatl_obj_inform_block" ng-show="item.price"><div class="sprite sprite-priceBlack"></div>{{item.price}}</div>
+                        <div class="itemCatl_obj_inform_block" ng-show="item.room"><div class="sprite sprite-roomBlack"></div>{{item.room}}</div>
                     </div>
             </a>
     </div>
 </section>
-<div ng-hide="data[0]">Загрузка данных</div>
+<div ng-hide="data[0]" class="catalog_loadData">Загрузка данных, Пожалуйста подождите</div>
