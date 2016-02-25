@@ -16,7 +16,7 @@
     <p>Стоимость {{item.price}}</p>
         <div> <p>Photo</p>
             <ul>
-                <li style="width: 150px" class="li_image_photo" ng-repeat="(key, item) in item.photo_object"><img class="image_photo" ng-src="./uploads/{{item}}"></br>
+                <li style="width: 150px" class="li_image_photo" ng-repeat="(key, item) in item.photo_object track by $index"><img class="image_photo" ng-src="./uploads/{{item}}"></br>
                     <button ng-click="deletePhoto(key)">Удалить {{key}}</button>
                 </li>
 

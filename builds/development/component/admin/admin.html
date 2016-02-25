@@ -50,7 +50,7 @@
     <div ng-show="addForm">
         <div> <p>Photo</p>
             <ul>
-                <li style="width: 150px" class="li_image_photo" ng-repeat="(key, item) in item.photo_object"><img class="image_photo" ng-src="./uploads/{{item}}"></br>
+                <li style="width: 150px" class="li_image_photo" ng-repeat="(key, item) in item.photo_object track by $index"><img class="image_photo" ng-src="./uploads/{{item}}"></br>
                     <button ng-click="deletePhoto(key)">Удалить {{key}}</button>
                 </li>
 
@@ -177,7 +177,7 @@
             <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[1]" value=""><br/>
             <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[2]" value=""><br/>
         Описание<textarea ng-model="item.discriptions" rows="10" cols="35" placeholder="Описание"
-                          maxlength="200"
+                          maxlength="600"
     >{{item.discriptions}}</textarea><br/>
          <input type="button" value="Добавить" ng-click="addNewObject(item)">
             <input type="button" value="Cancel" ng-click="addForm = false; itemReset()">

@@ -1,0 +1,67 @@
+.admin_title {
+	text-align: center;
+	font-family: 'latoitalic';
+}
+.admin_object_str {
+	padding: 5px 20px;
+	border-bottom: 1px solid grey;
+}
+.admin_object_str_phones {
+	padding: 5px;
+}
+.admin_object_photo {
+	margin-top: 40px;
+	border-bottom: 1px solid grey;
+}
+.admin_object_photo_title {
+	margin-top: 10px;
+	text-align: center;
+	font-family: 'latoitalic';
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+.admin_object_photo_img {
+	display: inline-block;
+	width: 300px;
+	height: 200px;
+	background: grey;
+	overflow: hidden;
+	margin-right: 15px;
+	margin-bottom: 15px;
+}
+.admin_object_photo_img img {
+	height: 100%;
+}
+.admin_edit {
+	margin-top: 20px;
+	margin: 0 auto;
+	width: 300px;
+	display: block;
+	padding: 5px 20px;
+}
+.drobzone { 
+text-align: center;
+padding: 30px;
+font-size: 24px;
+}
+.admin_edit_select {
+	margin: 0 auto;
+	width: 400px;
+	display: block;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	padding-left: 130px;
+}
+.admin_edit_history {
+	float: right;
+}
+.admin_edit_addImg {
+	float: left;
+}
+.cont_float {
+	border-top: 1px solid grey;
+	border-bottom: 1px solid grey;
+	padding: 20px 20px;
+	overflow: hidden;
+	margin-bottom: 40px;
+}

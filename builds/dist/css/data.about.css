@@ -32,11 +32,10 @@
 }
 
 .objectAb_contFlex_imgCont {
-	flex-shrink: 1;
- flex-basis: 670px;
  max-height: 460px;
  overflow: hidden;
  position: relative;
+ max-width: 670px;
 }
 .objectAb_contFlex_imgCont img{
 	max-height: 460px;
@@ -71,7 +70,7 @@
 	height: 96px;
 	overflow: hidden;
 	margin-bottom: 7px;
-	background: black;
+	background: white;
 }
 .objectAb_contFlex_minCont_img:hover img {
 	opacity: 0.6;

@@ -81,7 +81,7 @@
 	<h3 class="lastOffersTitle_title latoLight" id="lastOffers">Последние предложения</h3>
 </div>
 <section class="lastOffers">
-	<div ng-repeat="item in data" class="lastOffers_obj">
+	<a href="#/catalog/{{item.number_obj}}" ng-repeat="item in data" class="lastOffers_obj">
 		<div class="lastOffers_obj_img" >
 			<img ng-src="./uploads/{{item.photo_object[0]}}">
 		</div>
@@ -97,7 +97,7 @@
 			<div ng-show="item.isolation_flat" class="lastOffers_obj_objInform"><div class="sprite sprite-floors"></div>{{item.isolation_flat}}</div>
 			<div ng-show="item.isolation_house" class="lastOffers_obj_objInform"><div class="sprite sprite-floors"></div>{{item.isolation_house}}</div>
 		</div>
-	</div>
+	</a>
 </section>
 <article class="article">
 	<h3 class="article_title latoLight" id="about">О НАC</h3>

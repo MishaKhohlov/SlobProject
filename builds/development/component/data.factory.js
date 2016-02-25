@@ -158,18 +158,18 @@
             // Изменение объекта недвижимости
             updateData: function(obj){
                 var obj = publickDataObj.validData(obj);
-                $log.log(obj);
+                // $log.log('vall',obj);
                 var cloneObj = {};
                 for(var key in obj) {
 
                     if(key == 'city' || key == 'discriptions' || key == 'district'
                      || key == 'isolation_house' || key == 'isolation_flat' || key == 'name_agent' || key == 'name_obj' || key == 'number_obj' || key == 'phone_agent'
                      || key == 'price' || key == 'room' || key == 'space' || 
-                     key == 'type' || key == 'uid') {
+                     key == 'type' || key == 'uid' || key == 'photo_object') {
                         cloneObj[key] = obj[key];
                     }
                   }
-                $log.log(cloneObj);
+                // $log.log(cloneObj);
                 objRef.child(obj.number_obj).set(cloneObj);
             }
     };

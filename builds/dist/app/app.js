@@ -237,18 +237,18 @@
             // Изменение объекта недвижимости
             updateData: function(obj){
                 var obj = publickDataObj.validData(obj);
-                $log.log(obj);
+                // $log.log('vall',obj);
                 var cloneObj = {};
                 for(var key in obj) {
 
                     if(key == 'city' || key == 'discriptions' || key == 'district'
                      || key == 'isolation_house' || key == 'isolation_flat' || key == 'name_agent' || key == 'name_obj' || key == 'number_obj' || key == 'phone_agent'
                      || key == 'price' || key == 'room' || key == 'space' || 
-                     key == 'type' || key == 'uid') {
+                     key == 'type' || key == 'uid' || key == 'photo_object') {
                         cloneObj[key] = obj[key];
                     }
                   }
-                $log.log(cloneObj);
+                // $log.log(cloneObj);
                 objRef.child(obj.number_obj).set(cloneObj);
             }
     };
@@ -980,16 +980,16 @@
         // комуникация между контролеррами
         $rootScope.arrImageName = [];
         // test
-        //$timeout(function(){
+        // $timeout(function(){
         //    $log.log($rootScope.arrImageName);
-        //}, 4000);
+        // }, 4000);
 
         // добавление имёна файлов в массив
         function addNamePhoto () {
             if($rootScope.arrImageName[0]) {
                 Data.addImageItem($rootScope.arrImageName, id);
             } else {
-                $log.log("arrImageName empty")
+                $log.log("arrImageName empty");
             }
         }
         // CALLBACKS
@@ -1047,6 +1047,7 @@
     }
     function aboutAdminCtrl ($scope, $rootScope, $timeout, $localStorage, $log, $state, Auth, Data) {
         $log.log($rootScope.arrImageName);
+        $('body, html').stop().animate({scrollTop : 688}, 800,  'linear');
         $log.debug("List_a controller star");
         var id = $state.params.id;
         function valueEmpty(){
@@ -1086,9 +1087,9 @@
                 $log.log('Загруженно одиночным запросом', data);
                 $scope.item = data;
                 if(data.photo_object) {
-                    $log.log("promises array", data.photo_object);
                     $rootScope.arrImageName = data.photo_object;
                 }
+                $log.log('Full obj', $scope.item);
             } else {
               $scope.messageClosePageAbout = 'Вы пытаетесь зайти на запрещёную страницу';
               $scope.closeDataAbout = true;
@@ -1096,17 +1097,18 @@
         });
         // Обновление данных
         $scope.updateData = function(){
+            // $log.log('Start update', $scope.item);
             if(Data.validDataAddObj($scope.item)) {
                 $scope.emptyData = false;
                 var objForArr = [];
                 angular.forEach($scope.item.phone_agent, function(value) {
                     this.push(value);
                 }, objForArr);
-                $log.log(objForArr);
                 if(Data.validArr(objForArr)) {
                     $scope.messageAddData = null;
                     Data.updateData($scope.item);
                     $scope.messageAddData = 'Данные успешно перезаписанны';
+                    // $log.log('Time', $scope.item);
                 } else {
                     $scope.messageAddData = 'Вы ввели одинаковые телефон';
                 }

@@ -1,29 +1,30 @@
-<main ng-hide="closeDataAbout">
-    <h1>This is Data About Administrator</h1>
- <div class="object">
-    <p>Индекс {{$index+1}}</p>
-    <p ng-hide="item.type == 'Выберите тип объекта'">Тип {{item.type}}</p>
-    <p ng-show="item.name_obj">Имя объекта {{item.name_obj}}</p>
-    <p ng-show="item.number_obj">Номер{{item.number_obj}}</p>
-    <p ng-show="item.isolation_house && item.type == 'Дом'">Изолир Дома {{item.isolation_house}}</p>
-    <p ng-show="item.isolation_flat && item.type == 'Квартира'">Изолир Кварт {{item.isolation_flat}}</p>
-    <p ng-show="item.room && item.type == 'Дом' || item.type == 'Квартира'" >Кол-во комнат {{item.room}}</p>
-    <p ng-show="item.district">Район {{item.district}}</p>
-    <p ng-show="item.space">Площадь {{item.space}}</p>
-    <p>Имя Агента {{item.name_agent}}</p>
-    <p ng-repeat="phone in item.phone_agent">Телефон {{phone}}</p>
-    <p ng-show="item.discriptions">Описание {{item.discriptions}}</p>
-    <p>Стоимость {{item.price}}</p>
-        <div> <p>Photo</p>
-            <ul>
-                <li style="width: 150px" class="li_image_photo" ng-repeat="(key, item) in item.photo_object"><img class="image_photo" ng-src="./uploads/{{item}}"></br>
-                    <button ng-click="deletePhoto(key)">Удалить {{key}}</button>
-                </li>
-
-            </ul>
+<div class="admin" ng-hide="closeDataAbout">
+<h1 class="admin_title">Страница Редактирования Объекта</h1>
+<div>
+    <div  class="admin_object_str" ng-hide="item.type == 'Выберите тип объекта'">Тип - {{item.type}}</div>
+    <div class="admin_object_str" ng-show="item.name_obj">Имя объекта - {{item.name_obj}}</div>
+    <div class="admin_object_str" ng-show="item.number_obj">Номер объекта - {{item.number_obj}}</div>
+    <div class="admin_object_str" ng-show="item.isolation_house && item.type == 'Дом'">Свойство объекта - {{item.isolation_house}}</div>
+    <div class="admin_object_str" ng-show="item.isolation_flat && item.type == 'Квартира'">Свойство объекта - {{item.isolation_flat}}</div>
+    <div class="admin_object_str" ng-show="item.room && item.type == 'Дом' || item.type == 'Квартира'" >Кол-во комнат - {{item.room}}</div>
+    <div class="admin_object_str" ng-show="item.district">Район - {{item.district}}</div>
+    <div class="admin_object_str" ng-show="item.space">Площадь - {{item.space}}</div>
+    <div class="admin_object_str">Имя Агента - {{item.name_agent}}</div>
+    <div class="admin_object_str">Телефоны:
+        <div class="admin_object_str_phones" ng-repeat="phone in item.phone_agent">{{phone}}</div>
+    </div>
+    <div class="admin_object_str" ng-show="item.discriptions">Описание - {{item.discriptions}}</div>
+    <div class="admin_object_str">Стоимость объекта {{item.price}}</div>
+    <div class="admin_object_photo">
+        <h4 class="admin_object_photo_title">Фотографии объекта</h4>
+        <div class="admin_object_photo_img" ng-repeat="(key, item) in item.photo_object track by $index">
+            <img class="image_photo" ng-src="./uploads/{{item}}"></br>
+            <button ng-click="deletePhoto(key)">Удалить</button>
         </div>
     </div>
-        <button ng-click="addImg ? addImg = false : addImg = true">Открыть редактирование фотографий</button></br>
+</div>
+<div>
+    <button class="admin_edit" ng-click="addImg ? addImg = false : addImg = true">Открыть редактирование фотографий</button></br>
         <div ng-show="addImg" ng-controller="AppController" nv-file-drop="" uploader="uploader" >
             <!-- 3. nv-file-over uploader="link" over-class="className" -->
             <div ng-show="uploader.isHTML5">
@@ -31,36 +32,33 @@
                     Перетащите файл сюда
                 </div>
             </div>
-
-            <br />
-
-            <input type="file" nv-file-select="" uploader="uploader" multiple filters="imageFilter" />
-            <div ng-show="messageImg">
-                <ul>
-                    <li>Журнал событий</li>
-                    <li ng-repeat="item in messageImg">{{item}}</li>
-                </ul>
+            <input class="admin_edit_select" type="file" nv-file-select="" uploader="uploader" multiple filters="imageFilter" />
+            <div class="cont_float">
+                <div  class="admin_edit_history" ng-show="messageImg">
+                    <p>Журнал событий</p>
+                    <div ng-repeat="item in messageImg">{{item}}</div>
+                </div>
+                <div class="admin_edit_addImg">
+                    <p>Количество добавленных файлов {{ uploader.queue.length }}</p>
+                        <div ng-repeat="item in uploader.queue">
+                            <div>Имя: {{ item.file.name }}</div>
+                            <div>Размер: {{ item.file.size/1024/1024|number:2 }} Mb</div>
+                            <div ng-show="uploader.isHTML5">
+                                Прогресс загрузки: {{ item.progress }}
+                                <div class="item-progress-box">
+                                    <div class="item-progress" ng-style="{ 'width': item.progress + '%' }"></div>
+                                 </div>
+                            </div>
+                            <div ng-if="controller.isImage(item._file)">
+                                Предпросмотр:
+                                <div ng-thumb="{ file: item._file, height: 200 }"></div>
+                            </div>
+                            <div>
+                                <button ng-click="item.remove()" ng-click="item.progress = 0">Удалить</button>
+                            </div>
+                    </div>
+                </div>
             </div>
-            <h2>Количество добавленных файлов {{ uploader.queue.length }}</h2>
-            <ul>
-                <li ng-repeat="item in uploader.queue">
-                    <div>Имя: {{ item.file.name }}</div>
-                    <div>Размер: {{ item.file.size/1024/1024|number:2 }} Mb</div>
-                    <div ng-show="uploader.isHTML5">
-                        Прогресс загрузки: {{ item.progress }}
-                        <div class="item-progress-box">
-                            <div class="item-progress" ng-style="{ 'width': item.progress + '%' }"></div>
-                        </div>
-                    </div>
-                    <div ng-if="controller.isImage(item._file)">
-                        Предпросмотр:
-                        <div ng-thumb="{ file: item._file, height: 200 }"></div>
-                    </div>
-                    <div>
-                        <button ng-click="item.remove()" ng-click="item.progress = 0">Удалить</button>
-                    </div>
-                </li>
-            </ul>
             <div>
                 <div>
                     <div ng-show="uploader.progress">Общий прогресс загрузки: {{ uploader.progress }}</div>
@@ -73,7 +71,7 @@
                 <button ng-click="uploader.clearQueue()" ng-click="uploader.progress = 0" ng-disabled="!uploader.queue.length">Удалить изображения</button>
             </div>
         </div>
-
+</div>
         <p>Объект</p>
         <select ng-model="item.type" ng-class="emptyData ? 'border-red' : ''">
             <option value="">Выберите тип объекта</option>
@@ -146,7 +144,7 @@
             <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[1]" value=""><br/>
             <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[2]" value=""><br/>
             Описание<textarea ng-model="item.discriptions" rows="10" cols="35" placeholder="Описание"
-                              maxlength="200"
+                              maxlength="600"
         >{{item.discriptions}}</textarea><br/>
         </div>
 
@@ -161,5 +159,5 @@
     <div ng-show="messageAddData">{{messageAddData}}</div>
     </div>
 
-</main>
+</div>
 <div ng-show="messageClosePageAbout">{{messageClosePageAbout}}</div>
