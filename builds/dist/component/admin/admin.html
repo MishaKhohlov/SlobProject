@@ -1,46 +1,43 @@
-<h1>Hello word Administrator</h1>
+<h1>Администрирование сайта</h1>
 <div ng-hide="authLogin()">
-    <div>
-        <p>Agent {{setAgent}}</p>
-        <input ng-model="userLogin.email" ng-class="emptyDataEmailUser ? 'border-red' : ''" type="text" placeholder="Login"><br>
-        <input ng-model="userLogin.password" ng-class="emptyDataPasswordUser ? 'border-red' : ''" type="password" placeholder="Password">
-        <input type="button" ng-click="login()" value="Login"><br>
-        <div>{{messageLogin}}</div>
-    </div>
+        <p ng-show="setAgent">Агент {{setAgent}}</p>
+        <input class="admGlob_inp" ng-model="userLogin.email" ng-class="emptyDataEmailUser ? 'border-red' : ''" type="text" placeholder="Login"><br>
+        <input class="admGlob_inp" ng-model="userLogin.password" ng-class="emptyDataPasswordUser ? 'border-red' : ''" type="password" placeholder="Password">
+        <input class="admGlob_button" type="button" ng-click="login()" value="Login"><br>
+        <div class="admGlob_message">{{messageLogin}}</div>
 </div>
-<div ng-show="authLogin()">
+<div class="adminUser" ng-show="authLogin()">
     <div ng-show="admin">{{admin}}</div>
-    <div>{{userData.$id}}</div>
-    <div>{{userData.firstname}}</div>
-    <div>{{userData.lastname}}</div>
-    <div>{{userData.email}}</div>
-    <input type="button" ng-click="logout()" value="Logout">
+    <div class="orange">Не забудьте выйти после завершения</div>
+    <div>Имя - {{userData.firstname}}</div>
+    <div>Фамилия - {{userData.lastname}}</div>
+    <div>Email - {{userData.email}}</div>
+    <input  class="admGlob_button" type="button" ng-click="logout()" value="Logout">
 </div>
-<div style="float: right" ng-show="adminComplete">
+<div  class="admin_request" ng-show="adminComplete">
     <p>Заявки</p>
     <div ng-show="request[0].phone">
-        <ul>
-            <li ng-repeat="(key, itemForm) in request">
-                <p>From {{itemForm.middleName}} {{itemForm.name}}</p>
-                <p>Choose {{itemForm.selectForm}}</p>
-                <p>Description {{itemForm.discriptions}}</p>
-                <p>Phone {{itemForm.phone}}</p>
-            </li>
-        </ul>
-        <input type="button" value="Delete" ng-click="deleteForm()">
+    
+            <div class="admin_request_str" ng-repeat="(key, itemForm) in request">
+                <p>От кого -  {{itemForm.middleName}} {{itemForm.name}}</p>
+                <p>Выбранная услуга - {{itemForm.selectForm}} (sell - продать, buy - купить)</p>
+                <p>Описане - {{itemForm.discriptions}}</p>
+                <p>Телефон {{itemForm.phone}}</p>
+            </div>
+        <input class="admGlob_button" type="button" value="Delete" ng-click="deleteForm()">
     </div>
     <div ng-hide="request[0].phone">Заявок нету</div>
 </div>
-<div ng-show="adminComplete">
+<div class="admin_registr" ng-show="adminComplete">
     <p>Регистрация нового пользователя</p>
 
-    <input ng-model="userCredentials.email" ng-class="emptyDataEmail ? 'border-red' : ''" type="text" placeholder="Логин"><br>
-    <input ng-model="userCredentials.password" ng-class="emptyDataPassword ? 'border-red' : ''" type="password" placeholder="Пароль"><br>
-    <input ng-model="userCredentials.firstname" ng-class="emptyDataFirstName ? 'border-red' : ''" type="text" placeholder="Имя"><br>
-    <input ng-model="userCredentials.lastname" ng-class="emptyDataLastName ? 'border-red' : ''" type="text" placeholder="Фамилия"><br>
-    <label for="chex_admin">Права Администратора<input id="chex_admin" type="checkbox" ng-model="userCredentials.admin"></label><br>
-    <input type="button" ng-click="register()" value="Зарегистрировать"><br>
-    <div>{{messageForUser}}</div>
+    <input ng-model="userCredentials.email" ng-class="emptyDataEmail ? 'border-red' : ''" type="text" placeholder="Логин">
+    <input ng-model="userCredentials.password" ng-class="emptyDataPassword ? 'border-red' : ''" type="password" placeholder="Пароль">
+    <input ng-model="userCredentials.firstname" ng-class="emptyDataFirstName ? 'border-red' : ''" type="text" placeholder="Имя">
+    <input ng-model="userCredentials.lastname" ng-class="emptyDataLastName ? 'border-red' : ''" type="text" placeholder="Фамилия">
+    <label for="chex_admin">Права Администратора<input id="chex_admin" type="checkbox" ng-model="userCredentials.admin"></label>
+    <input class="admGlob_button" type="button" ng-click="register()" value="Зарегистрировать">
+    <div class="admGlob_message">{{messageForUser}}</div>
 </div>
 <div ng-show="authLogin()">
     <p>Добавление нового объекта</p>
@@ -184,12 +181,47 @@
             <div ng-show="messageAddData">Ошибка{{messageAddData}}</div>
     </div>
 </div>
-    <div ng-show="authLogin()">
-        Поиск<br>
-        Поиск по имени объекта или номеру<input type="text" ng-model="searchOr"><br>
-        <div>{{messageForSearch}}</div>
+
+
+
+    <div class="admin_search" ng-show="authLogin()">
+        <div>Поиск по имени объекта или номеру</div>
+        <input type="text" ng-model="searchOr">
+        <div class="admGlob_message">{{messageForSearch}}</div>
     </div>
-    <ul ng-show="authLogin()">
+<section ng-show="authLogin()" ng-show="data[0]" id="catalog">
+    <div class="itemCatl">
+            <a class="itemCatl_obj" href="#/catalog_admin/{{item.number_obj}}" ng-repeat="(key, item) in data | filter: search | userAccept: setAgent : adminComplete">
+                    <div class="itemCatl_obj_title">{{item.type}}, Лот {{item.number_obj}}</div>
+                    <!-- <div>{{item.number_obj}}</div> -->
+                    <div class="itemCatl_obj_location">{{item.city}}, {{item.district}}</div>
+                    <div class="itemCatl_obj_mask">
+                            <h4>{{item.name_obj}}</h4>
+                            <p>{{item.discriptions}}</p>
+                    </div>
+                    <div class="itemCatl_obj_imgTitle"><img ng-src="./uploads/{{item.photo_object[0]}}"></div>
+                    <div class="itemCatl_obj_photos">
+                        <div ng-if="slidePhotosleft" class="itemCatl_obj_photos_imgWrp_spr">
+                                <div class="sprite sprite-scroll-up"></div>
+                            </div>
+                        <div class="itemCatl_obj_photos_imgWrp" bg-show="item.photo_object[0]" ng-repeat="(key, item) in item.photo_object"><img ng-src="./uploads/{{item}}">
+                        </div>
+                         <div class="itemCatl_obj_photos_imgWrp_spr">
+                                <div class="sprite sprite-scroll-up"></div>
+                            </div>
+                    </div>
+
+                    <div class="itemCatl_obj_inform">
+                        <div class="itemCatl_obj_inform_block" ng-show="item.space"><div class="sprite sprite-spaceBlack"></div>{{item.space}}</div>
+                        <div class="itemCatl_obj_inform_block" ng-show="item.isolation_flat"><div class="sprite sprite-inf"></div>{{item.isolation_flat}}</div>
+                        <div class="itemCatl_obj_inform_block" ng-show="item.isolation_house"><div class="sprite sprite-inf"></div>{{item.isolation_house}}</div>
+                        <div class="itemCatl_obj_inform_block" ng-show="item.price"><div class="sprite sprite-priceBlack"></div>{{item.price}}</div>
+                        <div class="itemCatl_obj_inform_block" ng-show="item.room"><div class="sprite sprite-roomBlack"></div>{{item.room}}</div>
+                    </div>
+            </a>
+    </div>
+</section>
+<!--     <ul ng-show="authLogin()">
     <p>Catalog</p>
 
     <li style="margin-top: 50px" ng-repeat="(key, item) in data | filter: search | userAccept: setAgent : adminComplete"><a class="item_a" href="#/catalog_admin/{{item.number_obj}}">
@@ -222,5 +254,5 @@
             <button ng-click="delete = false">Нет</button>
         </div>
     </li>
-    </ul>
+    </ul> -->
 </div>

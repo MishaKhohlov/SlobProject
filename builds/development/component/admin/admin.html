@@ -1,14 +1,12 @@
-<h1>Hello word Administrator</h1>
+<h1>Администрирование сайта</h1>
 <div ng-hide="authLogin()">
-    <div>
-        <p>Agent {{setAgent}}</p>
-        <input ng-model="userLogin.email" ng-class="emptyDataEmailUser ? 'border-red' : ''" type="text" placeholder="Login"><br>
-        <input ng-model="userLogin.password" ng-class="emptyDataPasswordUser ? 'border-red' : ''" type="password" placeholder="Password">
-        <input type="button" ng-click="login()" value="Login"><br>
-        <div>{{messageLogin}}</div>
-    </div>
+        <p ng-show="setAgent">Агент {{setAgent}}</p>
+        <input class="admGlob_inp" ng-model="userLogin.email" ng-class="emptyDataEmailUser ? 'border-red' : ''" type="text" placeholder="Login"><br>
+        <input class="admGlob_inp" ng-model="userLogin.password" ng-class="emptyDataPasswordUser ? 'border-red' : ''" type="password" placeholder="Password">
+        <input class="admGlob_button" type="button" ng-click="login()" value="Login"><br>
+        <div class="admGlob_message">{{messageLogin}}</div>
 </div>
-<div ng-show="authLogin()">
+<div class="adminUser" ng-show="authLogin()">
     <div ng-show="admin">{{admin}}</div>
     <div>{{userData.$id}}</div>
     <div>{{userData.firstname}}</div>
@@ -16,7 +14,7 @@
     <div>{{userData.email}}</div>
     <input type="button" ng-click="logout()" value="Logout">
 </div>
-<div style="float: right" ng-show="adminComplete">
+<div ng-show="adminComplete">
     <p>Заявки</p>
     <div ng-show="request[0].phone">
         <ul>

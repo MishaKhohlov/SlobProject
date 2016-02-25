@@ -24,7 +24,7 @@
     </div>
 </div>
 <div>
-    <button class="admin_edit" ng-click="addImg ? addImg = false : addImg = true">Открыть редактирование фотографий</button></br>
+    <button class="admin_edit" ng-click="addImg ? addImg = false : addImg = true">Редактирование фотографий</button></br>
         <div ng-show="addImg" ng-controller="AppController" nv-file-drop="" uploader="uploader" >
             <!-- 3. nv-file-over uploader="link" over-class="className" -->
             <div ng-show="uploader.isHTML5">
@@ -39,18 +39,16 @@
                     <div ng-repeat="item in messageImg">{{item}}</div>
                 </div>
                 <div class="admin_edit_addImg">
-                    <p>Количество добавленных файлов {{ uploader.queue.length }}</p>
-                        <div ng-repeat="item in uploader.queue">
-                            <div>Имя: {{ item.file.name }}</div>
-                            <div>Размер: {{ item.file.size/1024/1024|number:2 }} Mb</div>
-                            <div ng-show="uploader.isHTML5">
+                        <div class="admin_edit_addImg_obj" ng-repeat="item in uploader.queue">
+                            <div class="admin_edit_addImg_obj_inf">Имя: {{ item.file.name }}</div>
+                            <div class="admin_edit_addImg_obj_inf">Размер: {{ item.file.size/1024/1024|number:2 }} Mb</div>
+                            <div class="admin_edit_addImg_obj_infLoad" ng-show="uploader.isHTML5">
                                 Прогресс загрузки: {{ item.progress }}
                                 <div class="item-progress-box">
                                     <div class="item-progress" ng-style="{ 'width': item.progress + '%' }"></div>
                                  </div>
                             </div>
                             <div ng-if="controller.isImage(item._file)">
-                                Предпросмотр:
                                 <div ng-thumb="{ file: item._file, height: 200 }"></div>
                             </div>
                             <div>
@@ -61,97 +59,106 @@
             </div>
             <div>
                 <div>
-                    <div ng-show="uploader.progress">Общий прогресс загрузки: {{ uploader.progress }}</div>
-                    <div ng-hide="uploader.progress">Общий прогресс загрузки: 0</div>
+                    <div ng-show="uploader.progress" class="total-progress-title">Общий прогресс загрузки: {{ uploader.progress }}</div>
+                    <div ng-hide="uploader.progress" class="total-progress-title">Общий прогресс загрузки: 0</div>
                     <div class="total-progress-box">
                         <div class="total-progress" ng-style="{ 'width': uploader.progress + '%' }"></div>
                     </div>
                 </div>
-                <button ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">Загрузить изображения</button>
-                <button ng-click="uploader.clearQueue()" ng-click="uploader.progress = 0" ng-disabled="!uploader.queue.length">Удалить изображения</button>
+                <button class="admin_dowloadBtn" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">Загрузить изображения</button>
+                <button class="admin_dowloadBtn" ng-click="uploader.clearQueue()" ng-click="uploader.progress = 0" ng-disabled="!uploader.queue.length">Удалить изображения</button>
             </div>
         </div>
 </div>
-        <p>Объект</p>
-        <select ng-model="item.type" ng-class="emptyData ? 'border-red' : ''">
-            <option value="">Выберите тип объекта</option>
-            <option>Квартира</option>
-            <option>Дом</option>
-            <option>Участки</option>
-            <option>Нежилая недвижимость</option>
-        </select><br/>
-            Имя объекта<input ng-model="item.name_obj"> <br/>
-            Свойства дома<select ng-show="item.type == 'Дом'" ng-model="item.isolation_house" ng-class="emptyData ? 'border-red' : ''">
-            <option value="">Выберите свойства объекта</option>
-            <option>Часть дома</option>
-            <option>Целый дом</option>
-            <option>Дача</option>
-        </select><br/>
-            Свойства Квартиры<select ng-show="item.type == 'Квартира'"  ng-model="item.isolation_flat" ng-class="emptyData ? 'border-red' : ''">
-            <option value="">Выберите свойства объекта</option>
-            <option>Изолированные</option>
-            <option>Гостинки</option>
-        </select><br/>
-            Кол-во комнат<select ng-model="item.room" ng-show="item.type == 'Квартира' || item.type == 'Дом'" ng-class="emptyData ? 'border-red' : ''">
-            <option value="">Выберите кол-во комнат</option>
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>Многокомнатные</option>
-            <option>Элитные</option>
-        </select><br/>
-            Цена <input ng-model="item.price" placeholder="Цена" ng-class="emptyData ? 'border-red' : ''" type="number" ng-class="emptyData ? 'border-red' : ''"><br/>
-            Метоположение<select ng-model="item.city" ng-class="emptyData ? 'border-red' : ''" type="text" ng-class="emptyData ? 'border-red' : ''">
-            <option value="">Выберите Местоположение</option>
-            <option>Харьков</option>
-            <option>Пригород</option>
-        </select><br/>
-            Район<select ng-show="item.city == 'Харьков'" ng-model="item.district" ng-class="emptyData ? 'border-red' : ''">
-            <option value="">Выберите район</option>
-            <option>Алеексеевка</option>
-            <option>Аэропорт</option>
-            <option>Восточный</option>
-            <option>пл.Восстания(Конный рынок)</option>
-            <option>Гагарина</option>
-            <option>Бавария</option>
-            <option>Жуковского</option>
-            <option>Журавлёвка</option>
-            <option>Завод им. Шевченко (ХПЗ)</option>
-            <option>Залютина</option>
-            <option>Ивановка</option>
-            <option>Лысая гора</option>
-            <option>Москалёвка</option>
-            <option>Немышля</option>
-            <option>Новые Дома</option>
-            <option>Одеская</option>
-            <option>Основа</option>
-            <option>Павлово Поле</option>
-            <option>Павловка</option>
-            <option>Песочин</option>
-            <option>Петихатки</option>
-            <option>Рогань</option>
-            <option>Салтовка</option>
-            <option>Северная Салтовка</option>
-            <option>Сортировка</option>
-            <option>Холодная гора</option>
-            <option>ХТЗ</option>
-            <option>Шишковка</option>
-            <option>Центр</option>
-        </select><br/>
-            Площадь<input type="number"  ng-model="item.space" placeholder="Площадь" ng-class="emptyData ? 'border-red' : ''"><br/>
-            Телефон<input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[0]" value=""><br/>
-            <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[1]" value=""><br/>
-            <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[2]" value=""><br/>
-            Описание<textarea ng-model="item.discriptions" rows="10" cols="35" placeholder="Описание"
-                              maxlength="600"
-        >{{item.discriptions}}</textarea><br/>
-        </div>
+    <div class="admin_editFill">
+            <p>Tип объекта</p>
+            <select ng-model="item.type" ng-class="emptyData ? 'border-red' : ''">
+                <option value="">Выберите тип объекта</option>
+                <option>Квартира</option>
+                <option>Дом</option>
+                <option>Участки</option>
+                <option>Нежилая недвижимость</option>
+            </select>
+            <p>Имя объекта</p>
+            <input ng-model="item.name_obj">
+            <p>Свойства дома</p>
+            <select ng-show="item.type == 'Дом'" ng-model="item.isolation_house" ng-class="emptyData ? 'border-red' : ''">
+                <option value="">Выберите свойства объекта</option>
+                <option>Часть дома</option>
+                <option>Целый дом</option>
+                <option>Дача</option>
+            </select>
+            <p>Свойства Квартиры</p>
+            <select ng-show="item.type == 'Квартира'"  ng-model="item.isolation_flat" ng-class="emptyData ? 'border-red' : ''">
+                <option value="">Выберите свойства объекта</option>
+                <option>Изолированные</option>
+                <option>Гостинки</option>
+            </select>
+            <p>Кол-во комнат</p>
+             <select ng-model="item.room" ng-show="item.type == 'Квартира' || item.type == 'Дом'" ng-class="emptyData ? 'border-red' : ''">
+                <option value="">Выберите кол-во комнат</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>Многокомнатные</option>
+                <option>Элитные</option>
+            </select>
+            <p>Цена</p>
+            <input ng-model="item.price" placeholder="Цена" ng-class="emptyData ? 'border-red' : ''" type="number" ng-class="emptyData ? 'border-red' : ''">
+            <p>Метоположение</p>
+            <select ng-model="item.city" ng-class="emptyData ? 'border-red' : ''" type="text" ng-class="emptyData ? 'border-red' : ''">
+                <option value="">Выберите Местоположение</option>
+                <option>Харьков</option>
+                <option>Пригород</option>
+            </select>
+            <p>Район</p>
+            <select ng-show="item.city == 'Харьков'" ng-model="item.district" ng-class="emptyData ? 'border-red' : ''">
+                <option value="">Выберите район</option>
+                <option>Алеексеевка</option>
+                <option>Аэропорт</option>
+                <option>Восточный</option>
+                <option>пл.Восстания(Конный рынок)</option>
+                <option>Гагарина</option>
+                <option>Бавария</option>
+                <option>Жуковского</option>
+                <option>Журавлёвка</option>
+                <option>Завод им. Шевченко (ХПЗ)</option>
+                <option>Залютина</option>
+                <option>Ивановка</option>
+                <option>Лысая гора</option>
+                <option>Москалёвка</option>
+                <option>Немышля</option>
+                <option>Новые Дома</option>
+                <option>Одеская</option>
+                <option>Основа</option>
+                <option>Павлово Поле</option>
+                <option>Павловка</option>
+                <option>Песочин</option>
+                <option>Петихатки</option>
+                <option>Рогань</option>
+                <option>Салтовка</option>
+                <option>Северная Салтовка</option>
+                <option>Сортировка</option>
+                <option>Холодная гора</option>
+                <option>ХТЗ</option>
+                <option>Шишковка</option>
+                <option>Центр</option>
+            </select>
+            <p>Площадь</p>
+            <input type="number"  ng-model="item.space" placeholder="Площадь" ng-class="emptyData ? 'border-red' : ''">
+            <p>Телефон</p>
+            <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[0]" value="">
+            <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[1]" value="">
+            <input type="number" placeholder="Ведите номер" ng-model="item.phone_agent[2]" value="">
+            <p>Описание</p>
+            <textarea ng-model="item.discriptions" rows="10" cols="35" placeholder="Описание" maxlength="600">{{item.discriptions}}</textarea>
+    </div>
 
-        <input type="button" value="Change" ng-click="updateData(item)"><br/>
-        <button ng-click="delete ? delete = false : delete = true">Удалить Объект</button></br>
-         <div ng-show="delete">
-             <p>Вы уверены</p>
+        <input class="admin_saveChange" type="button" value="Сохранить изменения" ng-click="updateData(item)">
+        <button class="admin_deleteChange" ng-click="delete ? delete = false : delete = true">Удалить Объект</button></br>
+         <div class="admin_sure" ng-show="delete">
+             <p>Вы уверены ?</p>
              <button ng-click="deleteObj(item.number_obj)">Да, объект {{item.number_obj}} будет удалён навсегда</button>
              <button ng-click="delete = false">Нет</button>
          </div>

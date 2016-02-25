@@ -32,13 +32,13 @@
 }
 
 .objectAb_contFlex_imgCont {
- max-height: 460px;
  overflow: hidden;
  position: relative;
  max-width: 670px;
+ height: 460px;
 }
 .objectAb_contFlex_imgCont img{
-	max-height: 460px;
+ max-height: 460px;
 }
 .objecAb_contFlex_imgCont_lot {
 	padding-left: 10px;

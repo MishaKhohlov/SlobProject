@@ -211,11 +211,14 @@
 .itemCatl_obj_mask p {
 	font-family: 'latoitalic';
 	margin-top: 15px;
-	padding-left: 50px;
 	font-size: 14px;
 	color: black;
 	text-transform: uppercase;
 	font-weight: 100;
+	display: block;
+	height: 205px;
+	padding: 0 50px;
+	overflow: hidden;
 }
 .itemCatl_obj_imgTitle {
 	height: 340px;
@@ -267,9 +270,9 @@ left: 0;
 	width: 35px;
 	z-index: 94;
 }
-.itemCatl_obj_photos_imgWrp_spr:hover {
+/*.itemCatl_obj_photos_imgWrp_spr:hover {
 	background: #ffab3b;
-}
+}*/
 .itemCatl_obj_photos_imgWrp_spr .sprite {
 	margin-right: 5px;
 	transform: scale(0.7) rotate(90deg);

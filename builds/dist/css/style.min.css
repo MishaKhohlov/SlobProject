@@ -5,9 +5,10 @@
 @import "service.css";
 @import "data.about.css";
 @import "admin.about.css";
+@import "admin.css";
 /*@import "jobs.css";*/
 /*@import "laws.css";*/
-/*@import "admin.css";*/
+
 html {
   font-family: sans-serif; /* 1 */
   -ms-text-size-adjust: 100%; /* 2 */
@@ -497,9 +498,7 @@ canvas {
     background-color: #f3f3f3;
     -webkit-box-shadow: 3px 3px 3px 0 #e3e3e3;
     -moz-box-shadow: 3px 3px 3px 0 #e3e3e3;
-    box-shadow: 3px 3px 3px 0 #e3e3e3;
     border: 1px solid #c3c3c3;
-    margin: 6px 0 0 6px;
 }
 .test {
     border: solid 3px red;
@@ -528,10 +527,16 @@ canvas {
     display: inline-block;
 }
 .total-progress {
-    width: 5px;
     display: block;
-    height: 10px;
+    height: 20px;
     border: 1px solid  pink;
+    margin-bottom: 35px;
+}
+.total-progress-title {
+   height: 18px;
+   line-height: 24px;
+   font-family: 'latoitalic';
+   margin-bottom: 15px;
 }
 .object p {
     border: 1px solid black;
