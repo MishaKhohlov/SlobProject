@@ -107,7 +107,7 @@
     }
     function catalogCtrl ($scope, $log, Data, $rootScope, $timeout, $sessionStorage) {
     	$log.debug("Catalog controller star");
-
+        $rootScope.colorChange = null;
         resetFormAddObjOther();
         function resetFormAddObjOther(){
             $scope.filterRange = {

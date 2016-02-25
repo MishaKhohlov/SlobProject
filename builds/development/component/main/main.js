@@ -4,9 +4,11 @@
     angular.module('ngMain', ['ngStorage'])
         .controller('mainCtrl', mainCtrl);
 
-    function mainCtrl ($scope, $log, Data, $timeout, $state,  $sessionStorage) {
+    function mainCtrl ($scope, $log, Data, $timeout, $state,  $sessionStorage, $rootScope) {
         $log.debug("Main controller star");
-
+        $rootScope.colorChange = null;
+        
+        
         $scope.zoomPlanClose = false;
         $scope.zoomPlan = function(src){
             $scope.zoomPlanClose = true;
@@ -46,7 +48,7 @@
             $scope.messageForForm = 'Данные отправленны, Ожидайте ответа, Спасибо';
             $timeout(function(){
                 $scope.messageForForm = '';
-            }, 3000)
+            }, 3000);
 
         };
 

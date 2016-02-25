@@ -24,6 +24,7 @@
 
 	function appControllerAdmin($scope, $log, FileUploader, Data, $state, $rootScope, $timeout){
 		$log.log("Image controller star");
+		$rootScope.colorChange = null;
 		var id;
 		$rootScope.$watch('newId', function(newValue) {
 			id = newValue;

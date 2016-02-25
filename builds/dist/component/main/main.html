@@ -123,7 +123,7 @@
 		<label class="requestMain_form_label"><input ng-model="item.selectForm" type="radio" name="obj" value="sell">Продать</label>
 		</div>
 		<textarea class="requestMain_form_discriptions" rows="10" cols="35" placeholder="Введите текст сообщения*" maxlength="300" ng-model="item.discriptions"></textarea>
-  		 <input class="requestMain_send latoLight"type="button" value="Отправить" ng-click="sendForm(item); item = null">
+  		 <input class="requestMain_send latoLight"type="button" value="Отправить" ng-click="sendForm(item)">
     </div>
     </div>
     <div class="requestMain_message" ng-show="messageForForm">{{messageForForm}}</div>

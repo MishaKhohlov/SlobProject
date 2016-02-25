@@ -1,0 +1,213 @@
+.linkObject, .linkObject a {
+ color: #5f5f5f;
+ font-size: 14px;
+ font-family: 'latoitalic';
+ line-height: 24px;
+}
+
+.linkObject a:hover {
+ transition: 0.2s linear all;
+ color: #ff921c;
+}
+
+.linkObject span {
+ padding: 0 8px;
+}
+
+.dataAbout {
+ background: #f3f3f3;
+ padding-top: 5px;
+}
+
+.objectAb {
+ max-width: 816px;
+ margin: 0 auto;
+ margin-top: 25px;
+}
+
+.objectAb_contFlex {
+ display: flex;
+ justify-content: space-between;
+ flex-wrap: nowrap;
+}
+
+.objectAb_contFlex_imgCont {
+	flex-shrink: 1;
+ flex-basis: 670px;
+ max-height: 460px;
+ overflow: hidden;
+ position: relative;
+}
+.objectAb_contFlex_imgCont img{
+	max-height: 460px;
+}
+.objecAb_contFlex_imgCont_lot {
+	padding-left: 10px;
+	font-family: 'latolight';
+	position: absolute;
+	top: 0px;
+	color: white;
+	background: rgba(0, 0, 0, 0.4);
+	line-height: 26px;
+	width: 100%;
+}
+.objectAb_contFlex_imgCont_name {
+	padding-left: 10px;
+	font-family: 'latolight';
+	position: absolute;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.4);
+	line-height: 34px;
+	font-size: 24px;
+	width: 100%;
+	color: white;
+	text-transform: uppercase;
+}
+.objecAb_contFlext_minCont {
+	position: relative;
+}
+.objectAb_contFlex_minCont_img {
+	width: 96px;
+	height: 96px;
+	overflow: hidden;
+	margin-bottom: 7px;
+	background: black;
+}
+.objectAb_contFlex_minCont_img:hover img {
+	opacity: 0.6;
+	cursor: pointer;
+}
+.objectAb_contFlex_minCont_img img{
+	height: 100%;
+}
+.objectAb_contFlex_minCont_upContr {
+	position: absolute;
+	top: 0;
+}
+.objectAb_contFlex_minCont_downContr {
+	position: absolute;
+	bottom: 0;
+	background: #ff921c;
+	width: 96px;
+	height: 50px;
+	box-sizing: border-box;
+	padding-top: 7px;
+}
+.objectAb_contFlex_minCont_upContr {
+	position: absolute;
+	top: 0;
+	background: #ff921c;
+	width: 96px;
+	height: 50px;
+	z-index: 99;
+	box-sizing: border-box;
+	padding-top: 17px;
+	opacity: 0.8;
+}
+.objectAb_contFlex_minCont_downContr div.sprite, .objectAb_contFlex_minCont_upContr div.sprite {
+	margin: 0 auto;
+}
+.objectAb_contFlex_minCont_downContr:hover {
+	transition: 0.2s linear all;
+	cursor: pointer;
+	background: #ff501c;
+}
+.objectAb_contFlex_minCont_upContr:hover {
+	transition: 0.2s linear all;
+	cursor: pointer;
+	display: block;
+	background: #ff501c;
+}
+.objectAb_contFlex_minCont_upContr div.sprite {
+	transform: rotate(180deg);
+}
+.objecAb_contFlext_minCont_center {
+	height: 400px;
+	width: 96px;
+	overflow: hidden;
+	position: relative;
+}
+/* Change top js*/
+.objecAb_contFlext_minCont_scroll {
+	position: absolute;
+	top: 0px;
+	transition: 0.3s linear all;
+}
+.objectAb_infCont {
+	margin-top: 35px;
+	display: flex;
+}
+.objectAb_infCont_inform {
+	display: flex;
+	margin-right: 45px;
+	line-height: 24px;
+}
+.objectAb_infCont_inform div.sprite {
+	margin-right: 12px;
+}
+.objectAb_location {
+	margin-top: 25px;
+	display: flex;
+	line-height: 24px;
+}
+.objectAb_location div.sprite {
+	margin-right: 15px;
+}
+.objectAb_descr {
+	font-family: 'latoitalic';
+	text-indent: 25px;
+	margin-top: 40px;
+}
+.objectAb_price {
+	display: flex;
+	margin-top: 25px;
+	font-size: 24px;
+	line-height: 24px;
+	justify-content: flex-end;
+}
+.objectAb_price div.sprite {
+	margin-right: 15px;
+}
+.objectAb_agentFlex {
+	margin-top: 5px;
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 40px;
+}
+.objectAb_agentFlex img {
+	margin-left: 28px;
+	margin-right: 28px;
+}
+.objectAb_agentFlex_nameAgent {
+	font-family: 'latolight';
+}
+.objectAb_agentFlex_nameAgent_title {
+	font-size: 20px;
+	font-weight: 100;
+	margin-bottom: 50px;
+}
+.objectAb_agentFlex_nameAgent_phones {
+	height: 30px;
+	line-height: 30px;
+	display: flex;
+}
+.objectAb_agentFlex_nameAgent_phones div.sprite {
+	margin-right: 7px;
+	transform: scale(0.8);
+}
+.objectAb_agentFlex_nameAgent_email {
+	margin-top: 13px;
+	display: flex;
+	line-height: 14px;
+}
+.objectAb_agentFlex_nameAgent_email div.sprite {
+	margin-right: 5px;
+}
+.objectAb_agentDescr {
+	text-indent: 25px;
+	flex-basis: 360px;
+	margin-top: 55px;
+}
+.colorChange {
+	 background: #f3f3f3;
+}

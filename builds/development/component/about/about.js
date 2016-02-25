@@ -5,9 +5,9 @@
         .config(aboutConf)
         .controller('aboutCtrl', aboutCtrl);
 
-    function aboutCtrl ($scope, $log) {
+    function aboutCtrl ($scope, $log, $rootScope) {
         $log.debug("About controller star");
-
+        $rootScope.colorChange = null;
 
         $log.debug("About controller finish");
     }

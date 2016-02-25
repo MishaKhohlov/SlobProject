@@ -3,7 +3,7 @@
 @import "main.css";
 @import "catalog.css";
 @import "service.css";
-/*@import "about.css";*/
+@import "data.about.css";
 /*@import "jobs.css";*/
 /*@import "laws.css";*/
 /*@import "admin.css";*/
@@ -189,8 +189,8 @@ th {
   padding: 0;
 }
 *{
-	padding: 0px;
-	margin: 0px;
+  padding: 0px;
+  margin: 0px;
 }
 /*-----------------------Fonts------------------------------------------*/
 @font-face {
@@ -203,7 +203,7 @@ th {
          url('fonts/lato-italic-webfont.svg#latoitalic') format('svg');
     font-weight: normal;
     font-style: normal;
-	font-display: block;
+  font-display: block;
 
 }
 
@@ -217,7 +217,7 @@ th {
          url('fonts/lato-light-webfont.svg#latolight') format('svg');
     font-weight: normal;
     font-style: normal;
-	font-display: block;
+  font-display: block;
 }
 @font-face {
     font-family: 'latothin';
@@ -229,29 +229,29 @@ th {
          url('fonts/lato-thin-webfont.svg#latothin') format('svg');
     font-weight: normal;
     font-style: normal;
-	font-display: block;
+  font-display: block;
 }
 /*----------------------------constant-------------------------------*/
 .latoItal {
-	font-family: 'latoitalic';
+  font-family: 'latoitalic';
 }
 .latoLight {
-	font-family: 'latolight';
+  font-family: 'latolight';
 }
 .latoThin {
-	 font-family: 'latothin';
+   font-family: 'latothin';
 }
 .orange {
-	color: #ff911c;
+  color: #ff911c;
 }
 .grey {
-	color: #f4f2f2;
+  color: #f4f2f2;
 }
 .greyDark {
-	color: #808080;
+  color: #808080;
 }
 .red {
-	color: #ff501c;
+  color: #ff501c;
 }
 /*-----------------------Sprite---------------------------------------*/
 .sprite {
@@ -259,35 +259,39 @@ th {
     background-repeat: no-repeat;
     display: block;
 }
-
 .sprite-dot {
     width: 20px;
     height: 27px;
     background-position: -10px -10px;
 }
+.sprite-dotBlack {
+    width: 14px;
+    height: 24px;
+    background-position: -50px -10px;
+}
 
 .sprite-eyes {
     width: 60px;
     height: 36px;
-    background-position: -50px -10px;
+    background-position: -84px -10px;
 }
 
 .sprite-floors {
     width: 25px;
     height: 24px;
-    background-position: -130px -10px;
+    background-position: -164px -10px;
 }
 
 .sprite-go-inform {
     width: 21px;
     height: 24px;
-    background-position: -175px -10px;
+    background-position: -209px -10px;
 }
 
 .sprite-inf {
-    width: 27px;
-    height: 26px;
-    background-position: -216px -10px;
+    width: 24px;
+    height: 24px;
+    background-position: -250px -10px;
 }
 
 .sprite-line {
@@ -302,22 +306,28 @@ th {
     background-position: -10px -88px;
 }
 
+.sprite-message {
+    width: 21px;
+    height: 16px;
+    background-position: -294px -10px;
+}
+
 .sprite-phone {
     width: 14px;
     height: 30px;
-    background-position: -260px -10px;
+    background-position: -335px -10px;
 }
 
 .sprite-phone_black {
     width: 14px;
     height: 30px;
-    background-position: -294px -10px;
+    background-position: -369px -10px;
 }
 
 .sprite-phone_hover {
     width: 23px;
     height: 29px;
-    background-position: -328px -10px;
+    background-position: -403px -10px;
 }
 
 .sprite-price {
@@ -325,88 +335,95 @@ th {
     height: 38px;
     background-position: -863px -88px;
 }
-.cont_sprite_price {
- transform: scale(0.6);
-}
+
 .sprite-priceBlack {
-    width: 17px;
-    height: 25px;
-    background-position: -371px -10px;
+    width: 16px;
+    height: 24px;
+    background-position: -446px -10px;
 }
 
 .sprite-room {
     width: 24px;
     height: 24px;
-    background-position: -407px -10px;
+    background-position: -482px -10px;
 }
 
 .sprite-roomBlack {
     width: 24px;
     height: 24px;
-    background-position: -451px -10px;
+    background-position: -526px -10px;
+}
+
+.sprite-scroll-downWhite {
+    width: 26px;
+    height: 25px;
+    background-position: -570px -10px;
 }
 
 .sprite-scroll-up {
     width: 28px;
     height: 35px;
-    background-position: -495px -10px;
+    background-position: -616px -10px;
 }
 
 .sprite-space {
     width: 24px;
     height: 24px;
-    background-position: -543px -10px;
+    background-position: -664px -10px;
 }
 
 .sprite-spaceBlack {
     width: 24px;
     height: 24px;
-    background-position: -587px -10px;
+    background-position: -708px -10px;
 }
-
+.cont_sprite_price {
+ transform: scale(0.6);
+}
 
 /*----------------------------Begin-------------------------------*/
 body {
-	max-width: 1986px;
-	position: relative;
-	margin: 0 auto;
-	// background: #d0d0d0;
+  max-width: 1986px;
+  position: relative;
+  margin: 0 auto;
+  
+
 }
 .page {
-	max-width: 1464px;
-	margin: 0 auto;
+  max-width: 1464px;
+  margin: 0 auto;
 }
 body::-webkit-scrollbar{
     width: 19px;
-	border-radius: 25px;
-	background-color: #d0d0d0;
-	
+  border-radius: 25px;
+  background-color: #d0d0d0;
+  
 }
  
 body::-webkit-scrollbar-thumb{
     background-color: white;
-	border-radius: 25px;
-	border: 3px solid #d0d0d0;
+  border-radius: 25px;
+  border: 3px solid #d0d0d0;
 } 
 body::-webkit-scrollbar-thumb:hover{
     background-color: rgba(255, 145, 28, 0.71);
 }
 body::-webkit-scrollbar-button{
     display: none;
-	
+  
 }
 
 /*.ng-enter { z-index: 8888;}
 .ng-leave { z-index: 9999;}*/
 .hide {
-	display: none;
+  display: none;
 }
 .showFlex {
-	display: flex;
+  display: flex;
 }
 a {
-	-moz-user-selec: -moz-non;
-	-o-user-select: none;
+  -moz-user-selec: -moz-non;
+  -o-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
      user-select: none;

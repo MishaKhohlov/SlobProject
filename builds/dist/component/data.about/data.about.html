@@ -1,26 +1,95 @@
-<main>
-    <h1>This is Data About</h1>
-
-    <div class="object">
-        <p>Индекс {{$index+1}}</p>
-        <p ng-hide="item.type == 'Выберите тип объекта'">Тип {{item.type}}</p>
-        <p ng-show="item.name_obj">Имя объекта {{item.name_obj}}</p>
-        <p ng-show="item.number_obj">Номер{{item.number_obj}}</p>
-        <p ng-show="item.isolation_house && item.type == 'Дом'">Изолир Дома {{item.isolation_house}}</p>
-        <p ng-show="item.isolation_flat && item.type == 'Квартира'">Изолир Кварт {{item.isolation_flat}}</p>
-        <p ng-show="item.room && item.type == 'Дом' || item.type == 'Квартира'" >Кол-во комнат {{item.room}}</p>
-        <p ng-show="item.district">Район {{item.district}}</p>
-        <p ng-show="item.space">Площадь {{item.space}}</p>
-        <p>Имя Агента {{item.name_agent}}</p>
-        <p ng-repeat="phone in item.phone_agent">Телефон {{phone}}</p>
-        <p ng-show="item.discriptions">Описание {{item.discriptions}}</p>
-        <p>Стоимость {{item.price}}</p>
-        <div> <p>Photo</p>
-            <ul>
-                <li style="width: 150px" class="li_image_photo" ng-repeat="(key, item) in item.photo_object"><img class="image_photo" ng-src="./uploads/{{item}}"></br>
-                </li>
-
-            </ul>
+ <div class="dataAbout">
+ <div class="linkObject">
+     <a ui-sref="home">Главная</a>
+     <span>></span>
+     <a href="" ng-click="goPageCatalog(item.type)">{{item.type}}</a>
+     <span>></span>
+     <a ng-show="item.name_obj" href="">{{item.name_obj}}</a>
+     <a ng-hide="item.name_obj" href="">No name</a>
+ </div>
+ <div class="objectAb">
+    <div class="objectAb_contFlex" ng-show="titlePhotos">
+        <div ng-show="item.photo_object[0]" class="objectAb_contFlex_imgCont">
+            <img ng-src="./uploads/{{titlePhotos}}">
+            <div class="objecAb_contFlex_imgCont_lot">Лот - {{item.number_obj}}</div>
+            <div class="objectAb_contFlex_imgCont_name" ng-show="item.name_obj">{{item.name_obj}}</div>
+        </div>
+        <div class="objecAb_contFlext_minCont">
+            <div class="objectAb_contFlex_minCont_upContr" ng-click="scrollImg(false)" ng-show="scrollUp">
+                <div class="sprite sprite-scroll-downWhite"></div>
+            </div>
+            <div class="objecAb_contFlext_minCont_center">
+                <div class="objecAb_contFlext_minCont_scroll">
+                    <div class="objectAb_contFlex_minCont_img" ng-click="selectTitle(key)" ng-repeat="(key, item) in item.photo_object">
+                        <img class="image_photo" ng-src="./uploads/{{item}}">
+                    </div>
+                </div>
+            </div>
+            <div class="objectAb_contFlex_minCont_downContr" ng-click="scrollImg(true)">
+                <div class="sprite sprite-scroll-downWhite"></div>
+            </div>
         </div>
     </div>
-</main>
+    <div class="objectAb_infCont">
+        <div class="objectAb_infCont_inform" ng-show="item.space">
+             <div class="sprite sprite-spaceBlack"></div>
+            {{item.space}} М
+        </div>
+        <div class="objectAb_infCont_inform" ng-show="item.isolation_house">
+             <div class="sprite sprite-inf"></div>
+            {{item.isolation_house}}
+        </div>
+        <div class="objectAb_infCont_inform" ng-show="item.isolation_flat">
+             <div class="sprite sprite-inf"></div>
+            {{item.isolation_flat}}
+        </div>
+        <div class="objectAb_infCont_inform" ng-show="item.room">
+             <div class="sprite sprite-roomBlack"></div>
+            {{item.room}} КОМНАТ
+        </div> 
+    </div>
+    <div class="objectAb_location" ng-show="item.city"><div class="sprite sprite-dotBlack"></div>{{item.city}}<span ng-show="item.district">,{{item.district}}</span></div>
+    <p class="objectAb_descr" ng-show="item.discriptions">{{item.discriptions}}
+      Те, кому когда-либо приходилось делать в квартире ремонт, наверное, обращали внимание на старые га- зеты, наклеенные под обоями. Как правило, пока все статьи не перечитаешь, ничего другого делать не можешь.  Интересно же — обрывки текста, чья-то жизнь... 
+        Так же и с рыбой. Пока за- казчик не прочтет всё, он не успо- коится. Бывали случаи, когда дизайн принимал- ся именно из- за рыбного текста, который, разумеется, никакого отношения к ра- боте не имел.
+    </p>
+    <div class="objectAb_price" ng-show="item.price">
+        <div class="sprite sprite-priceBlack"></div>
+        {{item.price}} y.e.
+    </div>
+    <div class="objectAb_agentFlex">
+        <img src="../../images/agent.png">
+        <div class="objectAb_agentFlex_nameAgent">
+            <h5 class="objectAb_agentFlex_nameAgent_title">{{item.name_agent}}</h5>
+            <address>
+                <div  class="objectAb_agentFlex_nameAgent_phones" ng-repeat="phone in item.phone_agent">
+                <div class="sprite sprite-phone_black"></div>
+                {{phone}}</div>
+                <div class="objectAb_agentFlex_nameAgent_email"><div class="sprite sprite-message"></div>agent@yourcompany.com</div>
+            </address>
+        </div>
+        <div class="objectAb_agentDescr">
+            Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Вдали от всех живут они в буквенных домах на берегу Семантика большого языкового океана. Маленький ручеек Даль журчит по всей стране и обеспечивает ее всеми необходимыми правилами. 
+        </div>
+    </div>   
+</div>
+<section class="requestMain">
+    <h1 class="requestMain_title latoLight" id="requestForm">оставить заявку</h1>
+    <div class="line_cut"></div>
+    <div class="requestMain_wrapper">
+    <div class="requestMain_form">
+        <div class="requestMain_form_wrapper">
+            <input class="requestMain_form_name" type="text" placeholder="Ваше имя*" ng-model="send.name">
+            <input class="requestMain_form_middleName" type="text" placeholder="Отчество*" ng-model="send.middleName">
+            <input class="requestMain_form_phone"type="number" placeholder="Ваш телефон*" ng-model="send.phone">
+        </div>
+        <div class="requestMain_input_wrapper">
+        <label class="requestMain_form_label"><input ng-model="send.selectForm" type="radio" name="obj" value="buy">Купить</label>
+        <label class="requestMain_form_label"><input ng-model="send.selectForm" type="radio" name="obj" value="sell">Продать</label>
+        </div>
+        <textarea class="requestMain_form_discriptions" rows="10" cols="35" placeholder="Введите текст сообщения*" maxlength="300" ng-model="send.discriptions"></textarea>
+         <input class="requestMain_send latoLight"type="button" value="Отправить" ng-click="sendForm(send)">
+    </div>
+    </div>
+    <div class="requestMain_message" ng-show="messageForForm">{{messageForForm}}</div>
+</section> 
