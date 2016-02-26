@@ -1,0 +1,186 @@
+.admin_title {
+	text-align: center;
+	font-family: 'latoitalic';
+}
+.admin_object_str {
+	padding: 5px 20px;
+	border-bottom: 1px solid grey;
+}
+.admin_object_str_phones {
+	padding: 5px;
+}
+.admin_object_photo {
+	margin-top: 40px;
+	border-bottom: 1px solid grey;
+	margin-bottom: 20px;
+}
+
+.admin_object_photo {
+}
+.admin_object_photo_title {
+	margin-top: 10px;
+	text-align: center;
+	font-family: 'latoitalic';
+	font-size: 20px;
+	margin-bottom: 20px;
+}
+.admin_object_photo_img {
+	display: inline-block;
+	width: 300px;
+	height: 200px;
+	background: grey;
+	overflow: hidden;
+	margin-right: 15px;
+	margin-bottom: 15px;
+	position: relative;
+}
+.admin_object_photo_img button {
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	padding: 5px 20px;
+	display: block;
+	text-align: center;
+	background: #ff911c;
+	border: none;
+	color: white;
+}
+.admin_object_photo_img img {
+	height: 100%;
+}
+.admin_edit {
+	margin-top: 20px;
+	margin: 0 auto;
+	width: 300px;
+	display: block;
+	padding: 20px 30px;
+	text-align: center;
+	background: #ff911c;
+	border: none;
+	display: block;
+	color: white;
+}
+.drobzone { 
+text-align: center;
+padding: 30px;
+font-size: 24px;
+}
+.admin_edit_select {
+	margin: 0 auto;
+	width: 400px;
+	display: block;
+	margin-top: 30px;
+	margin-bottom: 30px;
+	padding-left: 130px;
+}
+.admin_edit_history {
+	float: right;
+}
+.admin_edit_history p {
+	font-size: 20px;
+	margin-bottom: 15px;
+	font-family: 'latoitalic';
+}
+.admin_edit_history div {
+	padding: 5px;
+	margin-bottom: 5px;
+	border-bottom: 1px solid grey;
+}
+.admin_edit_addImg {
+	display: flex;
+	justify-content: space-around;
+	max-width: 1200px;
+	flex-wrap: wrap;
+}
+.cont_float {
+	border-top: 1px solid grey;
+	border-bottom: 1px solid grey;
+	padding: 20px 20px;
+	overflow: hidden;
+	margin-bottom: 40px;
+}
+.admin_edit_addImg_obj {
+	background: #f4f2f2;
+	margin-bottom: 20px;
+}
+.admin_edit_addImg_obj button{
+	margin: 0 auto;
+	margin-top: 10px;
+	text-align: center;
+	width: 100px;
+	background: #ff911c;
+	border: none;
+	padding: 5px 10px;
+	display: block;
+	color: white; 
+}
+.admin_edit_addImg_obj_inf {
+	margin-bottom: 5px;
+}
+.admin_edit_addImg_obj_infLoad {
+	margin-bottom: 10px;
+}
+.admin_dowloadBtn {
+	margin-right: 30px;
+	margin-top: 10px;
+	text-align: center;
+	width: 200px;
+	background: #ff911c;
+	border: none;
+	padding: 5px 10px;
+	display: block;
+	color: white; 
+	display: inline-block;
+}
+.admin_editFill p {
+	border-top: 3px solid grey;
+	font-size: 20px;
+	line-height: 30px;
+	font-family: 'latoitalic';
+	margin-bottom: 5px;
+	margin-top: 20px;
+}
+.admin_editFill input, .admin_editFill select {
+	width: 500px;
+	padding: 10px 20px
+	font-size: 18px;	
+}
+.admin_editFill textarea {
+	width: 700px;
+}
+.admin_saveChange, .admin_deleteChange {
+	margin-right: 30px;
+	margin-top: 30px;
+	text-align: center;
+	width: 200px;
+	background: #ff911c;
+	border: none;
+	padding: 5px 10px;
+	display: block;
+	color: white; 
+	display: inline-block;
+	margin-bottom: 50px;
+}
+.admin_sure {
+	width: 500px;
+	margin: 0 auto;
+	margin-top: -20px;
+	border: 1px solid grey;
+	padding: 10px;
+	margin-bottom: 50px;
+}
+.admin_sure p {
+	text-align: center;
+}
+.admin_sure button {
+	margin-right: 30px;
+	margin-top: 30px;
+	text-align: center;
+	width: 200px;
+	background: #ff911c;
+	border: none;
+	padding: 5px 10px;
+	display: block;
+	color: white; 
+	display: inline-block;
+}

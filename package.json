@@ -27,5 +27,8 @@
     "gulp-sass": "latest",
     "gulp-uglify": "latest",
     "gulp-webserver": "latest"
+  },
+  "dependencies": {
+    "gulp-strip-ng-log": "^1.1.2"
   }
 }

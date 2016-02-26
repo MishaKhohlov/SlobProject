@@ -1,0 +1,94 @@
+.admGlob p {
+	text-align: center;
+	font-family: 'latoitalic';
+	font-size: 24px;
+}
+.admGlob_inp {
+	width: 300px;
+	display: block;
+	padding: 5px 10px;
+	margin-right: 30px;
+}
+.admGlob_button {
+	margin-right: 30px;
+	margin-top: 30px;
+	text-align: center;
+	width: 200px;
+	background: #ff911c;
+	border: none;
+	padding: 5px 10px;
+	display: block;
+	color: white; 
+	display: inline-block;
+}
+.admGlob_message {
+	color: #ff911c;
+	font-size: 20px;
+	margin-top: 10px;
+}
+.adminUser {
+	width: 500px;
+	border: 1px solid grey;
+	padding: 10px;
+}
+.adminUser div{
+	font-family: 'latoitalic';
+	font-size: 20px;
+	line-height: 24px;
+	margin-bottom: 5px;
+}
+.admin_request {
+	margin-top: 20px;
+	float: right;
+	width: 500px;
+	border: 1px solid grey;
+	padding: 10px;
+}
+.admin_request p {
+	font-size: 20px;
+	margin-top: 10px;;
+}
+.admin_request_str {
+	line-height: 24px;
+	font-size: 18px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid grey;
+}
+.admin_registr p{
+ 	margin-top: 20px;
+ 	margin-bottom: 10px
+}
+.admin_registr input {
+	width: 300px;
+	display: block;
+	padding: 5px 10px;
+	margin-right: 30px;
+	margin-bottom: 10px;
+}
+
+#chex_admin {
+	width: 20px;
+	height: 20px;
+	margin-top: 10px;
+}
+.admin_search {
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+.admin_search div {
+	font-family: 'latoitalic';
+	font-size: 20px;
+	line-height: 24px;
+	margin-bottom: 5px;
+}
+.admin_search input {
+	width: 300px;
+	display: block;
+	padding: 5px 10px;
+	margin-right: 30px;
+	margin-bottom: 10px;
+}
+.admGlob_button_openPhotoEdit {
+	width: 500px;
+	margin-bottom: 30px;
+}
