@@ -390,7 +390,7 @@
 
     function adminCtrl ($state, $scope, $log, $rootScope, $localStorage, Auth, Data) {
     	$log.log("Admin controller star");
-		valueEmpty();
+    	valueEmpty();
 		$scope.setAgent = false;
 
 		// Заготовки объектов

@@ -8,7 +8,7 @@ function begin() {
 	var scrollEnabled = false;
 	var accessSlider = true;
 	
-	setInterval(slider, 30000);
+	setInterval(slider, 50000);
 	function slider() {
 		if(accessSlider) {
 			if($('.slider').hasClass('slide2')) {
@@ -116,11 +116,3 @@ function begin() {
 		document.onkeydown = null;  
 	}
 }
-//$('a[href*=#]').bind("click", function(e){
-//var anchor = $(this);
-//$('html, body').stop().animate({
-//scrollTop: $(anchor.attr('href')).offset().top
-//}, 1000);
-//e.preventDefault();
-//});
-//return false;

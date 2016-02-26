@@ -1,0 +1,155 @@
+{
+  "object" : {
+    "67" : {
+      "city" : "Харьков",
+      "discriptions" : "С другой стороны постоянный количественный рост и сфера нашей активности представляет собой интересный эксперимент проверки системы обучения кадров, соответствует насущным потребностям. Равным образом начало повседневной работы по формированию позиции в значительной степени обуславливает создание форм развития. Таким образом дальнейшее развитие различных форм деятельности способствует подготовки и реализации систем массового участия.\n\nС другой стороны постоянный количественный рост и сфера нашей активности требуют от нас анализа новых предложений. Таким образом новая модель",
+      "district" : "Завод им. Шевченко (ХПЗ)",
+      "isolation_flat" : "Гостинки",
+      "name_agent" : "Kh Misha",
+      "name_obj" : "New Name1",
+      "number_obj" : 67,
+      "phone_agent" : [ 675729181, 2343241, 23231213 ],
+      "photo_object" : [ "7V__yp4ELXc.jpg", "iXMWKPtwSbg.jpg" ],
+      "price" : 23,
+      "room" : "Многокомнатные",
+      "space" : 233,
+      "type" : "Квартира",
+      "uid" : "24b2b4eb-9486-4d60-b1d7-157c031fdcf1"
+    },
+    "108" : {
+      "city" : "Харьков",
+      "discriptions" : "kdlvdnvsdlkvnsdnovnosdnvshvosenhocvncsd.csdcvsd",
+      "district" : "Москалёвка",
+      "isolation_flat" : "Изолированные",
+      "name_agent" : "Kh Misha",
+      "name_obj" : "Yjd",
+      "number_obj" : 108,
+      "phone_agent" : [ 12312312312, 123123123123, 12312312 ],
+      "photo_object" : [ "EmscYHcm91U.jpg" ],
+      "price" : 345,
+      "room" : "3",
+      "space" : 345,
+      "type" : "Квартира",
+      "uid" : "24b2b4eb-9486-4d60-b1d7-157c031fdcf1"
+    },
+    "202" : {
+      "city" : "Пригород",
+      "isolation_house" : "Целый дом",
+      "name_agent" : "Kh Misha",
+      "name_obj" : "gfgnfn",
+      "number_obj" : 202,
+      "photo_object" : [ "flat_1.jpg", "flat_2.jpg" ],
+      "price" : 434,
+      "room" : "3",
+      "space" : 32,
+      "type" : "Дом",
+      "uid" : "24b2b4eb-9486-4d60-b1d7-157c031fdcf1"
+    },
+    "292" : {
+      "city" : "Харьков",
+      "discriptions" : "ывмшымьсив зщауращш\\оза",
+      "name_agent" : "Kh Misha",
+      "name_obj" : "Ферма",
+      "number_obj" : 292,
+      "phone_agent" : [ 675729181, 675729182, 675729183 ],
+      "photo_object" : [ "flat_3.jpg", "NmDrxDZWPBg.jpg" ],
+      "price" : 23,
+      "space" : 23,
+      "type" : "Участки",
+      "uid" : "24b2b4eb-9486-4d60-b1d7-157c031fdcf1"
+    },
+    "300" : {
+      "city" : "Харьков",
+      "district" : "пл.Восстания(Конный рынок)",
+      "isolation_house" : "Целый дом",
+      "name_agent" : "Kh Misha",
+      "name_obj" : "Nem Name 2",
+      "number_obj" : 300,
+      "phone_agent" : [ 67890654, 678906547, 67890653 ],
+      "photo_object" : [ "tBi4bPCfRvY.jpg" ],
+      "price" : 23,
+      "room" : "1",
+      "space" : 3242,
+      "type" : "Дом",
+      "uid" : "24b2b4eb-9486-4d60-b1d7-157c031fdcf1"
+    },
+    "344" : {
+      "city" : "Харьков",
+      "discriptions" : "Моё описание",
+      "district" : "Основа",
+      "isolation_flat" : "Изолированные",
+      "name_agent" : "Kh Misha",
+      "name_obj" : "Новая Квартира",
+      "number_obj" : 344,
+      "phone_agent" : [ 212, 2124, 12 ],
+      "photo_object" : [ "ObQYg-yYd3U.jpg", "OW0r6usx_VE.jpg" ],
+      "price" : 245,
+      "room" : "3",
+      "space" : 43,
+      "type" : "Квартира",
+      "uid" : "24b2b4eb-9486-4d60-b1d7-157c031fdcf1"
+    },
+    "386" : {
+      "city" : "Харьков",
+      "discriptions" : "dgd dsgfsgvr fgrgdrg rg rgrg rg argargrgargarg",
+      "district" : "Новые Дома",
+      "isolation_flat" : "Изолированные",
+      "name_agent" : "Hel Kek",
+      "name_obj" : "New Object",
+      "number_obj" : 386,
+      "phone_agent" : [ 12312, null, 31233232 ],
+      "photo_object" : [ "imgTitle_1.jpg", "imgTitle_2.jpg", "imgTitle_3.jpg", "imgTitle_4.jpg", "imgTitle_5.jpg" ],
+      "price" : 23234,
+      "room" : "Элитные",
+      "space" : 431,
+      "type" : "Квартира",
+      "uid" : "60eeb7dc-cfe0-46a2-9e2b-a04a5f2807d4"
+    },
+    "487" : {
+      "city" : "Харьков",
+      "district" : "Восточный",
+      "isolation_flat" : "Гостинки",
+      "name_agent" : "Kh Misha",
+      "name_obj" : "3434",
+      "number_obj" : 487,
+      "photo_object" : [ "P51231-155413.jpg", "wesK2cR5dR0.jpg" ],
+      "price" : 343,
+      "room" : "Многокомнатные",
+      "space" : 34,
+      "type" : "Квартира",
+      "uid" : "24b2b4eb-9486-4d60-b1d7-157c031fdcf1"
+    }
+  },
+  "request" : {
+    "-KBOP3okF-eP1Xvo3E66" : {
+      "discriptions" : "afbsfucsdjmlcvdsjvsiodjvdsvdvsdvvdvvfvdfv",
+      "middleName" : "Khohlov",
+      "name" : "Misha",
+      "phone" : 675729181,
+      "selectForm" : "sell"
+    },
+    "-KBSWezlJ4iwV73z1oJp" : {
+      "discriptions" : "лпалвомлматвщармищвмщлм ьщстмщ томз яжчб жвязмзывозж.",
+      "middleName" : "Khhhh",
+      "name" : "NewName",
+      "phone" : 675729181,
+      "selectForm" : "sell"
+    }
+  },
+  "user" : {
+    "24b2b4eb-9486-4d60-b1d7-157c031fdcf1" : {
+      "admin" : true,
+      "email" : "m@m.ua",
+      "firstname" : "Misha",
+      "lastname" : "Kh",
+      "uid" : "24b2b4eb-9486-4d60-b1d7-157c031fdcf1"
+    },
+    "60eeb7dc-cfe0-46a2-9e2b-a04a5f2807d4" : {
+      "admin" : false,
+      "email" : "a@a.ua",
+      "firstname" : "Kek",
+      "lastname" : "Hel",
+      "uid" : "60eeb7dc-cfe0-46a2-9e2b-a04a5f2807d4"
+    }
+  }
+}
