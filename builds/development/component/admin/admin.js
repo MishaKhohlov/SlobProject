@@ -89,6 +89,7 @@
 			console.info('onCompleteAll');
 			messageForClient('Все файлы загружены');
 			$rootScope.imageArray = $scope.arrImageName;
+			$log.log($rootScope.imageArray);
 			$rootScope.tryButton = true;
 		};
 		console.info('Общая информация', uploader);
@@ -144,7 +145,8 @@
 		}
 		$scope.itemReset = function(){
 			$log.log('reset');
-			valueEmpty()
+			$rootScope.imageArray = [];
+			valueEmpty();
 		};
 		// очистка классов формы для регистрации
 		function resetForm() {

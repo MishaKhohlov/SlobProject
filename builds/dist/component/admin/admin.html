@@ -44,19 +44,19 @@
 
 <div ng-show="authLogin()">
     <p>Добавление нового объекта</p>
-    <input class="admGlob_button" type="button" value="Добавить новый объект." ng-click="addForm ? addForm = false : addForm = true; openFormObj()">
-    <input class="admGlob_button" type="button" value="Close" ng-click="addForm = false">
+    <input class="admGlob_button" type="button" value="Добавить новый объект." ng-click="addForm ? '' : addForm = true; openFormObj()">
+    <input  ng-show="addForm" class="admGlob_button" type="button" value="Close" ng-click="addForm = false; itemReset()">
 
     <div ng-show="addForm">
         <div class="admin_object_photo" ng-show="addForm">
             <h4 class="admin_object_photo_title">Фотографии объекта</h4>
-                <div class="admin_object_photo_img" ng-repeat="(key, item) in item.photo_object track by $index">
+                <div class="admin_object_photo_img" ng-repeat="(key, item) in imageArray track by $index">
                 <img class="image_photo" ng-src="./uploads/{{item}}"></br>
-                <button ng-click="deletePhoto(key)">Удалить</button>
             </div>
         </div>
 
-        <button  class="admGlob_button admGlob_button_openPhotoEdit" ng-click="addImg ? addImg = false : addImg = true">Открыть редактирование фотографий</button></br>
+        <button  class="admGlob_button admGlob_button_openPhotoEdit" ng-click="addImg ? addImg = false : addImg = true">Открыть редактирование фотографий</button>
+        <input  ng-show="addImg" class="admGlob_button" type="button" value="Close" ng-click="addImg = false; ">
         <div ng-show="addImg" ng-controller="AppControllerAdmin" nv-file-drop="" uploader="uploader" >
             <div ng-show="uploader.isHTML5">
                 <div class="drobzone over-zoney zone" nv-file-over="" uploader="uploader">
