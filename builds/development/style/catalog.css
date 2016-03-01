@@ -11,7 +11,7 @@
 	text-transform: uppercase;
 }
 /*Добавить при клике или выборе объекта к соответсвующиму диву*/
-.catalog_object_mask {
+div.catalog_object_mask {
 	transform: translateX(0px);
 }
 .catalog {

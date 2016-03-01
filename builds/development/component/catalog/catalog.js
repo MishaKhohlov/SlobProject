@@ -19,7 +19,7 @@
                     accessIteration = true;
                     if (paramObj.price.from !== null || paramObj.price.to !== null) {
                         if (paramObj.price.from) {
-                            $log.log(input[i].price, paramObj.price.from, input[i].price <= paramObj.price.from)
+                            $log.log(input[i].price, paramObj.price.from, input[i].price <= paramObj.price.from);
                             accessIteration = false;
                             if (input[i].price >= paramObj.price.from) {
                                 $log.log('price.to true');
@@ -27,7 +27,7 @@
                             }
                         }
                         if (paramObj.price.to && accessIteration) {
-                            $log.log(input[i].price, paramObj.price.to, input[i].price <= paramObj.price.to)
+                            $log.log(input[i].price, paramObj.price.to, input[i].price <= paramObj.price.to);
                             accessIteration = false;
                             if (input[i].price <= paramObj.price.to) {
                                 $log.log('price.from true');
@@ -35,9 +35,9 @@
                             }
                         }
                     }
-                    if (paramObj.space.from !== null && paramObj.space.to !== null) {
+                    if (paramObj.space.from !== null || paramObj.space.to !== null) {
                         if (paramObj.space.from && accessIteration) {
-                            $log.log(input[i].space, paramObj.space.from, input[i].price <= paramObj.space.from)
+                            $log.log(input[i].space, paramObj.space.from, input[i].price <= paramObj.space.from);
                             accessIteration = false;
                             if (input[i].space >= paramObj.space.from) {
                                 $log.log('space.from true');
@@ -45,7 +45,7 @@
                             }
                         }
                         if (paramObj.space.to && accessIteration) {
-                            $log.log(input[i].space, paramObj.space.to, input[i].price <= paramObj.space.to)
+                            $log.log(input[i].space, paramObj.space.to, input[i].price <= paramObj.space.to);
                             accessIteration = false;
                             if (input[i].space <= paramObj.space.to) {
                                 $log.log('space.to true');
@@ -54,7 +54,7 @@
                         }
                     }
                     if(accessIteration) {
-                        outArr.push(input[i])
+                        outArr.push(input[i]);
                     }
                 }
                 if(input)
@@ -66,7 +66,7 @@
                 Data.setlenghtCatalog(input.length);
                 return input;
             }
-        }
+        };
     }
     function sortCatalog($log, Data, $rootScope){
         return function (input, paramObj){
@@ -103,7 +103,7 @@
                  //$log.log('return input');
                 return input;
             }
-        }
+        };
     }
     function catalogCtrl ($scope, $log, Data, $rootScope, $timeout, $sessionStorage) {
     	$log.debug("Catalog controller star");

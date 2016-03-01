@@ -8,7 +8,9 @@
 @import "admin.css";*/
 /*@import "other.css";*/
 /*@import "laws.css";*/
-
+.cbalink {
+    display: none !important;
+}
 html {
   font-family: sans-serif; /* 1 */
   -ms-text-size-adjust: 100%; /* 2 */

@@ -27,10 +27,10 @@
         <div class="search_contrl_left">
             <div class="search_contrl_left_str">
                 <div class="sprite sprite-space"></div>
-                <div class="search_contrl_left_str_ye">м</div>
+                <div class="search_contrl_left_str_ye">м²</div>
                  <input type="number" ng-model="filterRange.space.from" placeholder="От">
                  <div class="search_contrl_left_str_line">--</div> 
-                <div class="search_contrl_left_str_ye">м</div>
+                <div class="search_contrl_left_str_ye">м²</div>
                 <input type="number" ng-model="filterRange.space.to" placeholder="До">
             </div>
             <div class="search_contrl_left_str">
@@ -124,7 +124,7 @@
 <section infinite-scroll='infiniteScroll()' ng-show="data[0]" id="catalog">
     <div class="itemCatl">
             <a class="itemCatl_obj" href="#/catalog/{{item.number_obj}}" ng-repeat="(key, item) in data | filter : search | sortCatalog : filter | range : filterRange">
-                    <div class="itemCatl_obj_title">{{item.type}}</div>
+                    <div class="itemCatl_obj_title">{{item.type}}, {{item.number_obj}}</div>
                     <!-- <div>{{item.number_obj}}</div> -->
                     <div class="itemCatl_obj_location">{{item.city}}, {{item.district}}</div>
                     <div class="itemCatl_obj_mask">
@@ -144,11 +144,11 @@
                     </div>
 
                     <div class="itemCatl_obj_inform">
-                        <div class="itemCatl_obj_inform_block" ng-show="item.space"><div class="sprite sprite-spaceBlack"></div>{{item.space}}</div>
+                        <div class="itemCatl_obj_inform_block" ng-show="item.space"><div class="sprite sprite-spaceBlack"></div>{{item.space}} м²</div>
                         <div class="itemCatl_obj_inform_block" ng-show="item.isolation_flat"><div class="sprite sprite-inf"></div>{{item.isolation_flat}}</div>
                         <div class="itemCatl_obj_inform_block" ng-show="item.isolation_house"><div class="sprite sprite-inf"></div>{{item.isolation_house}}</div>
-                        <div class="itemCatl_obj_inform_block" ng-show="item.price"><div class="sprite sprite-priceBlack"></div>{{item.price}}</div>
-                        <div class="itemCatl_obj_inform_block" ng-show="item.room"><div class="sprite sprite-roomBlack"></div>{{item.room}}</div>
+                        <div class="itemCatl_obj_inform_block" ng-show="item.price"><div class="sprite sprite-priceBlack"></div>{{item.price}} y.e.</div>
+                        <div class="itemCatl_obj_inform_block" ng-show="item.room"><div class="sprite sprite-roomBlack"></div>{{item.room}} км.</div>
                     </div>
             </a>
     </div>

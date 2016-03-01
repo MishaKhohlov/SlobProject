@@ -2,18 +2,18 @@
   "object" : {
     "67" : {
       "city" : "Харьков",
-      "discriptions" : "С другой стороны постоянный количественный рост и сфера нашей активности представляет собой интересный эксперимент проверки системы обучения кадров, соответствует насущным потребностям. Равным образом начало повседневной работы по формированию позиции в значительной степени обуславливает создание форм развития. Таким образом дальнейшее развитие различных форм деятельности способствует подготовки и реализации систем массового участия.\n\nС другой стороны постоянный количественный рост и сфера нашей активности требуют от нас анализа новых предложений. Таким образом новая модель",
+      "discriptions" : "С другой стороны постоянный количественный рост и сфера нашей активности представляет собой интересный эксперимент проверки системы обучения кадров, соответствует насущным потребностям. Равным образом начало повседневной работы по формированию позиции в значительной степени обуславливает создание форм развития. Таким образом дальнейшее развитие разлdfhg.\n\nС другой стороны постоянный количественный рост и сфера нашей активности требуют от нас анализа новых предложений. Таким образом новая модель",
       "district" : "Завод им. Шевченко (ХПЗ)",
-      "isolation_flat" : "Гостинки",
+      "isolation_house" : "Часть дома",
       "name_agent" : "Kh Misha",
-      "name_obj" : "New Name1",
+      "name_obj" : "New Name",
       "number_obj" : 67,
       "phone_agent" : [ 675729181, 2343241, 23231213 ],
       "photo_object" : [ "7V__yp4ELXc.jpg", "iXMWKPtwSbg.jpg" ],
-      "price" : 23,
-      "room" : "Многокомнатные",
+      "price" : 23345,
+      "room" : "3",
       "space" : 233,
-      "type" : "Квартира",
+      "type" : "Дом",
       "uid" : "24b2b4eb-9486-4d60-b1d7-157c031fdcf1"
     },
     "108" : {
@@ -48,14 +48,17 @@
     "292" : {
       "city" : "Харьков",
       "discriptions" : "ывмшымьсив зщауращш\\оза",
+      "district" : "Одеская",
+      "isolation_house" : "Дача",
       "name_agent" : "Kh Misha",
       "name_obj" : "Ферма",
       "number_obj" : 292,
       "phone_agent" : [ 675729181, 675729182, 675729183 ],
       "photo_object" : [ "flat_3.jpg", "NmDrxDZWPBg.jpg" ],
       "price" : 23,
+      "room" : "2",
       "space" : 23,
-      "type" : "Участки",
+      "type" : "Дом",
       "uid" : "24b2b4eb-9486-4d60-b1d7-157c031fdcf1"
     },
     "300" : {
@@ -89,22 +92,6 @@
       "type" : "Квартира",
       "uid" : "24b2b4eb-9486-4d60-b1d7-157c031fdcf1"
     },
-    "386" : {
-      "city" : "Харьков",
-      "discriptions" : "dgd dsgfsgvr fgrgdrg rg rgrg rg argargrgargarg",
-      "district" : "Новые Дома",
-      "isolation_flat" : "Изолированные",
-      "name_agent" : "Hel Kek",
-      "name_obj" : "New Object",
-      "number_obj" : 386,
-      "phone_agent" : [ 12312, null, 31233232 ],
-      "photo_object" : [ "imgTitle_1.jpg", "imgTitle_2.jpg", "imgTitle_3.jpg", "imgTitle_4.jpg", "imgTitle_5.jpg" ],
-      "price" : 23234,
-      "room" : "Элитные",
-      "space" : 431,
-      "type" : "Квартира",
-      "uid" : "60eeb7dc-cfe0-46a2-9e2b-a04a5f2807d4"
-    },
     "487" : {
       "city" : "Харьков",
       "district" : "Восточный",
@@ -120,36 +107,13 @@
       "uid" : "24b2b4eb-9486-4d60-b1d7-157c031fdcf1"
     }
   },
-  "request" : {
-    "-KBOP3okF-eP1Xvo3E66" : {
-      "discriptions" : "afbsfucsdjmlcvdsjvsiodjvdsvdvsdvvdvvfvdfv",
-      "middleName" : "Khohlov",
-      "name" : "Misha",
-      "phone" : 675729181,
-      "selectForm" : "sell"
-    },
-    "-KBSWezlJ4iwV73z1oJp" : {
-      "discriptions" : "лпалвомлматвщармищвмщлм ьщстмщ томз яжчб жвязмзывозж.",
-      "middleName" : "Khhhh",
-      "name" : "NewName",
-      "phone" : 675729181,
-      "selectForm" : "sell"
-    }
-  },
   "user" : {
     "24b2b4eb-9486-4d60-b1d7-157c031fdcf1" : {
       "admin" : true,
       "email" : "m@m.ua",
       "firstname" : "Misha",
-      "lastname" : "Kh",
+      "lastname" : "Khohlov",
       "uid" : "24b2b4eb-9486-4d60-b1d7-157c031fdcf1"
-    },
-    "60eeb7dc-cfe0-46a2-9e2b-a04a5f2807d4" : {
-      "admin" : false,
-      "email" : "a@a.ua",
-      "firstname" : "Kek",
-      "lastname" : "Hel",
-      "uid" : "60eeb7dc-cfe0-46a2-9e2b-a04a5f2807d4"
     }
   }
 }
