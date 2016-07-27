@@ -1,0 +1,74 @@
+.ng-enter { z-index: 8888;}
+.ng-leave { z-index: 9999;}
+
+@keyframes slideOutUp {
+    to { transform: translateX(-100%); }
+}
+@keyframes scaleUp {
+    from { opacity: 0.3; transform: scale(0.8); }
+}
+
+.page.ng-leave, .page.ng-enter.ng-enter-active {animation: scaleUp 0.5s both ease-in; }
+.page.ng-enter, .page.ng-leave.ng-leave-active {animation: slideOutUp 0.5s both ease-in;}
+.item {
+    border: 1px solid #0b93d5;
+    background: rgba(43, 108, 200, 0.12);
+    text-decoration: none;
+    color: black;
+}
+.item_a {
+    text-decoration: none;
+}
+.active-link {
+    color: red;
+}
+.border-red {
+    border: 2px solid red;
+}
+.border-normal {
+    border: 1px solid black;
+}
+
+
+.another-file-over-class { border: dotted 3px green; }
+
+canvas {
+    background-color: #f3f3f3;
+    -webkit-box-shadow: 3px 3px 3px 0 #e3e3e3;
+    -moz-box-shadow: 3px 3px 3px 0 #e3e3e3;
+    box-shadow: 3px 3px 3px 0 #e3e3e3;
+    border: 1px solid #c3c3c3;
+    margin: 6px 0 0 6px;
+}
+.test {
+    border: solid 3px red;
+    background: red;
+}
+.drobzone {
+    display: block;
+    border: 1px solid #0b93d5;
+}
+.nv-file-over { border: dotted 3px red; } /* Включается когда наводим файл */
+.item-progress {
+    border: 1px solid  pink;
+}
+.item-progress {
+    background: blue;
+    width: 5px;
+    display: block;
+    height: 10px;
+    border: 1px solid  pink;
+}
+.image_photo {
+    height: 150px;
+}
+.li_image_photo {
+    margin-left: 15px;
+    display: inline-block;
+}
+.total-progress {
+    width: 5px;
+    display: block;
+    height: 10px;
+    border: 1px solid  pink;
+}
